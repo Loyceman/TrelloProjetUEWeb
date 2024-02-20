@@ -1,14 +1,26 @@
 import flask
 from flask import Flask, render_template, redirect, url_for, request, flash
-from flask_login import login_required, logout_user, LoginManager, login_user
+from flask_login import login_required, logout_user, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
-import sqlalchemy
+from database.database import db, init_database
+from database.models import User
 
 app = Flask(__name__)
 
 
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database/database.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+db.init_app(app)
+
+
+user_1 = User(username="Flo", password_hash="oui")
+db.session.add(user_1)
+db.commit()
+print(User.query.all)
+
 @app.route('/')
-@login_required
 def dashboard():
     # TODO
     return 'Hello World!'
