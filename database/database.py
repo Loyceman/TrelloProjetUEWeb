@@ -7,9 +7,8 @@ db = SQLAlchemy()
 
 
 def init_database():
-    db.drop_all()
-
     db.create_all()
+'''
     populate_database()
 
 
@@ -40,3 +39,4 @@ def populate_database():
 
             db.session.add(model_object)
         db.session.commit()
+'''
