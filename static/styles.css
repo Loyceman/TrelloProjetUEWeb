@@ -1,0 +1,29 @@
+.btn-project{
+  color: #fff;
+  background-color: #98ABEE;
+  border-color: #98ABEE;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  border-radius: 0;
+}
+
+.btn-create-project {
+  color: #000;
+  background-color: #F9E8C9;
+  border-color: #F9E8C9;
+  font-palette: dark;
+  letter-spacing: 0.05em;
+  border-radius: 0;
+}
+
+.btn-colour-1 {
+  color: #fff;
+  background-color: #201658;
+  border-color: #201658;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  border-radius: 0;
+}
+
+
+

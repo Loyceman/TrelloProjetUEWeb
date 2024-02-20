@@ -32,7 +32,7 @@ def load_user(user):
 
 @app.route('/')
 def dashboard():
-    return render_template("index.html.jinja2")
+    return flask.render_template("home_page.html.jinja2")
 
 
 @app.route('/project/<project_id>')
