@@ -1,0 +1,25 @@
+{% extends "base.html.jinja2" %}
+
+{% set title = "Database" %}
+{% set active_page = "Database" %}
+
+{% block content %}
+
+    <ul class="list-group">
+        {% for user in users_list %}
+         <li class="list-group-item">
+             <span>User: {{ user.username }} </span><br>
+             <span>Password: {{ user.password_hash }}</span>
+         </li>
+        {% endfor %}
+    </ul>
+
+        <ul class="list-group">
+        {% for task in tasks_list %}
+         <li class="list-group-item">
+             <span>Label: {{ task.label }} </span><br>
+             <span>Is Done: {{ task.isDone }}</span>
+         </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

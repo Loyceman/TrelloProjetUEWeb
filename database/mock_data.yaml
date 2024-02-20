@@ -1,0 +1,19 @@
+_classes:
+  user: &user
+    class: User
+  task: &task
+    class: Task
+
+user_florian:
+  id: 1
+  username: "loyceman"
+  password_hash: "yolo"
+  <<: *user
+
+
+
+task_carae:
+  id: 1
+  label: "Important"
+  isDone: true
+  <<: *task

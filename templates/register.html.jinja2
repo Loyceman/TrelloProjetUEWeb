@@ -1,0 +1,33 @@
+{% extends "base.html.jinja2" %}
+
+{% set title = "Register" %}
+{% set active_page = "Register" %}
+
+
+{% block content %}
+
+    <h3>Sign in (create a profile)</h3>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-danger" role="alert">
+            {{ messages[0] }}. Go to <a href="{{ url_for('login') }}">login page</a>.
+        </div>
+    {% endif %}
+    {% endwith %}
+    <form method="POST">
+    {#    <form method="POST" action="/signup">#}
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username"
+                   aria-describedby="usernameHelp"
+                   placeholder="Your username" name="username">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password"
+                   placeholder="Your Password" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+
+{% endblock %}
