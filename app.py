@@ -13,10 +13,13 @@ def dashboard():
     # TODO
     return 'Hello World!'
 
+
 @app.route('/project/<project_id>')
 @login_required
 def project(project_id):
+    # TODO
     return 'Project ' + project_id
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -26,6 +29,7 @@ def login():
     else :
         return render_template('login.html')
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -34,10 +38,12 @@ def register():
     else :
         return render_template('register.html')
 
+
 @app.route('/logout')
 def logout():
     # TODO
     return redirect('/')
+
 
 if __name__ == '__main__':
     app.run()
