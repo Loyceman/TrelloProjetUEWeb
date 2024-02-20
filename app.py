@@ -31,7 +31,6 @@ def load_user(user):
 
 
 @app.route('/')
-@login_required
 def dashboard():
     return render_template("index.html.jinja2")
 
