@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 
 @app.route('/')
-@login_required
 def dashboard():
     # TODO
     return 'Hello World!'
