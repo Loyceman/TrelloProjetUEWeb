@@ -1,0 +1,93 @@
+:root{
+  --c-background: #0a111a;
+  --c-background-hover: #4a5566;
+}
+
+html{
+  background-color: var(--c-background);
+  display: block
+}
+
+body {
+  color: white;
+}
+
+a a:hover a:active {
+  text-decoration: none;
+  user-select: none;
+  color: white;
+}
+
+.header{
+  background-color: var(--c-background);
+  line-height: 1;
+}
+
+.header-element{
+  display: flex;
+  border-radius: 0.25rem;
+  padding: 0.3125rem 0.5rem;
+  align-items: center;
+  font-size: 1.25rem;
+}
+
+.clickable:hover{
+  background-color: var(--c-background-hover);
+  text-decoration: none;
+}
+
+.icon{
+  fill: white;
+  height: 1em;
+  width: auto;
+  margin: 0.25rem;
+  border-radius: 10%;
+}
+
+.icon-clickable{
+  fill: white;
+  height:1.5em;
+  width: auto;
+  padding: 0.125em;
+  margin: 0 0.25rem;
+  border-radius: 100%
+}
+
+.text-title{
+  color: white;
+  text-align: center;
+  font-size: 1.25rem;
+  letter-spacing: 0.05em;
+  font-weight: bolder;
+  padding: 0.3125rem;
+}
+
+.btn-project{
+  color: #fff;
+  background-color: #98ABEE;
+  border-color: #98ABEE;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  border-radius: 0;
+}
+
+.btn-create-project {
+  color: #000;
+  background-color: #F9E8C9;
+  border-color: #F9E8C9;
+  font-palette: dark;
+  letter-spacing: 0.05em;
+  border-radius: 0;
+}
+
+.btn-colour-1 {
+  color: #fff;
+  background-color: #201658;
+  border-color: #201658;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  border-radius: 0;
+}
+
+
+
