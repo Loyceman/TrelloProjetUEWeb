@@ -6,6 +6,7 @@ from database.models import User, Task, UserRoleEnum
 import database.models as models
 import os
 from helpers import enum_to_readable
+from sqlalchemy import inspect
 
 app = Flask(__name__)
 
@@ -106,9 +107,18 @@ def logout():
 
 @app.route('/database')
 def show_database():
-    users_list = User.query.all()
-    tasks_list = Task.query.all()
-    return render_template('database.html.jinja2', users_list=users_list, tasks_list=tasks_list)
+    inspector = inspect(db.engine)
+    tables = inspector.get_table_names()
+
+    columns_dict = {}
+    for table in tables:
+        columns = inspector.get_columns(table)
+        columns_dict[table] = [column['name'] for column in columns]
+    data = {}
+    for table in tables:
+        model_class = globals()[table.capitalize()]  # Assuming your model class names are capitalized
+        data[table] = model_class.query.all()
+    return render_template('database.html.jinja2', columns=columns_dict, data=data, getattr=getattr)
 
 
 if __name__ == '__main__':
