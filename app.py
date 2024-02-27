@@ -77,25 +77,21 @@ def register():
         user = models.User.query.filter_by(username=username).first()
         if user:
             flash('User already exists')
-            return render_template('register.html.jinja2')
-        print("Username : ", username)
-        print("Password : ", password)
-        if username and password and role:
+        elif not username or not password or not role:
+            flash('Please fill in all the fields')
+        else:
             user = User(username=username,
                         password_hash=generate_password_hash(password, method='sha256'),
                         role=role)
             db.session.add(user)
             db.session.commit()
-        else:
-            return "Please fill all the fields"
-        return redirect('/login')
-    else:
-        user_roles_enums = [role.name for role in UserRoleEnum]
-        user_roles = [enum_to_readable(role.name) for role in UserRoleEnum]
-        return render_template('register.html.jinja2',
-                               user_roles_enums=user_roles_enums,
-                               user_roles=user_roles,
-                               zip=zip)
+            return redirect('/login')
+    user_roles_enums = [role.name for role in UserRoleEnum]
+    user_roles = [enum_to_readable(role.name) for role in UserRoleEnum]
+    return render_template('register.html.jinja2',
+                           user_roles_enums=user_roles_enums,
+                           user_roles=user_roles,
+                           zip=zip)
 
 
 @app.route('/logout', methods=["GET"])
