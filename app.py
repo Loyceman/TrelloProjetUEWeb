@@ -31,7 +31,7 @@ def load_user(user):
     return models.User.query.filter_by(username=user).first()
 
 
-@app.route('/home_page')
+@app.route('/home_page', methods=['GET', 'POST'])
 @login_required
 def dashboard():
     # if not current_user.is_authenticated :
@@ -45,12 +45,9 @@ def create_project():
     description = request.form.get('description')
 
     # Create project and add it to the database
-    project = models.Project(name=name, description=description)
+    project = models.Project(id=0, description=description)
     db.session.add(project)
     db.session.commit()
-
-    # Return success message
-    return jsonify(success=True)
 
 
 # Route for retrieving projects
