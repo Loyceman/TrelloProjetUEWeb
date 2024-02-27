@@ -5,22 +5,16 @@
 
 {% block content %}
 
-    <ul class="list-group">
-        {% for user in users_list %}
-         <li class="list-group-item">
-            <span>User: {{ user.username }} </span><br>
-            <span>Password: {{ user.password_hash }}</span><br>
-            <span>Role: {{ user.role }}</span>
-         </li>
-        {% endfor %}
-    </ul>
-
+    {% for table, items in data.items() %}
+        <h2>{{ table }}</h2>
         <ul class="list-group">
-        {% for task in tasks_list %}
-         <li class="list-group-item">
-             <span>Label: {{ task.label }} </span><br>
-             <span>Is Done: {{ task.isDone }}</span>
-         </li>
-        {% endfor %}
-    </ul>
+            {% for item in items %}
+                <li class="list-group-item">
+                    {% for column in columns[table] %}
+                        <span>{{ column }}: {{ getattr(item, column) }}</span><br>
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
 {% endblock %}
