@@ -1,5 +1,6 @@
-from flask import Flask, render_template, redirect, request, flash
-from flask_login import login_required, logout_user, LoginManager, login_user, current_user
+import flask
+from flask import Flask, render_template, redirect, request, flash, jsonify
+from flask_login import login_required, logout_user, LoginManager, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database
 from database.models import User, Task, UserRoleEnum
@@ -30,7 +31,8 @@ def load_user(user):
     return models.User.query.filter_by(username=user).first()
 
 
-@app.route('/')
+@app.route('/home_page')
+@login_required
 def dashboard():
     # if not current_user.is_authenticated :
     #     redirect('/login')
@@ -38,11 +40,24 @@ def dashboard():
     return render_template("home_page.html.jinja2")
 
 
-@app.route('/project/<project_id>')
-@login_required
-def project(project_id):
-    # TODO
-    return 'Project ' + project_id
+def create_project():
+    name = request.form.get('name')
+    description = request.form.get('description')
+
+    # Create project and add it to the database
+    project = models.Project(name=name, description=description)
+    db.session.add(project)
+    db.session.commit()
+
+    # Return success message
+    return jsonify(success=True)
+
+
+# Route for retrieving projects
+def get_projects():
+    projects = models.Project.query.all()
+    project_data = [{'name': project.name, 'description': project.description} for project in projects]
+    return jsonify(project_data)
 
 def create_project():
     name = request.form['name']
