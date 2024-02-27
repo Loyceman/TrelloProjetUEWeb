@@ -8,8 +8,9 @@
     <ul class="list-group">
         {% for user in users_list %}
          <li class="list-group-item">
-             <span>User: {{ user.username }} </span><br>
-             <span>Password: {{ user.password_hash }}</span>
+            <span>User: {{ user.username }} </span><br>
+            <span>Password: {{ user.password_hash }}</span><br>
+            <span>Role: {{ user.role }}</span>
          </li>
         {% endfor %}
     </ul>

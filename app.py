@@ -3,10 +3,10 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_login import login_required, logout_user, LoginManager, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database
-from database.models import User, Task
+from database.models import User, Task, UserRoleEnum
 import database.models as models
 import os
-
+from helpers import enum_to_readable
 
 app = Flask(__name__)
 
@@ -23,6 +23,8 @@ with app.test_request_context():
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
+
+
 
 
 @login_manager.user_loader
@@ -73,22 +75,26 @@ def register():
     if request.method == 'POST':
         username = request.form.get("username")
         password = request.form.get("password")
+        role = request.form.get("role")
         user = models.User.query.filter_by(username=username).first()
         if user:
             flash('User already exists')
             return render_template('register.html.jinja2')
         print("Username : ", username)
         print("Password : ", password)
-        if username and password:
-            user = models.User(username=username,
-                               password_hash=generate_password_hash(password, method='sha256'))
+        if username and password and role:
+            user = User(username=username,
+                        password_hash=generate_password_hash(password, method='sha256'),
+                        role=role)
             db.session.add(user)
             db.session.commit()
-        else :
+        else:
             return "Please fill all the fields"
         return redirect('/login')
     else:
-        return render_template('register.html.jinja2')
+        user_roles_enums = [role.name for role in UserRoleEnum]
+        user_roles = [enum_to_readable(role.name) for role in UserRoleEnum]
+        return render_template('register.html.jinja2', user_roles_enums=user_roles_enums, user_roles=user_roles, zip=zip)
 
 
 @app.route('/logout', methods=["GET"])
@@ -97,11 +103,14 @@ def logout():
     logout_user()
     return redirect('/')
 
+
 @app.route('/database')
 def show_database():
     users_list = User.query.all()
     tasks_list = Task.query.all()
     return render_template('database.html.jinja2', users_list=users_list, tasks_list=tasks_list)
 
+
 if __name__ == '__main__':
     app.run()
+
