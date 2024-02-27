@@ -1,5 +1,7 @@
 flask~=2.2.5
 flask-sqlalchemy
 flask-login
-werkzeug
-pyyaml
+werkzeug~=2.3.8
+pyyaml~=6.0.1
+sqlalchemy~=2.0.25
+yaml~=0.2.5
