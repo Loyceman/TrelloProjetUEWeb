@@ -7,14 +7,12 @@
   border-radius: 0;
 }
 
-.btn-category {
+.btn-primary {
   color: #fff;
-
-    background-color: #5784BA;
+  background-color: #5784BA;
   border-color: #5784BA;
   font-weight: bold;
   letter-spacing: 0.05em;
-  border-radius: 0;
 }
 
 .btn-project {

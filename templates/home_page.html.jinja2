@@ -1,23 +1,58 @@
-{% extends "header.html.jinja2" %}
+{% extends "base.html.jinja2" %}
 
-<!doctype html>
-    <html lang="fr">
+{% set title = "Home Page" %}
+{% set active_page = "Home Page" %}
 
 {% block content %}
 
-        <!-- btn-outline /// btn btn-light btn-lg btn-block -->
-        <button class="btn btn-colour-1 btn-lg btn-block" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+{% block content %}
+    <div class="d-grid gap-2">
+        <button class="btn btn-primary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
                 aria-controls="collapseOne">
             VOS ESPACES DE TRAVAIL
         </button>
-        <div id="collapseOne">
-            <div class="card-body ">
-                <button class="btn btn-project col-xl-2 col-sm-5 col-12"> Projet 1</button>
-                <button class="btn btn-project col-xl-2 col-sm-5 col-12"> Projet 2</button>
-                <button class="btn btn-project col-xl-2 col-sm-5 col-12"> Projet 3</button>
-                <button class="btn btn-create-project col-xl-2 col-sm-5 col-12"> Creer un nouveau projet </button>
+    </div>
+
+
+    <div id="collapseOne">
+        <div class="card-body ">
+            <button class="btn btn-project col-xl-auto col-sm-auto col-auto p-5">Projet 1</button>
+            <button class="btn btn-create-project col-xl-auto col-sm-auto col-auto p-5" data-bs-toggle="modal"
+                    data-bs-target="#modalCreateProject">Creer un nouveau projet
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="modalCreateProject" tabindex="-1" aria-labelledby="modalCreateProject"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="ModalCreateProjectTitle">Creer votre projet</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="formGroupExampleInput">Nom du projet</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput"
+                                           placeholder="Ici se trouve le nom de votre projet">
+
+                                    <label for="exampleFormControlTextarea1">Description</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2">Ici se trouve votre description</textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="button_create_project"
+                                    data-bs-dismiss="modal">Save changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
 {% endblock %}
 
