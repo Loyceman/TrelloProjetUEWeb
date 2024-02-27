@@ -1,6 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
 import yaml
-import inspect
 import pathlib
 
 db = SQLAlchemy()
@@ -14,9 +13,6 @@ def init_database():
 
 def populate_database():
     import database.models
-
-    model_classes = [model_class for (model_name, model_class) in inspect.getmembers(database.models, inspect.isclass)]
-    #do_populate = sum([len(c.query.all()) for c in model_classes]) == 0
     do_populate = True
     if not do_populate:
         return
@@ -39,4 +35,3 @@ def populate_database():
 
             db.session.add(model_object)
         db.session.commit()
-
