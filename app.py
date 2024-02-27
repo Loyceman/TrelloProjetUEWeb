@@ -31,6 +31,7 @@ def load_user(user):
 
 
 @app.route('/')
+@login_required
 def dashboard():
     # if not current_user.is_authenticated :
     #     redirect('/login')
