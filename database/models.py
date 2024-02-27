@@ -29,4 +29,21 @@ class User(UserMixin, db.Model):
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     label = db.Column(db.Text)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     isDone = db.Column(db.Boolean)
+
+
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.Text)
+
+
+junction_table = db.Table('team by project',
+                          db.Column('team_id', db.Integer, db.ForeignKey('team.id')),
+                          db.Column('project_id', db.Integer, db.ForeignKey('project.id')),
+                          )
+
+
+class Team(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nom = db.Column(db.Text)
