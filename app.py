@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database
-from database.models import User, Task, UserRoleEnum
+from database.models import User, Task, UserRoleEnum, Project, Team
 import database.models as models
 import os
 from helpers import enum_to_readable
@@ -139,7 +139,7 @@ def logout():
 def show_database():
     inspector = inspect(db.engine)
     tables = inspector.get_table_names()
-
+    tables = [table for table in tables if not is_junction_table(table)]
     columns_dict = {}
     for table in tables:
         columns = inspector.get_columns(table)
@@ -149,6 +149,15 @@ def show_database():
         model_class = globals()[table.capitalize()]  # Assuming your model class names are capitalized
         data[table] = model_class.query.all()
     return render_template('database.html.jinja2', columns=columns_dict, data=data, getattr=getattr)
+
+
+def is_junction_table(table_name):
+    # You can define your logic to identify junction tables here
+    # For example, if a table has only two foreign keys, it's likely a junction table
+    # This is a simplified example, you may need to adjust it based on your specific database schema
+    inspector = inspect(db.engine)
+    foreign_keys = inspector.get_foreign_keys(table_name)
+    return len(foreign_keys) == 2
 
 
 if __name__ == '__main__':
