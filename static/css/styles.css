@@ -1,6 +1,7 @@
 :root{
   --c-background: #0a111a;
   --c-background-hover: #4a5566;
+  --bs-light: #f8f9fa;
 }
 
 html{
@@ -9,6 +10,8 @@ html{
 }
 
 body {
+  background-color: var(--c-background);
+  line-height: 1;
   color: white;
 }
 
@@ -18,17 +21,61 @@ a a:hover a:active {
   color: white;
 }
 
+.layout-classic{
+  display: flex;
+  align-items: center;
+}
+
+.layout-popover{
+  display: flex;
+  flex-direction: column;
+}
+
 .header{
-  background-color: var(--c-background);
-  line-height: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: visible;
+}
+
+.header-zone{
+  border-radius: 0.25rem;
+  padding: 0.3125rem 0.5rem;
+  font-size: 1.25rem;
 }
 
 .header-element{
+  margin: 0 0.5rem;
+}
+
+.header-layout-right{
   display: flex;
-  border-radius: 0.25rem;
-  padding: 0.3125rem 0.5rem;
+  justify-content: flex-end;
   align-items: center;
-  font-size: 1.25rem;
+}
+
+.custom-popover {
+  --bs-popover-max-width: 200px;
+  --bs-popover-border-color: white;
+  --bs-popover-header-bg: var(--bs-light);
+  --bs-popover-header-color: var(--c-background);
+  --bs-popover-body-padding-x: 1rem;
+  --bs-popover-body-padding-y: .5rem;
+}
+
+.popover-zone{
+  background-color: white;
+}
+
+.popover-zone::before{
+  content: '';
+  display: block;
+  height: 1px;
+  background-color: var(--c-background);
+}
+
+.popover-element{
+  padding: 8px 20px;
 }
 
 .clickable:hover{
@@ -49,8 +96,15 @@ a a:hover a:active {
   height:1.5em;
   width: auto;
   padding: 0.125em;
-  margin: 0 0.25rem;
-  border-radius: 100%
+}
+
+.round{
+  border-radius: 100%;
+}
+
+.text{
+  text-align: center;
+  margin: 0.25rem;
 }
 
 .text-title{
