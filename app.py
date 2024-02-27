@@ -1,5 +1,4 @@
-import flask
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, request, flash
 from flask_login import login_required, logout_user, LoginManager, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database
@@ -23,8 +22,6 @@ with app.test_request_context():
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
-
-
 
 
 @login_manager.user_loader
@@ -94,7 +91,10 @@ def register():
     else:
         user_roles_enums = [role.name for role in UserRoleEnum]
         user_roles = [enum_to_readable(role.name) for role in UserRoleEnum]
-        return render_template('register.html.jinja2', user_roles_enums=user_roles_enums, user_roles=user_roles, zip=zip)
+        return render_template('register.html.jinja2',
+                               user_roles_enums=user_roles_enums,
+                               user_roles=user_roles,
+                               zip=zip)
 
 
 @app.route('/logout', methods=["GET"])
@@ -113,4 +113,3 @@ def show_database():
 
 if __name__ == '__main__':
     app.run()
-
