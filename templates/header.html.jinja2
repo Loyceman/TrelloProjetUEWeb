@@ -24,7 +24,7 @@
                     <span class="text-title">TRELL'IMT</span>
                 </a>
                 <a class="header-zone header-element clickable nav-link" href="/database">
-                    <span class="text">Database</span>
+                    <span class="text-header">Database</span>
                 </a>
 
                 <div class="flex-grow-1"></div>
@@ -47,8 +47,15 @@
         <div id="popover-profile-content">
             <section>
                 <div class="popover-zone layout-popover">
-                    <a class="text popover-element nav-link" href="/logout">
-                        Logout
+                    <span class="popover-element text-normal">
+                        Bonjour, Théo
+                    </span>
+                    <a class="popover-element text-normal nav-link clickable clickable-light">
+                        Gérer mon compte
+                    </a>
+                    <span class="separator"></span>
+                    <a class="popover-element text-normal fw-bold nav-link clickable clickable-light" href="/logout">
+                        Se déconnecter
                     </a>
                 </div>
 
@@ -59,7 +66,7 @@
             <section>
                 <div class="popover-zone layout-popover">
                     <span class="popover-element">
-                        You have no notifications
+                        Aucune notification
                     </span>
                 </div>
             </section>
@@ -69,16 +76,16 @@
     <script>
         var options_profile = {
             html: true,
-            title: "Your Profile, Théo",
+            title: "Votre Profil",
             content: document.getElementById('popover-profile-content'),
-            trigger: 'focus'
+            {#trigger: 'focus'#}
         }
 
         var options_notifs = {
             html: true,
             title: "Notifications",
             content: document.getElementById('popover-notifs-content'),
-            trigger: 'focus'
+            trigger: 'focus',
         }
         var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
         var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {

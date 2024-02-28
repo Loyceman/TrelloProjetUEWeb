@@ -1,16 +1,17 @@
 :root{
-  --c-background: #0a111a;
-  --c-background-hover: #4a5566;
-  --bs-light: #f8f9fa;
+  --c-dark: #0a111a;
+  --c-dark-hover: #4a5566;
+  --c-light: #eef1f4;
+  --c-white-hover: #e0e8ef
 }
 
 html{
-  background-color: var(--c-background);
+  background-color: var(--c-dark);
   display: block
 }
 
 body {
-  background-color: var(--c-background);
+  background-color: var(--c-dark);
   line-height: 1;
   color: white;
 }
@@ -39,7 +40,6 @@ a a:hover a:active {
 }
 
 .header-zone{
-  border-radius: 0.25rem;
   padding: 0.3125rem 0.5rem;
   font-size: 1.25rem;
 }
@@ -56,31 +56,41 @@ a a:hover a:active {
 
 .custom-popover {
   --bs-popover-max-width: 200px;
-  --bs-popover-border-color: white;
-  --bs-popover-header-bg: var(--bs-light);
-  --bs-popover-header-color: var(--c-background);
-  --bs-popover-body-padding-x: 1rem;
-  --bs-popover-body-padding-y: .5rem;
+  --bs-popover-border-color: var(--c-light);
+  --bs-popover-header-bg: var(--c-light);
+  --bs-popover-header-color: var(--c-dark);
+  --bs-popover-body-padding-x: 0.75rem;
+  --bs-popover-body-padding-y: 0.5rem;
 }
 
 .popover-zone{
   background-color: white;
 }
 
-.popover-zone::before{
+.separator::after{
   content: '';
   display: block;
   height: 1px;
-  background-color: var(--c-background);
+  margin: 0.25em 0.75em;
+  background-color: var(--c-dark);
 }
 
 .popover-element{
-  padding: 8px 20px;
+  padding: 0.5em 0.5em;
+  margin: 0.25em 0;
+}
+
+.clickable{
+  border-radius: 0.25rem;
 }
 
 .clickable:hover{
-  background-color: var(--c-background-hover);
+  background-color: var(--c-dark-hover);
   text-decoration: none;
+}
+
+.clickable-light:hover{
+  background-color: var(--c-white-hover);
 }
 
 .icon{
@@ -102,9 +112,13 @@ a a:hover a:active {
   border-radius: 100%;
 }
 
-.text{
+.text-header{
   text-align: center;
   margin: 0.25rem;
+}
+
+.text-normal{
+  text-align: left;
 }
 
 .text-title{
@@ -112,7 +126,7 @@ a a:hover a:active {
   text-align: center;
   font-size: 1.25rem;
   letter-spacing: 0.05em;
-  font-weight: bolder;
+  font-weight: bold;
   padding: 0.3125rem;
 }
 
