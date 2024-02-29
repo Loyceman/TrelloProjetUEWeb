@@ -10,6 +10,8 @@ function onLoad() {
         let description = $("#description_new_project").val()
         if (name !== "") {
             create_button(name, description)
+        } else {
+            alert("nom pas valide ou inexistant")
         }
     });
 }
@@ -20,15 +22,13 @@ function create_button(name_project, description_project) {
         method: "POST",
         timeout: 2000,
         data: {
+            type: 'project',
             name: name_project,
             description: description_project
         },
         success: function (response) {
             $("#modalCreateProject").modal("hide"); // Hide modal
-            updateProjectList(name_project)
-        },
-        error: function (){
-            alert("erreur : envoi de données impossible")
+            updateProjectList(name_project);
         }
     });
 }
@@ -39,13 +39,9 @@ function updateProjectList(name_project) {
         url: "/home_page",
         method: "GET",
         success: function (projects) {
-            $("#listProject").empty(); // Clear existing project listing
-
-            // Append new project buttons to the project list
-            /*projects.forEach(function (project) {
-                let buttonHtml = '<button class="btn btn-outline-secondary">' + name_project + '</button>';
-                $("#listProject").append(buttonHtml);
-            });*/
+            console.log("append a button")
+            //$("#listProject").append('<button class="btn btn-project col-xl-auto col-sm-auto col-auto p-5"> Projet Test 2 </button>')
+            // ne fonctionne pas pour le moment 
         }
     });
 }

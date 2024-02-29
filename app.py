@@ -34,27 +34,36 @@ def load_user(user):
 @app.route('/home_page', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    # if not current_user.is_authenticated :
-    #     redirect('/login')
-    # else:
+    if request.method == 'POST':
+        match request.form['type']:
+            case 'project':
+                create_project()
+    # elif request.method == 'GET':
+    #    print("get get")
+    #    get_projects()
+
     return render_template("home_page.html.jinja2")
 
 
 def create_project():
-    name = request.form.get('name')
-    description = request.form.get('description')
+    name = request.form['name']
+    description = request.form['description']
 
     # Create project and add it to the database
-    project = models.Project(id=0, description=description)
+    project = Project(description=description, name=name)
     db.session.add(project)
     db.session.commit()
 
+    return jsonify({'message': 'Project created successfully'}), 200
+
 
 # Route for retrieving projects
-def get_projects():
-    projects = models.Project.query.all()
-    project_data = [{'name': project.name, 'description': project.description} for project in projects]
-    return jsonify(project_data)
+# def get_projects():
+#    projects = Project.query.all()
+#    print(projects)
+#    project_data = [{'name': project.name, 'description': project.description} for project in projects]
+#    print(project_data)
+#    return jsonify(project_data)
 
 def create_project():
     name = request.form['name']
