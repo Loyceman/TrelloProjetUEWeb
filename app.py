@@ -1,6 +1,5 @@
-import flask_login
 from flask import Flask, render_template, redirect, request, flash
-from flask_login import login_required, logout_user, LoginManager, login_user
+from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database
 from database.models import User, Task, UserRoleEnum
@@ -33,7 +32,7 @@ def load_user(user):
 
 @app.route('/')
 def dashboard():
-    # if not flask_login.current_user.is_authenticated :
+    # if not current_user.is_authenticated :
     #     redirect('/login')
     # else:
     return render_template("home_page.html.jinja2")

@@ -55,7 +55,7 @@ a a:hover a:active {
 }
 
 .custom-popover {
-  --bs-popover-max-width: 200px;
+  --bs-popover-max-width: 240px;
   --bs-popover-border-color: var(--c-light);
   --bs-popover-header-bg: var(--c-light);
   --bs-popover-header-color: var(--c-dark);
@@ -71,13 +71,14 @@ a a:hover a:active {
   content: '';
   display: block;
   height: 1px;
-  margin: 0.25em 0.75em;
+  margin: 0.5em 0.75em;
   background-color: var(--c-dark);
 }
 
 .popover-element{
   padding: 0.5em 0.5em;
   margin: 0.25em 0;
+  width: 200px;
 }
 
 .clickable{
@@ -94,18 +95,21 @@ a a:hover a:active {
 }
 
 .icon{
-  fill: white;
   height: 1em;
   width: auto;
   margin: 0.25rem;
-  border-radius: 10%;
 }
 
 .icon-clickable{
-  fill: white;
   height:1.5em;
   width: auto;
   padding: 0.125em;
+}
+
+.icon-popover{
+  height: 1.5em;
+  width: auto;
+  float: right;
 }
 
 .round{
