@@ -16,13 +16,7 @@ body {
   color: white;
 }
 
-a a:hover a:active {
-  text-decoration: none;
-  user-select: none;
-  color: white;
-}
-
-.layout-classic{
+.layout-center{
   display: flex;
   align-items: center;
 }
@@ -67,7 +61,7 @@ a a:hover a:active {
   background-color: white;
 }
 
-.separator::after{
+.popover-separator::after{
   content: '';
   display: block;
   height: 1px;

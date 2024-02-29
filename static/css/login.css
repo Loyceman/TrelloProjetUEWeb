@@ -1,0 +1,58 @@
+:root{
+  --c-dark: #0a111a;
+  --c-dark-hover: #4a5566;
+  --c-light: #eef1f4;
+  --c-white-hover: #e0e8ef
+}
+
+html, body {
+    height: 100%;
+    line-height: 1;
+}
+
+h2{
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.section-login{
+    max-width: 400px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.layout-login{
+    width: 100%;
+    padding: 10%;
+    margin-bottom: 5%;
+    border-radius: 10%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 15px;
+    background-color: white;
+}
+
+.login-element{
+    width: 100%;
+}
+
+.layout-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-box{
+    padding: 0.5em;
+    margin: 0 0.25em;
+}
+
+.clickable{
+  border-radius: 0.5em;
+}
+
+.clickable:hover{
+  background-color: var(--c-white-hover);
+  text-decoration: none;
+}

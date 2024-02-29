@@ -1,48 +1,64 @@
 {% extends "base.html.jinja2" %}
 
-{% set title = "Register" %}
-{% set active_page = "Register" %}
+{% block head %}
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
 
 
 {% block content %}
 
-    <h3>Sign in (create a profile)</h3>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="alert alert-danger" role="alert">
-            {{ messages[0] }}. Go to <a href="{{ url_for('login') }}">login page</a>.
-        </div>
-    {% endif %}
-    {% endwith %}
-    <form method="POST">
-    {#    <form method="POST" action="/signup">#}
-        <div class="row mb-3">
-            <label for="username" class="col-sm-2 col-form-label">Username</label>
-            <div class="col-sm-10">
-            <input type="text" class="form-control" id="username"
-                   aria-describedby="usernameHelp"
-                   placeholder="Your username" name="username">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="password" class="col-sm-2 col-form-label">Password</label>
-            <div class="col-sm-10">
-                <input type="password" class="form-control" id="password"
-                   placeholder="Your Password" name="password">
-            </div>
-        </div>
-        <fieldset class="row mb-3">
-            <legend class="col-form-label col-sm-2 pt-0">Your role in your team</legend>
-            <div class="col-sm-10">
-                {% for role_enum, role in zip(user_roles_enums, user_roles) %}
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="role" id="{{ role_enum }}" value="{{ role_enum }}">
-                    <label class="form-check-label" for="{{ role_enum }}">{{ role }}</label>
+    <section class="container-fluid section-login">
+        <div class="layout-login">
+
+            <h2 class="login-element">Register</h2>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{ messages[0] }}. Go to <a href="{{ url_for('login') }}">login page</a>.
                 </div>
-                {% endfor %}
-            </div>
-        </fieldset>
-        <button type="submit" class="btn btn-primary">Login</button>
-    </form>
+            {% endif %}
+            {% endwith %}
+            <form method="POST">
+            {#    <form method="POST" action="/signup">#}
+                <div class="mb-3">
+                    <label for="username" class="col-sm-2 col-form-label">Username</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" id="username"
+                           aria-describedby="usernameHelp"
+                           placeholder="Your username" name="username">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password"
+                           placeholder="Your Password" name="password">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="col-form-label pt-0">Your role in your team</label>
+                        {% for role_enum, role in zip(user_roles_enums, user_roles) %}
+                        <div class="form-check m-1">
+                            <input class="form-check-input" type="radio" name="role" id="{{ role_enum }}" value="{{ role_enum }}">
+                            <label class="form-check-label" for="{{ role_enum }}">{{ role }}</label>
+                        </div>
+                        {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+
+        <div class="login-element layout-center">
+            <span class="text-box">
+                Already have an account ?
+            </span>
+            <a class="text-box clickable" href="{{ url_for('login') }}">
+                Login
+            </a>
+        </div>
+
+    </section>
+
 
 {% endblock %}
