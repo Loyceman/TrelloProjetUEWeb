@@ -60,11 +60,15 @@ body {
 
 .custom-popover {
   --bs-popover-max-width: 240px;
-  --bs-popover-border-color: var(--c-light);
+  --bs-popover-border-color: var(--c-light-hover);
   --bs-popover-header-bg: var(--c-light);
   --bs-popover-header-color: var(--c-dark);
   --bs-popover-body-padding-x: 0.75rem;
   --bs-popover-body-padding-y: 0.5rem;
+}
+
+.popover-arrow::after{
+  border-bottom-color: var(--c-dark)!important;
 }
 
 .popover-zone{
