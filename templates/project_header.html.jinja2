@@ -1,11 +1,52 @@
 {% extends "header.html.jinja2" %}
 
+<!doctype html>
+    <html lang="fr">
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="../static/css/sidebar.css">
+{% endblock %}
+
 {% block content %}
 
-    <!-- Ici se trouve le header pour changer de projet et passer de la vue tâche à la vue standard et inversement -->
-    <h1> C'est le Header la zone </h1>
+    <main class="main">
 
-    {% block pageProject %}
-    {% endblock %}
+        <div id="sidebar-close">
+            <div class="sidebar-button" data-bs-toggle="offcanvas" data-bs-target="#sidebar-open" aria-expanded="false">
+                <span class="sidebar-box-open" >
+                    <img class="sidebar-icon" src="{{ url_for("static", filename="img/sidebar-open.svg") }}" alt="SidebarOpen"/>
+                </span>
+            </div>
+        </div>
+
+
+        <div id="sidebar-open" class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="true">
+            <div class="">
+                <div class="offcanvas-header pb-1">
+                    <h5 class="offcanvas-title sidebar-title" id="offcanvasExampleLabel">Menu</h5>
+                    <span class="sidebar-box-close sidebar-button" data-bs-dismiss="offcanvas">
+                        <img class="sidebar-icon" src="{{ url_for("static", filename="img/sidebar-close.svg") }}" alt="SidebarOpen"/>
+                    </span>
+                  </div>
+
+            </div>
+              <div class="offcanvas-body pt-0">
+                <section class="sidebar-zone">
+                    <p class="sidebar-zone-title">Mes vues</p>
+                    <span class="sidebar-element clickable">Vue projets</span>
+                    <span class="sidebar-element clickable">Vue tâches</span>
+                </section>
+                  <section class="sidebar-zone">
+                      <p class="sidebar-zone-title">Mes projets</p>
+                  </section>
+              </div>
+        </div>
+
+        {% block pageProject %}
+        {% endblock %}
+        
+    </main>
 
 {% endblock %}
+
+</html>
