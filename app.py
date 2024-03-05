@@ -56,6 +56,7 @@ def dashboard():
 def create_project():
     name = request.form['name']
     description = request.form['description']
+    color = request.form['color']
 
     existing_project = Project.query.filter_by(name=name).first()
     if existing_project:
@@ -64,7 +65,7 @@ def create_project():
         # Pour l'instant aucun interet de renvoyer error étant donné qu'il ne le lit pas
 
     # Creation d'un projet et ajout à la database
-    project = Project(description=description, name=name)
+    project = Project(description=description, name=name, color=color)
 
     db.session.add(project)
     db.session.commit()
@@ -78,7 +79,8 @@ def create_project():
 @login_required
 def get_projects():
     projects = Project.query.all()
-    project_data = [{'name': project.name, 'description': project.description} for project in projects]
+    project_data = [{'name': project.name, 'description': project.description, 'color': project.color} for project in
+                    projects]
     return jsonify(project_data)
 
 

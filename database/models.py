@@ -37,6 +37,7 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
     description = db.Column(db.Text)
+    color = db.Column(db.String(7))  # Stocke la couleur au format hexadécimal
 
 
 junction_table = db.Table('team by project',
