@@ -5,7 +5,8 @@
 
 {% block content %}
     <div class="d-grid gap-2">
-        <button class="btn btn-create-project" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProjects"
+        <button class="btn btn-create-project" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseProjects"
                 aria-expanded="false" aria-controls="collapseExample">
             VOS ESPACES DE TRAVAIL
         </button>
@@ -15,43 +16,38 @@
 
     <div class="collapse" id="collapseProjects">
         <div id="listProject">
-            <button class="btn btn-create-project" data-bs-toggle="modal"
-                    data-bs-target="#modalCreateProject"> Creer un nouveau projet
-            </button>
             <button class="btn btn-project" value="0" id="buttonProject"> Projet Test</button>
         </div>
 
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="modalCreateProject" tabindex="-1" aria-labelledby="modalCreateProject"
+    <div class="modal fade" id="modalCreateProject" tabindex="-1" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="ModalCreateProjectTitle">Creer votre projet</h1>
+                    <h1 class="modal-title fs-5">Créer un nouveau projet</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="name_new_project">Nom du projet</label>
-                            <input type="text" class="form-control" id="name_new_project"
-                                   placeholder="Ici se trouve le nom de votre projet">
-
-                            <label for="description_new_project">Description</label>
-                            <textarea class="form-control" id="description_new_project" rows="2">Ici se trouve votre description</textarea>
-                        </div>
-                    </form>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="name_new_project">
+                        <label for="name_new_project">Nom du projet</label>
+                    </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" id="description_new_project"></textarea>
+                        <label for="description_new_project">Description du projet</label>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-primary" id="button_create_project"> Creer le projet
-                    </button>
+                    <button type="button" class="btn btn-primary" id="button_create_project">Créer le projet</button>
                 </div>
             </div>
         </div>
     </div>
+
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="../static/js/home_page.js"></script>

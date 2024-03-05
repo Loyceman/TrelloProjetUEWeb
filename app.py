@@ -59,9 +59,11 @@ def create_project():
 
     existing_project = Project.query.filter_by(name=name).first()
     if existing_project:
-        return jsonify({'error': 'A project with the same name already exists'}), 400
+        return jsonify({
+            'error': 'A project with the same name already exists'}), 400
+        # Pour l'instant aucun interet de renvoyer error étant donné qu'il ne le lit pas
 
-    # Create project and add it to the database
+    # Creation d'un projet et ajout à la database
     project = Project(description=description, name=name)
 
     db.session.add(project)

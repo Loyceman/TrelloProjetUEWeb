@@ -16,7 +16,7 @@ function onLoad() {
         if (name !== "") {
             create_button(name, description)
         } else {
-            alert("nom pas valide ou inexistant")
+            alert("Veuillez entrer un nom de projet")
         }
     });
     updateProjectList();
@@ -35,6 +35,7 @@ function create_button(name_project, description_project) {
         success: function (response) {
             $("#modalCreateProject").modal("hide"); // Hide modal
             updateProjectList(name_project);
+
         }
     });
 }
@@ -47,7 +48,7 @@ function updateProjectList(name_project) {
         success: function (projects) {
             let listProject = document.getElementById("listProject");
             while (listProject.firstChild) {
-               listProject.removeChild(listProject.firstChild);
+                listProject.removeChild(listProject.firstChild);
             }
 
 
