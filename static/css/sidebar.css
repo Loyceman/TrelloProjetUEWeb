@@ -1,0 +1,88 @@
+html{
+    height: 100%;
+}
+
+body{
+    height: 100%;
+}
+
+.main{
+    display:flex;
+    height: 100%;
+}
+
+#sidebar-close{
+    height: 100%;
+    width: 20px;
+    background-color: var(--c-light);
+    position: relative;
+    box-shadow: 10px 0 10px -10px rgba(0,0,0,0.1);
+}
+
+#sidebar-open{
+    width: 200px;
+    height: 100%;
+    background-color: var(--c-light);
+    position: relative;
+    overflow: visible
+}
+
+.sidebar-element{
+
+}
+
+.sidebar-element::after{
+    content: '';
+    display: block;
+    height: 1px;
+    margin: 0.5em 0.75em;
+    background-color: var(--c-dark);
+}
+
+.sidebar-button{
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+}
+
+.sidebar-box-open{
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    height: 30px;
+    width: 30px;
+    border-radius: 0.25em;
+    border: 1px solid var(--c-light-hover);
+    background-color: var(--c-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.offcanvas-start {
+    top: 50px; /* ajustez la valeur selon la largeur de votre barre latérale */
+}
+
+.sidebar-box-close{
+    height: 30px;
+    width: 30px;
+    border-radius: 0.25em;
+    border: 1px solid var(--c-light-hover);
+    background-color: var(--c-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar-box-open:hover{
+    background-color: var(--c-light-hover);
+}
+
+.sidebar-box-close:hover{
+    background-color: var(--c-light-hover);
+}
+
+.sidebar-icon{
+    width: 80%;
+    height: auto;
+}

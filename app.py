@@ -19,7 +19,6 @@ db.init_app(app)
 
 with app.test_request_context():
     init_database()
-
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
@@ -35,14 +34,7 @@ def dashboard():
     # if not current_user.is_authenticated :
     #     redirect('/login')
     # else:
-    return render_template("home_page.html.jinja2")
-
-
-@app.route('/project/<project_id>')
-@login_required
-def project(project_id):
-    # TODO
-    return 'Project ' + project_id
+    return render_template("project_header.html.jinja2")
 
 def create_project():
     name = request.form['name']
