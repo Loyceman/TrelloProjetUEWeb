@@ -45,9 +45,6 @@ def dashboard():
         match request.form['type']:
             case 'project':
                 create_project()
-    # elif request.method == 'GET':
-    #    print("get get")
-    #    get_projects()
 
     return render_template("home_page.html.jinja2")
 

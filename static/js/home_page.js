@@ -2,10 +2,7 @@ $(onLoad)
 
 function onLoad() {
 
-    console.log("hello world")
-
     $("#listProject").on("click", "#buttonProject", function() {
-        // console.log("/projects/standard_view/" + $(this).val() + " project");
         window.location.href = "/projects/standard_view/" + $(this).val();
     });
 
