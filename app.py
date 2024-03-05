@@ -106,7 +106,7 @@ def login():
             return render_template('login.html.jinja2')
         login_user(user, remember=remember)
         print("User logged in")
-        return redirect('/')
+        return redirect('/home_page')
     else:
         return render_template('login.html.jinja2')
 
@@ -141,7 +141,7 @@ def register():
 @login_required
 def logout():
     logout_user()
-    return redirect('/')
+    return redirect('/login')
 
 
 @app.route('/database')
