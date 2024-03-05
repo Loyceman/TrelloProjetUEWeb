@@ -1,22 +1,20 @@
-{% extends "base.html.jinja2" %}
+{% extends "header.html.jinja2" %}
 
 {% set title = "Home Page" %}
 {% set active_page = "Home Page" %}
 
 {% block content %}
-
-{% block content %}
     <div class="d-grid gap-2">
-        <button class="btn btn-primary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                aria-controls="collapseOne">
+        <button class="btn btn-create-project" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProjects"
+                aria-expanded="false" aria-controls="collapseExample">
             VOS ESPACES DE TRAVAIL
         </button>
+
     </div>
 
 
-    <div id="collapseProjectSection">
-
-        <div id="listProject">
+    <div class="collapse" id="collapseProjects">
+        <div class="listProject">
             <button class="btn btn-project col-xl-auto col-sm-auto col-auto p-5"> Projet Test</button>
             <button class="btn btn-create-project col-xl-auto col-sm-auto col-auto p-5" data-bs-toggle="modal"
                     data-bs-target="#modalCreateProject"> Creer un nouveau projet
@@ -55,6 +53,6 @@
         </div>
     </div>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../static/js/home_page.js"></script>
 {% endblock %}
-
-</html>
