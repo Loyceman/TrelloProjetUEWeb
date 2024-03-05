@@ -31,6 +31,13 @@ def load_user(user):
     return models.User.query.filter_by(username=user).first()
 
 
+@app.route('/')
+@login_required
+def route():
+    return redirect('/home_page')
+
+
+# HOME PAGE
 @app.route('/home_page', methods=['GET', 'POST'])
 @login_required
 def dashboard():
@@ -44,27 +51,46 @@ def dashboard():
 
     return render_template("home_page.html.jinja2")
 
+
+# HOME PAGE
 def create_project():
     name = request.form['name']
     description = request.form['description']
 
+    existing_project = Project.query.filter_by(name=name).first()
+    if existing_project:
+        return jsonify({'error': 'A project with the same name already exists'}), 400
+
     # Create project and add it to the database
     project = Project(description=description, name=name)
+
     db.session.add(project)
     db.session.commit()
 
     return jsonify({'message': 'Project created successfully'}), 200
 
 
+# HOME PAGE
 # Route for retrieving projects
 @app.route('/projects', methods=['GET'])
 @login_required
 def get_projects():
     projects = Project.query.all()
-    print(projects)
     project_data = [{'name': project.name, 'description': project.description} for project in projects]
-    print(project_data)
     return jsonify(project_data)
+
+
+# PROJECT PAGES
+@login_required
+@app.route('/projects/standard_view/<int:project_id>', methods=['GET', 'POST'])
+def standard_project_page(project_id):
+    # Utilisez l'ID du projet pour récupérer les données du projet depuis la base de données
+    project = get_project_by_id(project_id)
+    return render_template("project_view_standard_page.html.jinja2", project=project, pid=project_id)
+
+
+def get_project_by_id(project_id):
+    return Project.query.get(project_id)
 
 
 @app.route('/login', methods=['GET', 'POST'])
