@@ -23,13 +23,19 @@
 
             <form method="POST" action="/login" class="login-element">
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
+                    <span class="label">
+                        <img class="icon" src="{{ url_for("static", filename="img/user-icon.svg") }}" alt="User"/>
+                        <label for="username" class="">Username</label>
+                    </span>
                     <input type="text" class="form-control" id="username"
                            aria-describedby="usernameHelp"
                            placeholder="Your username" name="username">
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <span class="label">
+                        <img class="icon" src="{{ url_for("static", filename="img/lock-icon.svg") }}" alt="Password">
+                        <label for="password" class="">Password</label>
+                    </span>
                     <input type="password" class="form-control" id="password"
                            placeholder="Your Password" name="password">
                 </div>

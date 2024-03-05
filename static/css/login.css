@@ -56,3 +56,15 @@ h2{
   background-color: var(--c-white-hover);
   text-decoration: none;
 }
+
+.label{
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+
+.icon{
+    width: 1em;
+    height: auto;
+    margin-right: 0.5em;
+}
