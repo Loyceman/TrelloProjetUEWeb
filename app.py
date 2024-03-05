@@ -57,12 +57,14 @@ def create_project():
 
 
 # Route for retrieving projects
-# def get_projects():
-#    projects = Project.query.all()
-#    print(projects)
-#    project_data = [{'name': project.name, 'description': project.description} for project in projects]
-#    print(project_data)
-#    return jsonify(project_data)
+@app.route('/projects', methods=['GET'])
+@login_required
+def get_projects():
+    projects = Project.query.all()
+    print(projects)
+    project_data = [{'name': project.name, 'description': project.description} for project in projects]
+    print(project_data)
+    return jsonify(project_data)
 
 
 @app.route('/login', methods=['GET', 'POST'])

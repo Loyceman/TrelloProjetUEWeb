@@ -14,6 +14,7 @@ function onLoad() {
             alert("nom pas valide ou inexistant")
         }
     });
+    updateProjectList();
 }
 
 function create_button(name_project, description_project) {
@@ -36,7 +37,7 @@ function create_button(name_project, description_project) {
 // Function to handle form submission
 function updateProjectList(name_project) {
     $.ajax({
-        url: "/home_page",
+        url: "/projects",
         method: "GET",
         success: function (projects) {
             console.log("append a button")
