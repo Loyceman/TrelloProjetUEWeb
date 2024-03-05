@@ -44,27 +44,6 @@ def dashboard():
 
     return render_template("home_page.html.jinja2")
 
-
-def create_project():
-    name = request.form['name']
-    description = request.form['description']
-
-    # Create project and add it to the database
-    project = Project(description=description, name=name)
-    db.session.add(project)
-    db.session.commit()
-
-    return jsonify({'message': 'Project created successfully'}), 200
-
-
-# Route for retrieving projects
-# def get_projects():
-#    projects = Project.query.all()
-#    print(projects)
-#    project_data = [{'name': project.name, 'description': project.description} for project in projects]
-#    print(project_data)
-#    return jsonify(project_data)
-
 def create_project():
     name = request.form['name']
     description = request.form['description']
