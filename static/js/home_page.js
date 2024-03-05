@@ -4,10 +4,9 @@ function onLoad() {
 
     console.log("hello world")
 
-
-    $("#buttonProject").click(function () {
-        //console.log("/"+ $(this).val() +" project")
-        //window.location.href = "/" ;
+    $("#listProject").on("click", "#buttonProject", function() {
+        // console.log("/projects/standard_view/" + $(this).val() + " project");
+        window.location.href = "/projects/standard_view/" + $(this).val();
     });
 
     $("#button_create_project").click(function () {
@@ -42,7 +41,6 @@ function create_button(name_project, description_project, color_project) {
     });
 }
 
-// Function to handle form submission
 function updateProjectList() {
     $.ajax({
         url: "/projects",
@@ -57,15 +55,17 @@ function updateProjectList() {
             if (projects !== null) {
                 projects.forEach((project) => {
                         const newButton = document.createElement('button');
-                        newButton.className = "btn btn-project"
+                        newButton.className = "btn btn-project";
+                        newButton.id = "buttonProject";
+                        newButton.value = project["id"];
                         newButton.textContent = project["name"];
-                        newButton.style.backgroundColor = project["color"]
-                        console.log(project["color"])
-                        console.log(" nom du projet : " + project["name"])
+                        newButton.style.backgroundColor = project["color"];
                         document.getElementById("listProject").appendChild(newButton);
+
                     }
                 )
             }
+
 
             // Créer le bouton de création de projet
             const ButtonCreateProject = document.createElement('button');

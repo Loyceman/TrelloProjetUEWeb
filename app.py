@@ -79,7 +79,8 @@ def create_project():
 @login_required
 def get_projects():
     projects = Project.query.all()
-    project_data = [{'name': project.name, 'description': project.description, 'color': project.color} for project in
+    project_data = [{'id': project.id, 'name': project.name, 'description': project.description, 'color': project.color}
+                    for project in
                     projects]
     return jsonify(project_data)
 
@@ -90,7 +91,7 @@ def get_projects():
 def standard_project_page(project_id):
     # Utilisez l'ID du projet pour récupérer les données du projet depuis la base de données
     project = get_project_by_id(project_id)
-    return render_template("project_view_standard_page.html.jinja2", project=project, pid=project_id)
+    return render_template("project_header.html.jinja2", project=project, pid=project_id)
 
 
 def get_project_by_id(project_id):
