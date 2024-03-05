@@ -2,7 +2,7 @@
   --c-dark: #0a111a;
   --c-dark-hover: #4a5566;
   --c-light: #eef1f4;
-  --c-white-hover: #e0e8ef
+  --c-light-hover: #e0e8ef
 }
 
 html, body {
@@ -53,7 +53,7 @@ h2{
 }
 
 .clickable:hover{
-  background-color: var(--c-white-hover);
+  background-color: var(--c-light-hover);
   text-decoration: none;
 }
 

@@ -1,17 +1,23 @@
 :root{
-  --c-dark: #0a111a;
-  --c-dark-hover: #4a5566;
-  --c-light: #eef1f4;
-  --c-white-hover: #e0e8ef
+  --c-dark: #26263B;
+  --c-dark-hover: #272737;
+  --c-light: #F4F4FA;
+  --c-light-hover: #DADAE4;
+  --c-blue: #288EEE;
+  --c-red: #F44933;
+}
+
+.color-nav{
+  background-color: var(--c-light);
 }
 
 html{
-  background-color: var(--bs-white);
+  background-color: white;
   display: block
 }
 
 body {
-  background-color: var(--bs-white);
+  background-color: white;
   line-height: 1;
   color: black;
 }
@@ -24,6 +30,10 @@ body {
 .layout-popover{
   display: flex;
   flex-direction: column;
+}
+
+.navbar{
+  border-bottom: 1px solid var(--c-light-hover);
 }
 
 .header{
@@ -80,12 +90,13 @@ body {
 }
 
 .clickable:hover{
-  background-color: var(--c-dark-hover);
+  background-color: var(--c-light-hover);
   text-decoration: none;
 }
 
-.clickable-light:hover{
-  background-color: var(--c-white-hover);
+.clickable-dark:hover{
+  background-color: var(--c-dark-hover);
+  text-decoration: none;
 }
 
 .icon{
@@ -120,7 +131,7 @@ body {
 }
 
 .text-title{
-  color: white;
+  color: var(--c-dark);
   text-align: center;
   font-size: 1.25rem;
   letter-spacing: 0.05em;

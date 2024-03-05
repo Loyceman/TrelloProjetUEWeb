@@ -20,7 +20,6 @@ db.init_app(app)
 
 with app.test_request_context():
     init_database()
-
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)

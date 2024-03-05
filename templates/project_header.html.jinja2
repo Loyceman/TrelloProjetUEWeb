@@ -1,11 +1,63 @@
 {% extends "header.html.jinja2" %}
 
+<!doctype html>
+    <html lang="fr">
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="../static/css/sidebar.css">
+{% endblock %}
+
 {% block content %}
 
-    <!-- Ici se trouve le header pour changer de projet et passer de la vue tâche à la vue standard et inversement -->
-    <h1> C'est le Header la zone </h1>
+
 
     {% block pageProject %}
     {% endblock %}
 
+    <!-- Ici se trouve le header pour changer de projet et passer de la vue tâche à la vue standard et inversement -->
+    <main class="main">
+
+        <div id="sidebar-close">
+            <div class="sidebar-button" data-bs-toggle="offcanvas" data-bs-target="#sidebar-open" aria-expanded="false">
+                <span class="sidebar-box-open" >
+                    <img class="sidebar-icon" src="{{ url_for("static", filename="img/sidebar-open.svg") }}" alt="SidebarOpen"/>
+                </span>
+            </div>
+        </div>
+
+
+        <div id="sidebar-open" class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="true">
+            <div class="sidebar-element">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Menu</h5>
+                    <span class="sidebar-box-close sidebar-button" data-bs-dismiss="offcanvas">
+                        <img class="sidebar-icon" src="{{ url_for("static", filename="img/sidebar-close.svg") }}" alt="SidebarOpen"/>
+                    </span>
+                  </div>
+
+            </div>
+              <div class="offcanvas-body">
+                <div>
+                  Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+                </div>
+              </div>
+        </div>
+    </main>
+
+        <!-- btn-outline /// btn btn-light btn-lg btn-block -->
+{#        <button class="btn btn-colour-1 btn-lg btn-block" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"#}
+{#                aria-controls="collapseOne">#}
+{#            VOS ESPACES DE TRAVAIL#}
+{#        </button>#}
+{#        <div id="collapseOne">#}
+{#            <div class="card-body ">#}
+{#                <button class="btn btn-project col-xl-2 col-sm-5 col-12"> Projet 1</button>#}
+{#                <button class="btn btn-project col-xl-2 col-sm-5 col-12"> Projet 2</button>#}
+{#                <button class="btn btn-project col-xl-2 col-sm-5 col-12"> Projet 3</button>#}
+{#                <button class="btn btn-create-project col-xl-2 col-sm-5 col-12"> Creer un nouveau projet </button>#}
+{#            </div>#}
+{#        </div>#}
+
 {% endblock %}
+
+</html>
