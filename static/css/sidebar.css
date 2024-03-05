@@ -99,12 +99,3 @@ body{
     font-size: 1em;
     font-weight: bold;
 }
-
-.clickable{
-  border-radius: 0.25rem;
-}
-
-.clickable:hover{
-  background-color: var(--c-light-hover);
-  text-decoration: none;
-}
