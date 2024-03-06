@@ -4,16 +4,17 @@ html{
 
 body{
     height: 100%;
+    --sidebar-close-width: 20px;
 }
 
-.main{
+main{
     display:flex;
-    height: 100%;
+    flex-grow: 1;
 }
 
 #sidebar-close{
     height: 100%;
-    width: 20px;
+    width: var(--sidebar-close-width);
     background-color: var(--c-light);
     position: relative;
     box-shadow: 10px 0 10px -10px rgba(0,0,0,0.1);
@@ -22,7 +23,7 @@ body{
 #sidebar-open{
     width: 240px;
     height: 100%;
-    left: -20px;
+    left: calc(-1 * var(--sidebar-close-width));
     background-color: var(--c-light);
     position: relative;
 }

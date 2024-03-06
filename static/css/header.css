@@ -22,12 +22,18 @@ body {
   color: var(--c-dark);
 }
 
+.surface{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .layout-center{
   display: flex;
   align-items: center;
 }
 
-.layout-popover{
+.layout-column{
   display: flex;
   flex-direction: column;
 }
@@ -104,7 +110,7 @@ body {
 }
 
 .icon{
-  height: 1em;
+  height: 100%;
   width: auto;
   margin: 0.25rem;
 }

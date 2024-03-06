@@ -13,12 +13,15 @@ function onLoad() {
         closeOnSelect: false,
     });
 
-
-    $("#dateProjectStart").on('change', function () {
-        let startDate = $(this).val();
-        $("#dateProjectEnd").attr('min', startDate);
-    });
-
+    const icon_unfold = document.getElementById("icon-unfold-projects")
+    icon_unfold.addEventListener("click", function() {
+        if (icon_unfold.src.includes("chevron-down")) {
+            icon_unfold.src = icon_unfold.src.replace("down","up")
+        }
+        else {
+            icon_unfold.src = icon_unfold.src.replace("up","down")
+        }
+    })
 
     $("#button_create_project").click(function () {
         let name = $("#name_new_project").val()
@@ -91,7 +94,7 @@ function updateProjectList() {
             }
 
 
-            // Créer le bouton de création de projet
+            // // Créer le bouton de création de projet
             const ButtonCreateProject = document.createElement('button');
             ButtonCreateProject.classList.add("btn", "btn-create-project");
             ButtonCreateProject.setAttribute("data-bs-toggle", "modal");

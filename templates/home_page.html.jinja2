@@ -4,25 +4,47 @@
 {% set active_page = "Home Page" %}
 
 {% block css %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
 {% endblock %}
 
 {% block content %}
-    <div class="d-grid gap-2">
-        <button class="btn btn-create-project" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseProjects"
-                aria-expanded="false" aria-controls="collapseExample">
-            VOS ESPACES DE TRAVAIL
-        </button>
 
-    </div>
+    <main class="container layout-column flex-grow-1 p-3">
+        <section class="zone-head">
+            <div class="layout-column gap-2">
+
+                <div class="col-12 zone-head-content">
+
+                    <div class="d-flex flex-grow-1" data-bs-toggle="collapse" data-bs-target="#collapseProjects" aria-expanded="false" aria-controls="collapseExample">
+                        <div class="layout-center">
+                            <span class="zone-head-icon">
+                                <img id="icon-unfold-projects" class="icon" src="{{ url_for("static", filename="img/chevron-down.svg") }}" alt="Show"/>
+                            </span>
+                            <span class="zone-title">MES ESPACES DE TRAVAIL</span>
+                        </div>
+                        <div class="layout-center flex-grow-1">
+                            <span class="line"></span>
+                        </div>
+                    </div>
+
+                    <button id="btn-new-project" class="btn btn-primary layout-center" type="button" data-bs-toggle="modal" data-bs-target="#modalCreateProject" onclick="excludeClick(event)">
+                        <img class="icon" src="{{ url_for("static", filename="img/add-square.svg") }}" alt="Show"/>
+                        <span class="m-1">Nouveau projet</span>
+                    </button>
+
+                </div>
+
+                <div class="collapse" id="collapseProjects">
+                    <div id="listProject" class="d-grid gap-2">
+                        <!-- ici sont ajoutés les boutons projets et le bouton 'créer votre nouveau projet' -->
+                    </div>
+
+                </div>
+            </div>
 
 
-    <div class="collapse" id="collapseProjects">
-        <div id="listProject">
-            <!-- ici sont ajoutés les boutons projets et le bouton 'créer votre nouveau projet' -->
-        </div>
-
-    </div>
+        </section>
+    </main>
 
     <div class="modal fade" id="modalCreateProject" tabindex="-1" aria-labelledby="exampleModalLabel"
          aria-hidden="true">

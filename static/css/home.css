@@ -1,0 +1,55 @@
+html, body{
+    height: 100%
+}
+
+
+.zone-head{
+    display: flex;
+    flex-direction: column;
+}
+
+.zone-head-content{
+    display: flex;
+    border-radius: 0.25em;
+    background-color: var(--c-light);
+    border: 1px solid var(--c-light-hover);
+    padding: 0.75em;
+}
+
+.zone-head-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 1.25em;
+    width: auto;
+}
+
+.zone-title{
+    font-size: 1.25em;
+    font-weight: bold;
+    margin: 0.25em 0.75em;
+}
+
+#btn-new-project{
+    height: 2em;
+    font-size: 1.25em;
+    float: right
+}
+
+#icon-unfold-projects{
+}
+
+.line{
+    display: flex;
+    flex-grow: 1;
+    content: '';
+    height: 0;
+    min-width: 0;
+    border: 1px dashed var(--c-dark);
+    margin: 1em;
+}
+
+.project-appearance{
+    border-radius: 0.25em;
+    height: 150px;
+}
