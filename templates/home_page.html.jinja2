@@ -41,12 +41,31 @@
                         <textarea class="form-control" id="description_new_project"></textarea>
                         <label for="description_new_project">Description du projet</label>
                     </div>
-
+                    <hr>
                     <div class="m-2">
-                        <label for="exampleColorInput" class="form-label">Choisis ta couleur</label>
-                        <input type="color" class="form-control form-control-color" id="colorProjectDisplay"
-                               value="#F9E8C9"
-                               title="Choisis ta couleur">
+                        <label for="exampleColorInput" class="form-label">Couleur de ton projet</label>
+                        <input type="color" id="colorProjectDisplay"
+                               value="#c8c8fa"
+                               title="Couleur de ton projet">
+                    </div>
+                    <hr>
+                    <div>
+                        <label for="dateProjectStart"> Date du début de votre projet </label>
+                        <input type="date" id="dateProjectStart"> <br>
+                        <label for="dateProjectEnd"> Date de fin de votre projet </label>
+                        <input type="date" id="dateProjectEnd">
+                    </div>
+                    <hr>
+                    <div>
+
+                        <label class="m-2" for="SelectedUser"> Selectionner les utilisateurs participant à votre projet</label>
+                        <select class="form-select" id="SelectedUser" data-placeholder="Choose anything"
+                                multiple>
+                            {% for user in users %}
+                                <option>{{ user.username }}</option>
+                            {% endfor %}
+
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -59,6 +78,5 @@
 
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="../static/js/home_page.js"></script>
 {% endblock %}

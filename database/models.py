@@ -33,11 +33,23 @@ class Task(db.Model):
     isDone = db.Column(db.Boolean)
 
 
+# Table de liaison pour la relation Many-to-Many
+project_members = db.Table('project_members',
+                           db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+                           db.Column('project_id', db.Integer, db.ForeignKey('project.id'), primary_key=True)
+                           )
+
+
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
     description = db.Column(db.Text)
     color = db.Column(db.String(7))  # Stocke la couleur au format hexadécimal
+    endDate = db.Column(db.Date)
+    startDate = db.Column(db.Date)
+    # Relation Many-to-Many avec la table project_members
+    members = db.relationship('User', secondary=project_members,
+                              backref=db.backref('projects', lazy='dynamic'), lazy='dynamic')
 
 
 junction_table = db.Table('team by project',

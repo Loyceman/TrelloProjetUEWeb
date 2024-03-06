@@ -1,3 +1,5 @@
+import datetime
+
 import flask
 from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
@@ -45,7 +47,7 @@ def dashboard():
             case 'project':
                 create_project()
 
-    return render_template("home_page.html.jinja2")
+    return render_template("home_page.html.jinja2", users=User.query.all())
 
 
 # HOME PAGE
@@ -54,14 +56,29 @@ def create_project():
     description = request.form['description']
     color = request.form['color']
 
+    start_date_str = request.form['startDate']
+    start_year, start_month, start_day = map(int, start_date_str.split('-'))
+    start_date = datetime.date(start_year, start_month,
+                               start_day)  # Transforme les dates de javascript en date utilisable par Python
+
+    end_date_str = request.form['endDate']
+    end_year, end_month, end_day = map(int, end_date_str.split('-'))
+    end_date = datetime.date(end_year, end_month, end_day)
+
+    members = request.form.getlist('members')  # Récupère une liste des membres du projet
+
     existing_project = Project.query.filter_by(name=name).first()
     if existing_project:
-        return jsonify({
-            'error': 'A project with the same name already exists'}), 400
-        # Pour l'instant aucun interet de renvoyer error étant donné qu'il ne le lit pas
+        return jsonify({'error': 'A project with the same name already exists'}), 400
 
-    # Creation d'un projet et ajout à la database
-    project = Project(description=description, name=name, color=color)
+    # Création d'un projet et ajout à la base de données
+    project = Project(description=description, name=name, color=color, startDate=start_date, endDate=end_date)
+
+    # Ajout des membres au projet
+    for member_id in members:
+        member = User.query.get(member_id)
+        if member:
+            project.members.append(member)
 
     db.session.add(project)
     db.session.commit()
