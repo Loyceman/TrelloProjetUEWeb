@@ -16,6 +16,12 @@ user_jbl:
   role: "PROJECT_MANAGER"
   <<: *user
 
+user_theo:
+  username: "to"
+  password_hash: "pbkdf2:sha256:600000$gU0FKBEubk5BGJ4q$0b2980832dc2447c164aaa9fbe09faac4deeeb2c972b6b790b9c0a8ee95f0b92"
+  role: "PROJECT_MANAGER"
+  <<: *user
+
 
 task_carae:
   id: 1
