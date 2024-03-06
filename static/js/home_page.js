@@ -81,14 +81,28 @@ function updateProjectList() {
 
             if (projects !== null) {
                 projects.forEach((project) => {
-                        const newButton = document.createElement('button');
-                        newButton.className = "btn btn-project";
+                    const newLayout = document.createElement("div")
+                        newLayout.className = "btn-project-layout p-0 col-xl-3 col-sm-6 col-12"
+                    const newButton = document.createElement('button');
+                        newButton.className = "btn btn-project p-0";
                         newButton.id = "buttonProject";
                         newButton.value = project["id"];
-                        newButton.textContent = project["name"];
-                        newButton.style.backgroundColor = project["color"];
-                        document.getElementById("listProject").appendChild(newButton);
+                        newButton.style.border = "2px solid"
+                        newButton.style.borderColor = project["color"]
+                    const newTitle = document.createElement("span")
+                        newTitle.className = "btn-project-title"
+                        newTitle.textContent = project["name"];
+                        newTitle.style.backgroundColor = project["color"];
+                    const newDesc = document.createElement("span");
+                        newDesc.className = "btn-project-desc p-2";
+                        newDesc.style.backgroundColor = "var(--c-light)"
+                        newDesc.textContent = project["description"];
 
+
+                    newLayout.appendChild(newButton)
+                    newButton.appendChild(newTitle)
+                    newButton.appendChild(newDesc)
+                    document.getElementById("listProject").appendChild(newLayout);
                     }
                 )
             }

@@ -27,7 +27,7 @@
                         </div>
                     </div>
 
-                    <button id="btn-new-project" class="btn btn-primary layout-center" type="button" data-bs-toggle="modal" data-bs-target="#modalCreateProject" onclick="excludeClick(event)">
+                    <button id="btn-new-project" class="btn btn-primary layout-center" type="button" data-bs-toggle="modal" data-bs-target="#modalCreateProject"">
                         <img class="icon" src="{{ url_for("static", filename="img/add-square.svg") }}" alt="Show"/>
                         <span class="m-1">Nouveau projet</span>
                     </button>
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="collapse" id="collapseProjects">
-                    <div id="listProject" class="d-grid gap-2">
+                    <div id="listProject" class="row mx-2">
                         <!-- ici sont ajoutés les boutons projets et le bouton 'créer votre nouveau projet' -->
                     </div>
 
