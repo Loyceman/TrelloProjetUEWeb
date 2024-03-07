@@ -1,0 +1,103 @@
+html, body{
+    height: 100%
+}
+
+
+.zone-head{
+    display: flex;
+    flex-direction: column;
+}
+
+.zone-head-content{
+    display: flex;
+    border-radius: 0.25em;
+    background-color: var(--c-light);
+    border: 1px solid var(--c-light-hover);
+    padding: 0.75em;
+}
+
+.zone-head-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 1.25em;
+    width: auto;
+}
+
+.zone-title{
+    font-size: 1.25em;
+    font-weight: bold;
+    margin: 0.25em 0.75em;
+}
+
+#btn-new-project{
+    height: 2em;
+    font-size: 1.25em;
+    float: right
+}
+
+#dateProjectStart, #dateProjectEnd, #colorProjectDisplay{
+    float: right;
+}
+
+.line{
+    display: flex;
+    flex-grow: 1;
+    content: '';
+    height: 0;
+    min-width: 0;
+    border: 1px dashed var(--c-dark);
+    margin: 1em;
+}
+
+.btn-project{
+    border-radius: 0.25em;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-grow: 1;
+    margin: 0.5em;
+    overflow: hidden;
+}
+
+.btn-project-layout{
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    height: 150px;
+
+}
+
+.btn-project-colorbar{
+    width: 30%;
+    height: 1em;
+    border-radius: 1em;
+    margin: 0.5em 0.25em;
+}
+
+.btn-project-title{
+    padding: 0.25em;
+    text-align: start;
+    font-size: 1.25em;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.btn-project-desc{
+    height: 100%;
+    text-align: start;
+    padding: 0.25em 0.5em;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.btn-create-project {
+  color: #000;
+  background-color: #F9E8C9;
+  border-color: #F9E8C9;
+  font-palette: dark;
+  letter-spacing: 0.05em;
+  border-radius: 0;
+}

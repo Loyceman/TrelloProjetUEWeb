@@ -4,25 +4,65 @@
 {% set active_page = "Home Page" %}
 
 {% block css %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
 {% endblock %}
 
 {% block content %}
-    <div class="d-grid gap-2">
-        <button class="btn btn-create-project" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseProjects"
-                aria-expanded="false" aria-controls="collapseExample">
-            VOS ESPACES DE TRAVAIL
-        </button>
 
-    </div>
+    <main class="container layout-column flex-grow-1 p-3 gap-4">
+        <section class="zone-head">
+            <div class="layout-column gap-2">
 
+                <div class="col-12 zone-head-content">
+                    <div id="project-collapser" class="d-flex flex-grow-1" data-bs-toggle="collapse" data-bs-target="#collapseProjects" aria-expanded="true" aria-controls="collapseExample">
+                        <div class="layout-center">
+                            <span class="zone-head-icon">
+                                <img id="icon-unfold-projects" class="icon" src="{{ url_for("static", filename="img/chevron-down.svg") }}" alt="Show"/>
+                            </span>
+                            <span class="zone-title">MES ESPACES DE TRAVAIL</span>
+                        </div>
+                        <div class="layout-center flex-grow-1">
+                            <span class="line"></span>
+                        </div>
+                    </div>
 
-    <div class="collapse" id="collapseProjects">
-        <div id="listProject">
-            <!-- ici sont ajoutés les boutons projets et le bouton 'créer votre nouveau projet' -->
-        </div>
+                    <button id="btn-new-project" class="btn btn-primary layout-center me-2" type="button" data-bs-toggle="modal" data-bs-target="#modalCreateProject">
+                        <img class="icon" src="{{ url_for("static", filename="img/add-square.svg") }}" alt="Show"/>
+                        <span class="m-1">Nouveau projet</span>
+                    </button>
+                </div>
 
-    </div>
+                <div class="collapse show" id="collapseProjects">
+                    <div id="listProject" class="row mx-2">
+                        <!-- ici sont ajoutés les boutons projets et le bouton 'créer votre nouveau projet' -->
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="zone-head">
+            <div class="layout-column gap-2">
+                <div class="zone-head-content col-12">
+                    <div id="task-collapser" class="d-flex flex-grow-1" data-bs-toggle="collapse" data-bs-target="#collapseTasks" aria-expanded="false" aria-controls="collapseExample">
+                        <div class="layout-center">
+                            <span class="zone-head-icon">
+                                <img id="icon-unfold-tasks" class="icon" src="{{ url_for("static", filename="img/chevron-down.svg") }}" alt="Show"/>
+                            </span>
+                            <span class="zone-title">MES TACHES</span>
+                        </div>
+                        <div class="layout-center flex-grow-1">
+                            <span class="line"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse" id="collapseTasks">
+
+                </div>
+            </div>
+        </section>
+    </main>
 
     <div class="modal fade" id="modalCreateProject" tabindex="-1" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
@@ -30,24 +70,51 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">Créer un nouveau projet</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close clickable" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="name_new_project">
-                        <label for="name_new_project">Nom du projet</label>
+
+                    <div class="form-floating layout-column mb-3">
+                        <input type="text" class="form-control" id="name_new_project" placeholder="Nom">
+                        <label for="name_new_project">Nom du projet <sup class="text-danger">*</sup></label>
                     </div>
-                    <div class="form-floating">
-                        <textarea class="form-control" id="description_new_project"></textarea>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="description_new_project" placeholder="Description"></textarea>
                         <label for="description_new_project">Description du projet</label>
                     </div>
 
-                    <div class="m-2">
-                        <label for="exampleColorInput" class="form-label">Choisis ta couleur</label>
-                        <input type="color" class="form-control form-control-color" id="colorProjectDisplay"
-                               value="#F9E8C9"
-                               title="Choisis ta couleur">
+                    <div class="layout-center p-2">
+                        <label for="dateProjectStart"> Date du début de votre projet <sup class="text-danger">*</sup> : </label>
+                        <span class="flex-grow-1"></span>
+                        <input class="is-invalid" type="date" id="dateProjectStart">
                     </div>
+                    <div class="layout-center p-2">
+                        <label for="dateProjectEnd"> Date de fin de votre projet <sup class="text-danger">*</sup> : </label>
+                        <span class="flex-grow-1"></span>
+                        <input type="date" id="dateProjectEnd">
+                    </div>
+                    <div class="layout-center p-2">
+                        <label for="colorProjectDisplay">Couleur associée au projet : </label>
+                        <span class="flex-grow-1"></span>
+                        <input type="color" id="colorProjectDisplay"
+                               value="#c8c8fa"
+                               title="Couleur de ton projet">
+                    </div>
+                    <hr>
+                    <div class="p-2">
+                        <label class="pb-2" for="SelectedUser"> Sélectionner les utilisateurs participant à votre projet</label>
+                        <select class="form-select" id="SelectedUser" data-placeholder="Choisissez ici"
+                                multiple>
+                            {% for user in users %}
+                                <option>{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <hr>
+
+                    <span class="text-danger p-2 m-0">
+                        <sup>*</sup> Champ obligatoire
+                    </span>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -59,6 +126,5 @@
 
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="../static/js/home_page.js"></script>
 {% endblock %}

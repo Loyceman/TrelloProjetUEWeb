@@ -4,16 +4,17 @@ html{
 
 body{
     height: 100%;
+    --sidebar-close-width: 20px;
 }
 
-.main{
+main{
     display:flex;
-    height: 100%;
+    flex-grow: 1;
 }
 
 #sidebar-close{
     height: 100%;
-    width: 20px;
+    width: var(--sidebar-close-width);
     background-color: var(--c-light);
     position: relative;
     box-shadow: 10px 0 10px -10px rgba(0,0,0,0.1);
@@ -22,7 +23,7 @@ body{
 #sidebar-open{
     width: 240px;
     height: 100%;
-    left: -20px;
+    left: calc(-1 * var(--sidebar-close-width));
     background-color: var(--c-light);
     position: relative;
 }
@@ -30,14 +31,6 @@ body{
 .sidebar-zone{
     display: flex;
     flex-direction: column;
-}
-
-.sidebar-zone::before{
-    content: '';
-    display: block;
-    height: 1px;
-    margin: 0.75em;
-    background-color: var(--c-dark);
 }
 
 .sidebar-element{
@@ -98,13 +91,4 @@ body{
 .sidebar-zone-title{
     font-size: 1em;
     font-weight: bold;
-}
-
-.clickable{
-  border-radius: 0.25rem;
-}
-
-.clickable:hover{
-  background-color: var(--c-light-hover);
-  text-decoration: none;
 }

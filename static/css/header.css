@@ -22,12 +22,23 @@ body {
   color: var(--c-dark);
 }
 
+hr{
+  background-color: var(--c-dark);
+  margin: 0.75em;
+}
+
+.surface{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .layout-center{
   display: flex;
   align-items: center;
 }
 
-.layout-popover{
+.layout-column{
   display: flex;
   flex-direction: column;
 }
@@ -75,14 +86,6 @@ body {
   background-color: white;
 }
 
-.popover-separator::after{
-  content: '';
-  display: block;
-  height: 1px;
-  margin: 0.5em 0.75em;
-  background-color: var(--c-dark);
-}
-
 .popover-element{
   padding: 0.5em 0.5em;
   margin: 0.25em 0;
@@ -104,7 +107,7 @@ body {
 }
 
 .icon{
-  height: 1em;
+  height: 100%;
   width: auto;
   margin: 0.25rem;
 }
@@ -143,20 +146,6 @@ body {
   padding: 0.3125rem;
 }
 
-.btn-project{
-  font-weight: bold;
-  letter-spacing: 0.05em;
-  border-radius: 0;
-}
-
-.btn-create-project {
-  color: #000;
-  background-color: #F9E8C9;
-  border-color: #F9E8C9;
-  font-palette: dark;
-  letter-spacing: 0.05em;
-  border-radius: 0;
-}
 
 .btn-colour-1 {
   color: #fff;
