@@ -2,9 +2,9 @@ $(onLoad)
 
 function onLoad() {
 
-    // $("#listProject").on("click", "#buttonProject", function() {
-    //     window.location.href = "/projects/standard_view/" + $(this).val();
-    // });
+    $("#listProject").on("click", "#buttonProject", function() {
+        window.location.href = "/projects/standard_view/" + $(this).val();
+    });
 
     $('#SelectedUser').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
         theme: "bootstrap-5",
@@ -28,6 +28,19 @@ function onLoad() {
         }
     }
 
+    function validTextField() {
+
+      if (textField.value.trim() === '') {
+        textField.classList.add('is-invalid');
+      } else {
+        textField.classList.remove('is-invalid');
+      }
+    }
+
+    const textField = document.getElementById('name_new_project');
+    textField.addEventListener("click", validTextField);
+    textField.addEventListener("input", validTextField);
+
     const icon_projects_unfold = document.getElementById("icon-unfold-projects")
     icon_projects_unfold.addEventListener("click", change_icon_unfold)
     const icon_tasks_unfold = document.getElementById("icon-unfold-tasks")
@@ -43,10 +56,14 @@ function onLoad() {
         let users_selected = $('#SelectedUser').val(); // Array des membres du projets
 
         if (name !== "") {
-            if (endDate < startDate) {
-                alert("La date de fin ne peut pas être antérieure à la date de début");
+            if (startDate !== "" || endDate !== "") {
+                if (endDate < startDate) {
+                    alert("La date de fin ne peut pas être antérieure à la date de début");
+                } else {
+                    create_button(name, description, color, startDate, endDate, users_selected)
+                }
             } else {
-                create_button(name, description, color, startDate, endDate, users_selected)
+                alert("Veuillez renseigner des dates pour le projet")
             }
         } else {
             alert("Veuillez entrer un nom de projet")

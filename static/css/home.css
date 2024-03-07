@@ -36,7 +36,8 @@ html, body{
     float: right
 }
 
-#icon-unfold-projects{
+#dateProjectStart, #dateProjectEnd, #colorProjectDisplay{
+    float: right;
 }
 
 .line{

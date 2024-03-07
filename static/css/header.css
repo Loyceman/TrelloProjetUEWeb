@@ -22,6 +22,11 @@ body {
   color: var(--c-dark);
 }
 
+hr{
+  background-color: var(--c-dark);
+  margin: 0.75em;
+}
+
 .surface{
   height: 100%;
   display: flex;
@@ -79,14 +84,6 @@ body {
 
 .popover-zone{
   background-color: white;
-}
-
-.popover-separator::after{
-  content: '';
-  display: block;
-  height: 1px;
-  margin: 0.5em 0.75em;
-  background-color: var(--c-dark);
 }
 
 .popover-element{

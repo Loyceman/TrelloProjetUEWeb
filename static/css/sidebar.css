@@ -33,14 +33,6 @@ main{
     flex-direction: column;
 }
 
-.sidebar-zone::before{
-    content: '';
-    display: block;
-    height: 1px;
-    margin: 0.75em;
-    background-color: var(--c-dark);
-}
-
 .sidebar-element{
     width: 100%;
     padding: 0.5em 0.5em;
