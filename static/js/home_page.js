@@ -66,6 +66,11 @@ function onLoad() {
         window.location.href = "/projects/standard_view/" + open_project_id;
     });
 
+    $("#button_delete_project").click(function(){
+         delete_project(open_project_id);
+    });
+
+
     $("#button_save_project").click(function () {
         let name = $("#name_saved_project").val()
         let description = $("#description_saved_project").val()
@@ -163,6 +168,23 @@ function saved_project(name_project, description_project, color_project, start_d
             console.log("error : posting modifications do not work")
         }
     });
+}
+
+function delete_project(project_id){
+    $.ajax({
+        url: "/delete_project",
+        method: "POST",
+        timeout: 2000,
+        data: {
+            type: 'project',
+            id: project_id
+        },
+        success: function () {
+            $("#modalSavedProject").modal("hide"); // Hide modal
+            alert("Votre projet a bien été supprimé")
+            updateProjectList()
+        }
+    })
 }
 
 function create_button(name_project, description_project, color_project, start_date_project, end_date_project, project_members) {

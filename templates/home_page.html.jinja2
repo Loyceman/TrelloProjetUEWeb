@@ -102,9 +102,18 @@
                                title="Couleur de ton projet">
                     </div>
                     <hr>
-                    <div class="p-2">
-                        <label class="pb-2" for="SelectedUser"> Sélectionner les utilisateurs participant à votre projet</label>
-                        <select class="form-select" id="SelectedUser" data-placeholder="Choisissez ici"
+                    <div>
+                        <label for="dateProjectStart"> Date du début de votre projet </label>
+                        <input type="date" id="dateProjectStart"> <br>
+                        <label for="dateProjectEnd"> Date de fin de votre projet </label>
+                        <input type="date" id="dateProjectEnd">
+                    </div>
+                    <hr>
+                    <div>
+
+                        <label class="m-2" for="SelectedUser"> Selectionner les utilisateurs participant à votre
+                            projet</label>
+                        <select class="form-select" id="SelectedUser" data-placeholder="Choose anything"
                                 multiple>
                             {% for user in users %}
                                 <option>{{ user.username }}</option>
@@ -134,12 +143,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <fieldset disabled>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="name_saved_project">
-                        <label for="name_saved_project" >Nom du projet</label>
-                    </div>
-                </fieldset>
+                    <fieldset disabled>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="name_saved_project">
+                            <label for="name_saved_project">Nom du projet</label>
+                        </div>
+                    </fieldset>
                     <div class="form-floating">
                         <textarea class="form-control" id="description_saved_project"></textarea>
                         <label for="description_saved_project">Description du projet</label>
@@ -154,8 +163,8 @@
                     <hr>
                     <div>
                         <fieldset disabled>
-                        <label for="dateProjectStartSaved"> Date du début de votre projet </label>
-                        <input type="date" id="dateProjectStartSaved"> <br>
+                            <label for="dateProjectStartSaved"> Date du début de votre projet </label>
+                            <input type="date" id="dateProjectStartSaved"> <br>
                         </fieldset>
                         <label for="dateProjectEndSaved"> Date de fin de votre projet </label>
                         <input type="date" id="dateProjectEndSaved">
@@ -163,7 +172,8 @@
                     <hr>
                     <div>
 
-                        <label class="m-2" for="SelectedUserSaved"> Selectionner les utilisateurs participant à votre projet</label>
+                        <label class="m-2" for="SelectedUserSaved"> Selectionner les utilisateurs participant à votre
+                            projet</label>
                         <select class="form-select" id="SelectedUserSaved" data-placeholder="Choose anything"
                                 multiple>
                             {% for user in users %}
@@ -174,10 +184,14 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-secondary" id="button_delete_project">Supprimer le projet</button>
-                    <button type="button" class="btn btn-primary" id="button_open_project">Ouvrir le projet</button>
-                    <button type="button" class="btn btn-primary" id="button_save_project">Sauvegarder le projet</button>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-danger" id="button_delete_project">Supprimer le projet
+                        </button>
+                        <button type="button" class="btn btn-success" id="button_save_project">Sauvegarder le projet
+                        </button>
+                        <button type="button" class="btn btn-primary" id="button_open_project">Ouvrir le projet</button>
+                    </div>
                 </div>
             </div>
         </div>

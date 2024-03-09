@@ -114,6 +114,20 @@ def create_project():
 
 
 # HOME PAGE
+@app.route('/delete_project', methods=['POST'])
+@login_required
+def delete_project():
+    id_project = request.form['id']
+    project = Project.query.filter_by(id=id_project).first()
+    if project:
+        db.session.delete(project)
+        db.session.commit()  # Confirmer la suppression
+        return jsonify({'message': 'Project deleted successfully'}), 200
+    else:
+        return jsonify({'error': 'Project not found'}), 404
+
+
+# HOME PAGE
 @app.route('/save_project', methods=['POST'])
 @login_required
 def save_project():
