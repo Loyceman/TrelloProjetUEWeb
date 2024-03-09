@@ -1,11 +1,6 @@
 $(onLoad)
 
 function onLoad() {
-
-    $("#listProject").on("click", "#buttonProject", function() {
-        window.location.href = "/projects/standard_view/" + $(this).val();
-    });
-
     $('#SelectedUser').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
         theme: "bootstrap-5",
         width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
@@ -61,11 +56,15 @@ function onLoad() {
     $("#dateProjectEndSaved").attr('min', $("#dateProjectStartSaved").val());
 
 
-
+    let open_project_id
     $(document).on('click', '#buttonProject', function () {
-        get_project($(this).val())
+        open_project_id = $(this).val()
+        get_project(open_project_id)
     });
 
+    $("#button_open_project").click(function(){
+        window.location.href = "/projects/standard_view/" + open_project_id;
+    });
 
     $("#button_save_project").click(function () {
         let name = $("#name_saved_project").val()
