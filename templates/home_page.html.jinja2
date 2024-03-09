@@ -64,6 +64,7 @@
         </section>
     </main>
 
+    <!-- Modal for creating a project -->
     <div class="modal fade" id="modalCreateProject" tabindex="-1" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -124,6 +125,63 @@
         </div>
     </div>
 
+    <!-- Modal for modify or open a project -->
+    <div class="modal fade" id="modalSavedProject" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Ouvrir ou modifier un projet</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <fieldset disabled>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="name_saved_project">
+                        <label for="name_saved_project" >Nom du projet</label>
+                    </div>
+                </fieldset>
+                    <div class="form-floating">
+                        <textarea class="form-control" id="description_saved_project"></textarea>
+                        <label for="description_saved_project">Description du projet</label>
+                    </div>
+                    <hr>
+                    <div class="m-2">
+                        <label for="colorProjectDisplaySaved" class="form-label">Couleur de ton projet</label>
+                        <input type="color" id="colorProjectDisplaySaved"
+                               value="#c8c8fa"
+                               title="Couleur de ton projet">
+                    </div>
+                    <hr>
+                    <div>
+                        <fieldset disabled>
+                        <label for="dateProjectStartSaved"> Date du début de votre projet </label>
+                        <input type="date" id="dateProjectStartSaved"> <br>
+                        </fieldset>
+                        <label for="dateProjectEndSaved"> Date de fin de votre projet </label>
+                        <input type="date" id="dateProjectEndSaved">
+                    </div>
+                    <hr>
+                    <div>
+
+                        <label class="m-2" for="SelectedUserSaved"> Selectionner les utilisateurs participant à votre projet</label>
+                        <select class="form-select" id="SelectedUserSaved" data-placeholder="Choose anything"
+                                multiple>
+                            {% for user in users %}
+                                <option>{{ user.username }}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-secondary" id="button_delete_project">Supprimer le projet</button>
+                    <button type="button" class="btn btn-primary" id="button_open_project">Ouvrir le projet</button>
+                    <button type="button" class="btn btn-primary" id="button_save_project">Sauvegarder le projet</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script src="../static/js/home_page.js"></script>

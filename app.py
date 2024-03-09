@@ -39,7 +39,7 @@ def route():
 
 
 # HOME PAGE
-@app.route('/home_page', methods=['GET', 'POST'])
+@app.route('/home_page', methods=['POST', 'GET'])
 @login_required
 def dashboard():
     if request.method == 'POST':
@@ -51,7 +51,27 @@ def dashboard():
 
 
 # HOME PAGE
-def create_project():
+# Route for retrieving projects
+@app.route('/projects', methods=['GET'])
+@login_required
+def get_projects():
+    projects = Project.query.all()
+    project_data = []
+    for project in projects:
+        members = [member.username for member in project.members.all()]
+        project_data.append({
+            'id': project.id,
+            'name': project.name,
+            'description': project.description,
+            'color': project.color,
+            'endDate': project.endDate,
+            'startDate': project.startDate,
+            'members': members
+        })
+    return jsonify(project_data)
+
+
+def retrieve_data():
     name = request.form['name']
     description = request.form['description']
     color = request.form['color']
@@ -65,8 +85,14 @@ def create_project():
     end_year, end_month, end_day = map(int, end_date_str.split('-'))
     end_date = datetime.date(end_year, end_month, end_day)
 
-    members = request.form.getlist('members')  # Récupère une liste des membres du projet
+    project_members = request.form.getlist('members[]')  # Récupère une liste des membres du projet
 
+    return name, description, color, start_date, end_date, project_members
+
+
+# HOME PAGE
+def create_project():
+    name, description, color, start_date, end_date, members = retrieve_data()
     existing_project = Project.query.filter_by(name=name).first()
     if existing_project:
         return jsonify({'error': 'A project with the same name already exists'}), 400
@@ -74,28 +100,50 @@ def create_project():
     # Création d'un projet et ajout à la base de données
     project = Project(description=description, name=name, color=color, startDate=start_date, endDate=end_date)
 
+    db.session.add(project)
+
     # Ajout des membres au projet
-    for member_id in members:
-        member = User.query.get(member_id)
+    for member_name in members:
+        member = User.query.filter_by(username=member_name).first()
         if member:
             project.members.append(member)
 
-    db.session.add(project)
     db.session.commit()
 
     return jsonify({'message': 'Project created successfully'}), 200
 
 
 # HOME PAGE
-# Route for retrieving projects
-@app.route('/projects', methods=['GET'])
+@app.route('/save_project', methods=['POST'])
 @login_required
-def get_projects():
-    projects = Project.query.all()
-    project_data = [{'id': project.id, 'name': project.name, 'description': project.description, 'color': project.color}
-                    for project in
-                    projects]
-    return jsonify(project_data)
+def save_project():
+    name, description, color, start_date, end_date, members = retrieve_data()
+
+    # Rechercher le projet existant dans la base de données
+    existing_project = Project.query.filter_by(name=name).first()
+    if existing_project:
+        # Mettre à jour les champs du projet avec les nouvelles valeurs
+        existing_project.description = description
+        existing_project.color = color
+        existing_project.startDate = start_date
+        existing_project.endDate = end_date
+
+        # Supprimer les membres actuels du projet
+        for member in existing_project.members:
+            db.session.delete(member)
+
+        # Ajouter les nouveaux membres au projet
+        for member_id in members:
+            member = User.query.get(member_id)
+            if member:
+                existing_project.members.append(member)
+
+        # Sauvegarder les modifications dans la base de données
+        db.session.commit()
+
+        return jsonify({'message': 'Project updated successfully'}), 200
+    else:
+        return jsonify({'error': 'Project not found'}), 404
 
 
 # PROJECT PAGES
@@ -113,24 +161,17 @@ def get_project_by_id(project_id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print("Users :")
-    users = User.query.all()
-    for user in users:
-        print(user.id, user.username, user.password_hash)
+    # users = User.query.all()
 
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
         remember = True if request.form.get('remember') else False
         user = models.User.query.filter_by(username=username).first()
-        print("Username : ", username)
-        print("Password : ", password)
-        print("Remember : ", remember)
         if not user or not check_password_hash(user.password_hash, password):
             flash('Please check your login details and try again.')
             return render_template('login.html.jinja2')
         login_user(user, remember=remember)
-        print("User logged in")
         return redirect('/home_page')
     else:
         return render_template('login.html.jinja2')

@@ -29,6 +29,17 @@ function onLoad() {
     }
 
     function validTextField() {
+    $('#SelectedUserSaved').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
+        theme: "bootstrap-5",
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $(this).data('placeholder'),
+        closeOnSelect: false,
+    });
+
+    $("#dateProjectStart").on('change', function () { // evite la selection de la date de fin antérieur à la date de debut
+        let startDate = $(this).val();
+        $("#dateProjectEnd").attr('min', startDate);
+    });
 
       if (textField.value.trim() === '') {
         textField.classList.add('is-invalid');
@@ -47,13 +58,41 @@ function onLoad() {
     icon_tasks_unfold.addEventListener("click", change_icon_unfold)
     change_icon_unfold()
 
+    $("#dateProjectEndSaved").attr('min', $("#dateProjectStartSaved").val());
+
+
+
+    $(document).on('click', '#buttonProject', function () {
+        get_project($(this).val())
+    });
+
+
+    $("#button_save_project").click(function () {
+        let name = $("#name_saved_project").val()
+        let description = $("#description_saved_project").val()
+        let color = $("#colorProjectDisplaySaved").val()
+        let endDate = $("#dateProjectEndSaved").val();
+        let startDate = $("#dateProjectStartSaved").val();
+        let users_selected = $('#SelectedUserSaved').val(); // Array des membres du projet
+
+        if (name !== "") {
+            if (endDate < startDate) {
+                alert("La date de fin ne peut pas être antérieure à la date de début");
+            } else {
+                saved_project(name, description, color, startDate, endDate, users_selected)
+            }
+        } else {
+            alert("Veuillez entrer un nom de projet")
+        }
+    });
+
     $("#button_create_project").click(function () {
         let name = $("#name_new_project").val()
         let description = $("#description_new_project").val()
         let color = $("#colorProjectDisplay").val()
         let endDate = $("#dateProjectEnd").val();
         let startDate = $("#dateProjectStart").val();
-        let users_selected = $('#SelectedUser').val(); // Array des membres du projets
+        let users_selected = $('#SelectedUser').val(); // Array des membres du nouveau projet
 
         if (name !== "") {
             if (startDate !== "" || endDate !== "") {
@@ -68,10 +107,63 @@ function onLoad() {
         } else {
             alert("Veuillez entrer un nom de projet")
         }
-
-
     });
+
+
     updateProjectList();
+}
+
+function formatDate(date) {
+    // Formater la date en AAAA-MM-JJ
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return year + "-" + month + "-" + day;
+}
+
+function get_project(project_id) {
+    $.ajax({
+        url: "/projects",
+        method: "GET",
+        success: function (projects) {
+            projects.forEach(function (project) {
+                if (parseInt(project.id) === parseInt(project_id)) {
+                    // Compléter la modale avec les infos de project_id
+                    $("#name_saved_project").val(project.name)
+                    $("#description_saved_project").val(project.description)
+                    $("#colorProjectDisplaySaved").val(project.color)
+                    $("#dateProjectEndSaved").val(formatDate(new Date(project.endDate))); // new Date() permet de s'assurer que c'est bien un objet Date javascript
+                    $("#dateProjectStartSaved").val(formatDate(new Date(project.startDate)));
+                    $("#SelectedUserSaved").val(project.members)
+                }
+            });
+        }
+    })
+}
+
+function saved_project(name_project, description_project, color_project, start_date_project, end_date_project, project_members) {
+    $.ajax({
+        url: "/save_project",
+        method: "POST",
+        timeout: 4000,
+        data: {
+            type: 'project',
+            name: name_project,
+            description: description_project,
+            color: color_project,
+            startDate: start_date_project,
+            endDate: end_date_project,
+            members: project_members
+        },
+        success: function () {
+            $("#modalSavedProject").modal("hide"); // Hide modal
+            updateProjectList();
+
+        },
+        error: function(){
+            console.log("error : posting modifications do not work")
+        }
+    });
 }
 
 function create_button(name_project, description_project, color_project, start_date_project, end_date_project, project_members) {

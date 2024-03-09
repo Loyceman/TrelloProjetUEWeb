@@ -45,8 +45,8 @@ class Project(db.Model):
     name = db.Column(db.Text)
     description = db.Column(db.Text)
     color = db.Column(db.String(7))  # Stocke la couleur au format hexadécimal
-    endDate = db.Column(db.Date)
-    startDate = db.Column(db.Date)
+    endDate = db.Column(db.DateTime)
+    startDate = db.Column(db.DateTime)
     # Relation Many-to-Many avec la table project_members
     members = db.relationship('User', secondary=project_members,
                               backref=db.backref('projects', lazy='dynamic'), lazy='dynamic')
