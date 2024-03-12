@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database
-from database.models import User, Task, UserRoleEnum, Project
+from database.models import UserRoleEnum, User, Task, Project
 import database.models as models
 import os
 from helpers import enum_to_readable
@@ -230,6 +230,9 @@ def login():
         print("Username : ", username)
         print("Password : ", password)
         print("Remember : ", remember)
+        print(check_password_hash(user.password_hash, password))
+        print(generate_password_hash(password))
+        print(user.password_hash)
         if not user or not check_password_hash(user.password_hash, password):
             flash('Please check your login details and try again.')
             return render_template('login.html.jinja2')
@@ -276,12 +279,15 @@ def logout():
 def show_database():
     inspector = inspect(db.engine)
     tables = inspector.get_table_names()
+    print(inspector.get_schema_names())
     tables = [table for table in tables if not is_junction_table(table)]
     columns_dict = {}
     for table in tables:
         columns = inspector.get_columns(table)
         columns_dict[table] = [column['name'] for column in columns]
     data = {}
+    print("Tables : ", tables)
+    print("Columns Dict : ", columns_dict)
     for table in tables:
         model_class = globals()[table.capitalize()]  # Assuming your model class names are capitalized
         data[table] = model_class.query.all()

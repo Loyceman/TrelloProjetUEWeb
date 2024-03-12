@@ -1,8 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
 import yaml
-import pathlib
-
-db = SQLAlchemy()
+from pathlib import Path
+from database.models import db
 
 
 def init_database():
@@ -12,32 +10,31 @@ def init_database():
 
 
 def populate_database():
-    import database.models
-    do_populate = True
-    if not do_populate:
-        return
+    # Load mock data from YAML file
+    mock_data_path = Path(__file__).parent / 'mock_data.yaml'
+    with open(mock_data_path, 'r') as file:
+        mock_data = yaml.safe_load(file)
 
-    database_folder = str(pathlib.Path(__file__).parent.absolute())
-    mock_data_file = database_folder + "/mock_data.yaml"
-    with open(mock_data_file) as f:
-        mock_data = yaml.safe_load(f)
-        print(mock_data)
-        for mock_object_key, mock_object_dict in mock_data.items():
-            if mock_object_key == "_classes":
-                continue
-            model_class_name = mock_object_dict.get("class")
-            print("Model class name :")
-            print(model_class_name)
-            model_class = getattr(database.models, model_class_name)
-            print("Model class :")
-            print(model_class)
-            model_object = model_class()
-            print(model_object)
-            print("Setting attributes :")
-            for attribute_name, attribute_name_value in mock_object_dict.items():
-                print("  Name : " + attribute_name)
-                print("  Value : " + str(attribute_name_value) + "\n")
-                setattr(model_object, attribute_name, attribute_name_value)
+    # Get all model classes from the SQLAlchemy metadata
+    model_classes = {}
 
-            db.session.add(model_object)
-        db.session.commit()
+    for mapper in db.Model.registry.mappers:
+        cls = mapper.class_
+        classname = cls.__name__
+        if not classname.startswith('_'):
+            tblname = cls.__tablename__
+            model_classes[tblname] = cls
+    for table_name, table_data in mock_data.items():
+        # Find the model class corresponding to the table name
+        model_class = next((cls for cls in model_classes.values() if cls.__tablename__ == table_name), None)
+        print(model_class)
+        if model_class:
+            print(table_data)
+            for item_data in table_data:
+                print(item_data)
+                # Create an instance of the model class with the provided data
+                instance = model_class(**item_data)
+                db.session.add(instance)
+        else:
+            print(f"Warning: No model found for table '{table_name}'")
+    db.session.commit()

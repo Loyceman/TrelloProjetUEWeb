@@ -1,49 +1,32 @@
-_classes:
-  user: &user
-    class: User
-  project: &project
-    class: Project
-  task: &task
-    class: Task
 
-user_florian: &user_florian
-  username: "loyceman"
-  password_hash: "sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48"
-  role: "DEVELOPER"
-  <<: *user
+user:
+  - username: JBL
+    password_hash: f0b9fc6b7f174a1eb6b0086f71af461ba4d7dd2c722544e6cc8d3fc87b431147
+    role: DEVELOPER
+  - username: user2
+    password_hash: password2
+    role: PROJECT_MANAGER
 
-user_jbl: &user_jbl
-  username: "JBL"
-  password_hash: "sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48"
-  role: "PROJECT_MANAGER"
-  <<: *user
+project:
+  - name: Project 1
+    description: Description for Project 1
+    color: '#FF0000'
+    endDate: 2024-12-31
+    startDate: 2024-01-01
+  - name: Project 2
+    description: Description for Project 2
+    color: '#00FF00'
+    endDate: 2024-12-31
+    startDate: 2024-01-01
 
-user_theo: &user_theo
-  username: "to"
-  password_hash: "pbkdf2:sha256:600000$gU0FKBEubk5BGJ4q$0b2980832dc2447c164aaa9fbe09faac4deeeb2c972b6b790b9c0a8ee95f0b92"
-  role: "PROJECT_MANAGER"
-  <<: *user
-
-task_carae:
-  name: "Test Task"
-  label: "Important"
-  project_id: 1
-  dueDate: "2024-03-15"
-  assignedMembers:
-    - *user_florian
-  isDone: false
-  <<: *task
-
-project_initial:
-  name: "Initial Project"
-  description: "Test Project for project view."
-  color: "#ff0000"
-  startDate: "2024-03-12"
-  endDate: "2024-03-31"
-  members:
-    - *user_florian
-    - *user_jbl
-  <<: *project
-
-  
-
+task:
+  - name: Task 1
+    label: Label for Task 1
+    dueDate: 2024-03-15
+    isDone: false
+    project_id: 1
+  - name: Task 2
+    label: Label for Task 2
+    dueDate: 2024-03-20
+    isDone: true
+    project_id: 1

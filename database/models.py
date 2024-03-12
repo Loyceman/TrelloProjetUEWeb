@@ -1,18 +1,21 @@
 from flask_login import UserMixin
 
-from database.database import db
 import enum
+from flask_sqlalchemy import SQLAlchemy
+
 import sqlalchemy
+
+db = SQLAlchemy()
 
 
 # Table de liaison pour la relation Many-to-Many
 users_projects_association = db.Table('project_members', db.Model.metadata,
-                           db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
-                           db.Column('project_id', db.Integer, db.ForeignKey('projects.id'), primary_key=True)
+                           db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+                           db.Column('project_id', db.Integer, db.ForeignKey('project.id'), primary_key=True)
                            )
 users_tasks_association = db.Table('task_members', db.Model.metadata,
-                        db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
-                        db.Column('task_id', db.Integer, db.ForeignKey('tasks.id'), primary_key=True))
+                        db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+                        db.Column('task_id', db.Integer, db.ForeignKey('task.id'), primary_key=True))
 
 
 class UserRoleEnum(enum.Enum):
@@ -21,7 +24,6 @@ class UserRoleEnum(enum.Enum):
 
 
 class User(UserMixin, db.Model):
-    __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.Text, unique=True, nullable=False)
@@ -41,7 +43,6 @@ class User(UserMixin, db.Model):
 
 
 class Project(db.Model):
-    __tablename__ = 'projects'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.Text)
@@ -57,7 +58,6 @@ class Project(db.Model):
 
 
 class Task(db.Model):
-    __tablename__ = 'tasks'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.Text)
@@ -65,5 +65,5 @@ class Task(db.Model):
     dueDate = db.Column(db.Date)
     isDone = db.Column(db.Boolean)
 
-    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     users = db.relationship('User', secondary=users_tasks_association, backref='Task')
