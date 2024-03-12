@@ -208,7 +208,7 @@ def save_project():
 def standard_project_page(project_id):
     # Utilisez l'ID du projet pour récupérer les données du projet depuis la base de données
     project = get_project_by_id(project_id)
-    return render_template("project_header.html.jinja2", project=project, pid=project_id)
+    return render_template("project_standard_view.html.jinja2", project=project, pid=project_id)
 
 
 def get_project_by_id(project_id):

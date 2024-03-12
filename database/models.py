@@ -26,18 +26,24 @@ class User(UserMixin, db.Model):
         return self.username
 
 
-class Task(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    label = db.Column(db.Text)
-    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
-    isDone = db.Column(db.Boolean)
-
-
 # Table de liaison pour la relation Many-to-Many
 project_members = db.Table('project_members',
                            db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
                            db.Column('project_id', db.Integer, db.ForeignKey('project.id'), primary_key=True)
                            )
+
+
+class Task(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text)
+    label = db.Column(db.Text)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+    dueDate = db.Column(db.Date)
+    assignedMembers = db.relationship('User',
+                                      secondary=project_members,
+                                      backref=db.backref('tasks', lazy='dynamic'),
+                                      lazy='dynamic')
+    isDone = db.Column(db.Boolean)
 
 
 class Project(db.Model):
@@ -48,8 +54,10 @@ class Project(db.Model):
     endDate = db.Column(db.DateTime)
     startDate = db.Column(db.DateTime)
     # Relation Many-to-Many avec la table project_members
-    members = db.relationship('User', secondary=project_members,
-                              backref=db.backref('projects', lazy='dynamic'), lazy='dynamic')
+    members = db.relationship('User',
+                              secondary=project_members,
+                              backref=db.backref('projects', lazy='dynamic'),
+                              lazy='dynamic')
 
 
 junction_table = db.Table('team by project',
