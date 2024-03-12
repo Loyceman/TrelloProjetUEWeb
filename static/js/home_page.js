@@ -117,34 +117,6 @@ function onLoad() {
     updateProjectList();
 }
 
-function formatDate(date) {
-    // Formater la date en AAAA-MM-JJ
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return year + "-" + month + "-" + day;
-}
-
-function get_project(project_id) {
-    $.ajax({
-        url: "/projects",
-        method: "GET",
-        success: function (projects) {
-            projects.forEach(function (project) {
-                if (parseInt(project.id) === parseInt(project_id)) {
-                    // Compléter la modale avec les infos de project_id
-                    $("#name_saved_project").val(project.name)
-                    $("#description_saved_project").val(project.description)
-                    $("#colorProjectDisplaySaved").val(project.color)
-                    $("#dateProjectEndSaved").val(formatDate(new Date(project.endDate))); // new Date() permet de s'assurer que c'est bien un objet Date javascript
-                    $("#dateProjectStartSaved").val(formatDate(new Date(project.startDate)));
-                    $("#SelectedUserSaved").val(project.members)
-                }
-            });
-        }
-    })
-}
-
 function saved_project(name_project, description_project, color_project, start_date_project, end_date_project, project_members) {
     $.ajax({
         url: "/save_project",
@@ -209,18 +181,47 @@ function create_button(name_project, description_project, color_project, start_d
     });
 }
 
+function formatDate(date) {
+    // Formater la date en AAAA-MM-JJ
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return year + "-" + month + "-" + day;
+}
+
+function get_project(project_id) {
+    $.ajax({
+        url: "/projects",
+        method: "GET",
+        success: function (projects) {
+            projects.forEach(function (project) {
+                if (parseInt(project.id) === parseInt(project_id)) {
+                    // Compléter la modale avec les infos de project_id
+                    $("#name_saved_project").val(project.name)
+                    $("#description_saved_project").val(project.description)
+                    $("#colorProjectDisplaySaved").val(project.color)
+                    $("#dateProjectEndSaved").val(formatDate(new Date(project.endDate))); // new Date() permet de s'assurer que c'est bien un objet Date javascript
+                    $("#dateProjectStartSaved").val(formatDate(new Date(project.startDate)));
+                    $("#SelectedUserSaved").val(project.members)
+                }
+            });
+        }
+    })
+}
+
 function updateProjectList() {
     $.ajax({
         url: "/projects",
         method: "GET",
         success: function (projects) {
+            console.log("on update")
             let listProject = document.getElementById("listProject");
             while (listProject.firstChild) {
                 listProject.removeChild(listProject.firstChild);
             }
 
-
-            if (projects !== null) {
+            console.log(projects)
+            if (Array.isArray(projects) && projects.length > 0) {
                 projects.forEach((project) => {
                     const newLayout = document.createElement("div")
                         newLayout.className = "btn-project-layout p-0 col-xl-3 col-sm-6 col-12"

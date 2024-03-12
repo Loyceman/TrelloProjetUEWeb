@@ -70,8 +70,8 @@ def retrieve_data():
     name = request.form['name']
     description = request.form['description']
     color = request.form['color']
-    # start_date = datetime.date(2024, 1, 1)
-    # end_date = datetime.date(2024, 12, 30)
+    start_date = datetime.date(2024, 1, 1)
+    end_date = datetime.date(2024, 12, 30)
 
     if request.form['startDate']:
         start_date_str = request.form['startDate']
@@ -175,21 +175,27 @@ def get_project_by_id(project_id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # users = User.query.all()
+    print("Users :")
+    users = User.query.all()
+    for user in users:
+        print(user.id, user.username, user.password_hash)
 
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
         remember = True if request.form.get('remember') else False
         user = models.User.query.filter_by(username=username).first()
+        print("Username : ", username)
+        print("Password : ", password)
+        print("Remember : ", remember)
         if not user or not check_password_hash(user.password_hash, password):
             flash('Please check your login details and try again.')
             return render_template('login.html.jinja2')
         login_user(user, remember=remember)
+        print("User logged in")
         return redirect('/home_page')
     else:
         return render_template('login.html.jinja2')
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
