@@ -1,6 +1,8 @@
 $(onLoad)
 
 function onLoad() {
+    get_current_user()
+
     $('#SelectedUserSaved').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
         theme: "bootstrap-5",
         width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
@@ -97,15 +99,11 @@ function onLoad() {
         let users_selected = $('#SelectedUser').val(); // Array des membres du nouveau projet
 
         if (name !== "") {
-            if (startDate !== "" || endDate !== "") {
-                alert("par default, votre projet commence aujourd'hui jusqu'au 30 decembre 2024")
-            }
             if (endDate < startDate) {
                 alert("La date de fin ne peut pas être antérieure à la date de début");
             } else {
                 create_project(name, description, color, startDate, endDate, users_selected)
             }
-
         } else {
             alert("Veuillez entrer un nom de projet")
         }
@@ -113,6 +111,16 @@ function onLoad() {
 
 
     updateProjectList();
+}
+
+function get_current_user(){
+    $.ajax({
+        url: "/current_user",
+        method: "GET",
+        success: function (current_user) {
+            console.log(current_user)
+        }
+    });
 }
 
 function saved_project(name_project, description_project, color_project, start_date_project, end_date_project, project_members) {
@@ -135,7 +143,7 @@ function saved_project(name_project, description_project, color_project, start_d
 
         },
         error: function () {
-            console.log("error : posting modifications do not work")
+            alert("error : posting modifications do not work")
         }
     });
 }
@@ -216,13 +224,11 @@ function updateProjectList() {
         url: "/projects",
         method: "GET",
         success: function (projects) {
-            console.log("on update")
             let listProject = document.getElementById("listProject");
             while (listProject.firstChild) {
                 listProject.removeChild(listProject.firstChild);
             }
 
-            console.log(projects)
             if (Array.isArray(projects) && projects.length > 0) {
                 projects.forEach((project) => {
 

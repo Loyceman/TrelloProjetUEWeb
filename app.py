@@ -184,6 +184,24 @@ def get_project_by_id(project_id):
     return Project.query.get(project_id)
 
 
+@login_required
+@app.route('/current_user', methods=['GET'])
+def get_current_user():
+    print(current_user.role.value)
+    user_projects = current_user.projects
+    projects_data = [{"id": project.id, "name": project.name} for project in user_projects]
+    if current_user.is_authenticated:
+        user_details = {
+            "id": current_user.id,
+            "username": current_user.username,
+            "role": current_user.role.value,
+            "projects": projects_data
+        }
+        return jsonify(user_details)
+    else:
+        return jsonify({"error": "No users are currently logged in"}), 401
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     print("==== LOGIN PAGE ====\n")

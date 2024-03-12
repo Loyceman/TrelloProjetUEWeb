@@ -28,11 +28,15 @@ class TaskCompletionEnum(enum.Enum):
     DONE = 'Done'
     STUCK = 'Stuck'
 
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.Text, unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(sqlalchemy.types.Enum(UserRoleEnum), nullable=False)
+    # Relation Many-to-Many avec la table project_members
+    members = db.relationship('Project', secondary=project_members,
+                              backref=db.backref('users', lazy='dynamic'), lazy='dynamic')
 
     def __init__(self, username='', password_hash='', role=''):
         self.username = username
