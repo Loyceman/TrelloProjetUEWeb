@@ -1,6 +1,18 @@
 $(onLoad)
 
 function onLoad() {
+    $('#SelectedUserSaved').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
+        theme: "bootstrap-5",
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $(this).data('placeholder'),
+        closeOnSelect: false,
+    });
+
+    $("#dateProjectStart").on('change', function () { // evite la selection de la date de fin antérieur à la date de debut
+        let startDate = $(this).val();
+        $("#dateProjectEnd").attr('min', startDate);
+    });
+
     $('#SelectedUser').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
         theme: "bootstrap-5",
         width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
@@ -24,18 +36,6 @@ function onLoad() {
     }
 
     function validTextField() {
-    $('#SelectedUserSaved').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
-        theme: "bootstrap-5",
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        placeholder: $(this).data('placeholder'),
-        closeOnSelect: false,
-    });
-
-    $("#dateProjectStart").on('change', function () { // evite la selection de la date de fin antérieur à la date de debut
-        let startDate = $(this).val();
-        $("#dateProjectEnd").attr('min', startDate);
-    });
-
       if (textField.value.trim() === '') {
         textField.classList.add('is-invalid');
       } else {
@@ -227,6 +227,8 @@ function updateProjectList() {
                         newLayout.className = "btn-project-layout p-0 col-xl-3 col-sm-6 col-12"
                     const newButton = document.createElement('button');
                         newButton.className = "btn btn-project";
+                        newButton.setAttribute("data-bs-toggle", "modal");
+                        newButton.setAttribute("data-bs-target", "#modalSavedProject");
                         newButton.id = "buttonProject";
                         newButton.value = project["id"];
                         newButton.style.borderColor = project["color"]
