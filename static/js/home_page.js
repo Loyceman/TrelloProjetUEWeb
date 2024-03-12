@@ -2,6 +2,7 @@ $(onLoad)
 
 function onLoad() {
 
+    // redirige vers la page projet
     $("#listProject").on("click", "#buttonProject", function() {
         window.location.href = "/projects/standard_view/" + $(this).val();
     });
@@ -88,11 +89,15 @@ function create_button(name_project, description_project, color_project, start_d
             endDate: end_date_project,
             members: project_members
         },
-        success: function () {
+        success: function (xhr) {
             $("#modalCreateProject").modal("hide"); // Hide modal
             updateProjectList();
+        },
 
+        error: function(xhr) {
+            alert(xhr.responseJSON.error)
         }
+
     });
 }
 
@@ -109,15 +114,19 @@ function updateProjectList() {
 
             if (projects !== null) {
                 projects.forEach((project) => {
+
                     const newLayout = document.createElement("div")
-                        newLayout.className = "btn-project-layout p-0 col-xl-3 col-sm-6 col-12"
+                        newLayout.className = "btn-project-layout p-2 col-xl-3 col-sm-6 col-12"
+                    const newBackground = document.createElement("div")
+                        newBackground.className = "btn-project-layout flex-grow-1 h-100"
+                        newBackground.style.backgroundColor = "#ffffff"
                     const newButton = document.createElement('button');
                         newButton.className = "btn btn-project";
                         newButton.id = "buttonProject";
                         newButton.value = project["id"];
                         newButton.style.borderColor = project["color"]
                         newButton.style.backgroundColor = project["color"].concat("0A");
-                        newButton.style.boxShadow = "0 0 5px 0".concat(project["color"]).concat("33")
+                        newButton.style.boxShadow = "0 0 5px 0 ".concat(project["color"]).concat("33")
                     const newColorBar = document.createElement("span")
                         newColorBar.className = "btn-project-colorbar"
                         newColorBar.style.backgroundColor = project["color"]
@@ -129,23 +138,25 @@ function updateProjectList() {
                         newDesc.textContent = project["description"];
 
 
-                    newLayout.appendChild(newButton)
+                    newLayout.appendChild(newBackground)
+                    newBackground.appendChild(newButton)
                     newButton.appendChild(newColorBar)
                     newButton.appendChild(newTitle)
                     newButton.appendChild(newDesc)
                     document.getElementById("listProject").appendChild(newLayout);
+
                     }
                 )
             }
 
 
             // // Créer le bouton de création de projet
-            const ButtonCreateProject = document.createElement('button');
-            ButtonCreateProject.classList.add("btn", "btn-create-project");
-            ButtonCreateProject.setAttribute("data-bs-toggle", "modal");
-            ButtonCreateProject.setAttribute("data-bs-target", "#modalCreateProject");
-            ButtonCreateProject.textContent = "Créer un nouveau projet";
-            document.getElementById("listProject").appendChild(ButtonCreateProject);
+            // const ButtonCreateProject = document.createElement('button');
+            // ButtonCreateProject.classList.add("btn", "btn-create-project");
+            // ButtonCreateProject.setAttribute("data-bs-toggle", "modal");
+            // ButtonCreateProject.setAttribute("data-bs-target", "#modalCreateProject");
+            // ButtonCreateProject.textContent = "Créer un nouveau projet";
+            // document.getElementById("listProject").appendChild(ButtonCreateProject);
         }
     })
 }

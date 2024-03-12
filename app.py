@@ -45,7 +45,7 @@ def dashboard():
     if request.method == 'POST':
         match request.form['type']:
             case 'project':
-                create_project()
+                return create_project()
 
     return render_template("home_page.html.jinja2", users=User.query.all())
 
@@ -69,7 +69,7 @@ def create_project():
 
     existing_project = Project.query.filter_by(name=name).first()
     if existing_project:
-        return jsonify({'error': 'A project with the same name already exists'}), 400
+        return jsonify({'error': 'Un projet existe déjà pour le nom renseigné'}), 400
 
     # Création d'un projet et ajout à la base de données
     project = Project(description=description, name=name, color=color, startDate=start_date, endDate=end_date)

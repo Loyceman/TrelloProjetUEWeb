@@ -18,6 +18,8 @@ html{
 
 body {
   background-color: white;
+  background-image: url("../img/background-4.jpg");
+  background-size: cover;
   line-height: 1;
   color: var(--c-dark);
 }

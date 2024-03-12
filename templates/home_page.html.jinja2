@@ -26,15 +26,18 @@
                         </div>
                     </div>
 
-                    <button id="btn-new-project" class="btn btn-primary layout-center me-2" type="button" data-bs-toggle="modal" data-bs-target="#modalCreateProject">
-                        <img class="icon" src="{{ url_for("static", filename="img/add-square.svg") }}" alt="Show"/>
-                        <span class="m-1">Nouveau projet</span>
-                    </button>
                 </div>
 
                 <div class="collapse show" id="collapseProjects">
                     <div id="listProject" class="row mx-2">
                         <!-- ici sont ajoutés les boutons projets et le bouton 'créer votre nouveau projet' -->
+                    </div>
+                    <div class="m-2 px-2">
+
+                        <button id="btn-new-project" class="btn btn-primary layout-center " type="button" data-bs-toggle="modal" data-bs-target="#modalCreateProject">
+                            <img class="icon" src="{{ url_for("static", filename="img/add-square.svg") }}" alt="Show"/>
+                            <span class="m-1">Nouveau projet</span>
+                        </button>
                     </div>
 
                 </div>
@@ -124,7 +127,5 @@
         </div>
     </div>
 
-
-
-    <script src="../static/js/home_page.js"></script>
+    <script src="{{ url_for('static', filename='js/home_page.js') }}"></script>
 {% endblock %}
