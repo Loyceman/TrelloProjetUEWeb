@@ -42,11 +42,6 @@ def route():
 @app.route('/home_page', methods=['POST', 'GET'])
 @login_required
 def dashboard():
-    if request.method == 'POST':
-        match request.form['type']:
-            case 'project':
-                create_project()
-
     return render_template("home_page.html.jinja2", users=User.query.all())
 
 
@@ -75,15 +70,18 @@ def retrieve_data():
     name = request.form['name']
     description = request.form['description']
     color = request.form['color']
+    # start_date = datetime.date(2024, 1, 1)
+    # end_date = datetime.date(2024, 12, 30)
 
-    start_date_str = request.form['startDate']
-    start_year, start_month, start_day = map(int, start_date_str.split('-'))
-    start_date = datetime.date(start_year, start_month,
-                               start_day)  # Transforme les dates de javascript en date utilisable par Python
-
-    end_date_str = request.form['endDate']
-    end_year, end_month, end_day = map(int, end_date_str.split('-'))
-    end_date = datetime.date(end_year, end_month, end_day)
+    if request.form['startDate']:
+        start_date_str = request.form['startDate']
+        start_year, start_month, start_day = map(int, start_date_str.split('-'))
+        start_date = datetime.date(start_year, start_month,
+                                   start_day)  # Transforme les dates de javascript en date utilisable par Python
+    if request.form['endDate']:
+        end_date_str = request.form['endDate']
+        end_year, end_month, end_day = map(int, end_date_str.split('-'))
+        end_date = datetime.date(end_year, end_month, end_day)
 
     project_members = request.form.getlist('members[]')  # Récupère une liste des membres du projet
 
@@ -91,6 +89,8 @@ def retrieve_data():
 
 
 # HOME PAGE
+@app.route('/create_project', methods=['POST'])
+@login_required
 def create_project():
     name, description, color, start_date, end_date, members = retrieve_data()
     existing_project = Project.query.filter_by(name=name).first()

@@ -189,7 +189,7 @@ function delete_project(project_id){
 
 function create_button(name_project, description_project, color_project, start_date_project, end_date_project, project_members) {
     $.ajax({
-        url: "/home_page",
+        url: "/create_project",
         method: "POST",
         timeout: 2000,
         data: {
