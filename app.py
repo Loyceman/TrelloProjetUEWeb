@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database
-from database.models import User, Task, UserRoleEnum, Project, Team
+from database.models import User, Task, UserRoleEnum, Project
 import database.models as models
 import os
 from helpers import enum_to_readable

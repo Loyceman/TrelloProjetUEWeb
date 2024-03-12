@@ -6,24 +6,33 @@ _classes:
   task: &task
     class: Task
 
-users :
-  user_florian: &user_florian
-    username: "loyceman"
-    password_hash: "sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48"
-    role: "DEVELOPER"
-    <<: *user
+user_florian: &user_florian
+  username: "loyceman"
+  password_hash: "sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48"
+  role: "DEVELOPER"
+  <<: *user
 
-  user_jbl: &user_jbl
-    username: "JBL"
-    password_hash: "sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48"
-    role: "PROJECT_MANAGER"
-    <<: *user
+user_jbl: &user_jbl
+  username: "JBL"
+  password_hash: "sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48"
+  role: "PROJECT_MANAGER"
+  <<: *user
 
-  user_theo: &user_theo
-    username: "to"
-    password_hash: "pbkdf2:sha256:600000$gU0FKBEubk5BGJ4q$0b2980832dc2447c164aaa9fbe09faac4deeeb2c972b6b790b9c0a8ee95f0b92"
-    role: "PROJECT_MANAGER"
-    <<: *user
+user_theo: &user_theo
+  username: "to"
+  password_hash: "pbkdf2:sha256:600000$gU0FKBEubk5BGJ4q$0b2980832dc2447c164aaa9fbe09faac4deeeb2c972b6b790b9c0a8ee95f0b92"
+  role: "PROJECT_MANAGER"
+  <<: *user
+
+task_carae:
+  name: "Test Task"
+  label: "Important"
+  project_id: 1
+  dueDate: "2024-03-15"
+  assignedMembers:
+    - *user_florian
+  isDone: false
+  <<: *task
 
 project_initial:
   name: "Initial Project"
@@ -36,7 +45,5 @@ project_initial:
     - *user_jbl
   <<: *project
 
-task_carae:
-  label: "Important"
-  isDone: true
-  <<: *task
+  
+

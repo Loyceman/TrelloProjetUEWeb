@@ -21,6 +21,7 @@ def populate_database():
     mock_data_file = database_folder + "/mock_data.yaml"
     with open(mock_data_file) as f:
         mock_data = yaml.safe_load(f)
+        print(mock_data)
         for mock_object_key, mock_object_dict in mock_data.items():
             if mock_object_key == "_classes":
                 continue
@@ -28,9 +29,14 @@ def populate_database():
             print("Model class name :")
             print(model_class_name)
             model_class = getattr(database.models, model_class_name)
+            print("Model class :")
+            print(model_class)
             model_object = model_class()
-
+            print(model_object)
+            print("Setting attributes :")
             for attribute_name, attribute_name_value in mock_object_dict.items():
+                print("  Name : " + attribute_name)
+                print("  Value : " + str(attribute_name_value) + "\n")
                 setattr(model_object, attribute_name, attribute_name_value)
 
             db.session.add(model_object)
