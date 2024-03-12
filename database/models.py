@@ -34,20 +34,22 @@ project_members = db.Table('project_members',
 
 
 class Task(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.Text)
     label = db.Column(db.Text)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     dueDate = db.Column(db.Date)
     assignedMembers = db.relationship('User',
                                       secondary=project_members,
+                                      primaryjoin=(id == project_members.c.project_id),
+                                      secondaryjoin=(User.id == project_members.c.user_id),
                                       backref=db.backref('tasks', lazy='dynamic'),
                                       lazy='dynamic')
     isDone = db.Column(db.Boolean)
 
 
 class Project(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.Text)
     description = db.Column(db.Text)
     color = db.Column(db.String(7))  # Stocke la couleur au format hexadécimal
@@ -67,5 +69,5 @@ junction_table = db.Table('team by project',
 
 
 class Team(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nom = db.Column(db.Text)
