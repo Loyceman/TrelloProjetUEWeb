@@ -20,27 +20,25 @@ function onLoad() {
         closeOnSelect: false,
     });
 
-    let change_icon_unfold = function() {
+    let change_icon_unfold = function () {
         if (document.getElementById("project-collapser").getAttribute("aria-expanded") === "true") {
-            icon_projects_unfold.src = icon_projects_unfold.src.replace("down","up")
-        }
-        else {
-            icon_projects_unfold.src = icon_projects_unfold.src.replace("up","down")
+            icon_projects_unfold.src = icon_projects_unfold.src.replace("down", "up")
+        } else {
+            icon_projects_unfold.src = icon_projects_unfold.src.replace("up", "down")
         }
         if (document.getElementById("task-collapser").getAttribute("aria-expanded") === "true") {
-            icon_tasks_unfold.src = icon_tasks_unfold.src.replace("down","up")
-        }
-        else {
-            icon_tasks_unfold.src = icon_tasks_unfold.src.replace("up","down")
+            icon_tasks_unfold.src = icon_tasks_unfold.src.replace("down", "up")
+        } else {
+            icon_tasks_unfold.src = icon_tasks_unfold.src.replace("up", "down")
         }
     }
 
     function validTextField() {
-      if (textField.value.trim() === '') {
-        textField.classList.add('is-invalid');
-      } else {
-        textField.classList.remove('is-invalid');
-      }
+        if (textField.value.trim() === '') {
+            textField.classList.add('is-invalid');
+        } else {
+            textField.classList.remove('is-invalid');
+        }
     }
 
     const textField = document.getElementById('name_new_project');
@@ -62,12 +60,12 @@ function onLoad() {
         get_project(open_project_id)
     });
 
-    $("#button_open_project").click(function(){
+    $("#button_open_project").click(function () {
         window.location.href = "/projects/standard_view/" + open_project_id;
     });
 
-    $("#button_delete_project").click(function(){
-         delete_project(open_project_id);
+    $("#button_delete_project").click(function () {
+        delete_project(open_project_id);
     });
 
 
@@ -100,14 +98,14 @@ function onLoad() {
 
         if (name !== "") {
             if (startDate !== "" || endDate !== "") {
-                if (endDate < startDate) {
-                    alert("La date de fin ne peut pas être antérieure à la date de début");
-                } else {
-                    create_button(name, description, color, startDate, endDate, users_selected)
-                }
-            } else {
-                alert("Veuillez renseigner des dates pour le projet")
+                alert("par default, votre projet commence aujourd'hui jusqu'au 30 decembre 2024")
             }
+            if (endDate < startDate) {
+                alert("La date de fin ne peut pas être antérieure à la date de début");
+            } else {
+                create_button(name, description, color, startDate, endDate, users_selected)
+            }
+
         } else {
             alert("Veuillez entrer un nom de projet")
         }
@@ -136,13 +134,13 @@ function saved_project(name_project, description_project, color_project, start_d
             updateProjectList();
 
         },
-        error: function(){
+        error: function () {
             console.log("error : posting modifications do not work")
         }
     });
 }
 
-function delete_project(project_id){
+function delete_project(project_id) {
     $.ajax({
         url: "/delete_project",
         method: "POST",
@@ -223,9 +221,9 @@ function updateProjectList() {
             console.log(projects)
             if (Array.isArray(projects) && projects.length > 0) {
                 projects.forEach((project) => {
-                    const newLayout = document.createElement("div")
+                        const newLayout = document.createElement("div")
                         newLayout.className = "btn-project-layout p-0 col-xl-3 col-sm-6 col-12"
-                    const newButton = document.createElement('button');
+                        const newButton = document.createElement('button');
                         newButton.className = "btn btn-project";
                         newButton.setAttribute("data-bs-toggle", "modal");
                         newButton.setAttribute("data-bs-target", "#modalSavedProject");
@@ -234,22 +232,22 @@ function updateProjectList() {
                         newButton.style.borderColor = project["color"]
                         newButton.style.backgroundColor = project["color"].concat("0A");
                         newButton.style.boxShadow = "0 0 5px 0".concat(project["color"]).concat("33")
-                    const newColorBar = document.createElement("span")
+                        const newColorBar = document.createElement("span")
                         newColorBar.className = "btn-project-colorbar"
                         newColorBar.style.backgroundColor = project["color"]
-                    const newTitle = document.createElement("span")
+                        const newTitle = document.createElement("span")
                         newTitle.className = "btn-project-title"
                         newTitle.textContent = project["name"];
-                    const newDesc = document.createElement("span");
+                        const newDesc = document.createElement("span");
                         newDesc.className = "btn-project-desc";
                         newDesc.textContent = project["description"];
 
 
-                    newLayout.appendChild(newButton)
-                    newButton.appendChild(newColorBar)
-                    newButton.appendChild(newTitle)
-                    newButton.appendChild(newDesc)
-                    document.getElementById("listProject").appendChild(newLayout);
+                        newLayout.appendChild(newButton)
+                        newButton.appendChild(newColorBar)
+                        newButton.appendChild(newTitle)
+                        newButton.appendChild(newDesc)
+                        document.getElementById("listProject").appendChild(newLayout);
                     }
                 )
             }

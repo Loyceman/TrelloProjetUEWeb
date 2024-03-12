@@ -70,7 +70,7 @@ def retrieve_data():
     name = request.form['name']
     description = request.form['description']
     color = request.form['color']
-    start_date = datetime.date(2024, 1, 1)
+    start_date = datetime.date.today()
     end_date = datetime.date(2024, 12, 30)
 
     if request.form['startDate']:
