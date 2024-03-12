@@ -92,3 +92,35 @@ main{
     font-size: 1em;
     font-weight: bold;
 }
+
+.btn-project-sidebar-layout{
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.btn-project-sidebar{
+    border-radius: 0.25em;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-grow: 1;
+    margin: 0.5em;
+    overflow: hidden;
+}
+
+.btn-project-sidebar-title{
+    padding: 0.25rem;
+    text-align: start;
+    /*font-size: 1.25em;*/
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.btn-project-sidebar-colorbar{
+    width: 30%;
+    height: 0.25em;
+    border-radius: 1em;
+    margin: 0.5em 0.25em;
+}

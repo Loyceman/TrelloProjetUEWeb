@@ -171,11 +171,15 @@ function create_project(name_project, description_project, color_project, start_
             endDate: end_date_project,
             members: project_members
         },
-        success: function () {
+        success: function (xhr) {
             $("#modalCreateProject").modal("hide"); // Hide modal
             updateProjectList();
+        },
 
+        error: function(xhr) {
+            alert(xhr.responseJSON.error)
         }
+
     });
 }
 
@@ -221,9 +225,13 @@ function updateProjectList() {
             console.log(projects)
             if (Array.isArray(projects) && projects.length > 0) {
                 projects.forEach((project) => {
-                        const newLayout = document.createElement("div")
-                        newLayout.className = "btn-project-layout p-0 col-xl-3 col-sm-6 col-12"
-                        const newButton = document.createElement('button');
+
+                    const newLayout = document.createElement("div")
+                        newLayout.className = "btn-project-layout p-2 col-xl-3 col-sm-6 col-12"
+                    const newBackground = document.createElement("div")
+                        newBackground.className = "btn-project-layout flex-grow-1 h-100"
+                        newBackground.style.backgroundColor = "#ffffff"
+                    const newButton = document.createElement('button');
                         newButton.className = "btn btn-project";
                         newButton.setAttribute("data-bs-toggle", "modal");
                         newButton.setAttribute("data-bs-target", "#modalSavedProject");
@@ -231,35 +239,37 @@ function updateProjectList() {
                         newButton.value = project["id"];
                         newButton.style.borderColor = project["color"]
                         newButton.style.backgroundColor = project["color"].concat("0A");
-                        newButton.style.boxShadow = "0 0 5px 0".concat(project["color"]).concat("33")
-                        const newColorBar = document.createElement("span")
+                        newButton.style.boxShadow = "0 0 5px 0 ".concat(project["color"]).concat("33")
+                    const newColorBar = document.createElement("span")
                         newColorBar.className = "btn-project-colorbar"
                         newColorBar.style.backgroundColor = project["color"]
-                        const newTitle = document.createElement("span")
+                    const newTitle = document.createElement("span")
                         newTitle.className = "btn-project-title"
                         newTitle.textContent = project["name"];
-                        const newDesc = document.createElement("span");
+                    const newDesc = document.createElement("span");
                         newDesc.className = "btn-project-desc";
                         newDesc.textContent = project["description"];
 
 
-                        newLayout.appendChild(newButton)
-                        newButton.appendChild(newColorBar)
-                        newButton.appendChild(newTitle)
-                        newButton.appendChild(newDesc)
-                        document.getElementById("listProject").appendChild(newLayout);
+                    newLayout.appendChild(newBackground)
+                    newBackground.appendChild(newButton)
+                    newButton.appendChild(newColorBar)
+                    newButton.appendChild(newTitle)
+                    newButton.appendChild(newDesc)
+                    document.getElementById("listProject").appendChild(newLayout);
+
                     }
                 )
             }
 
 
             // // Créer le bouton de création de projet
-            const ButtonCreateProject = document.createElement('button');
-            ButtonCreateProject.classList.add("btn", "btn-create-project");
-            ButtonCreateProject.setAttribute("data-bs-toggle", "modal");
-            ButtonCreateProject.setAttribute("data-bs-target", "#modalCreateProject");
-            ButtonCreateProject.textContent = "Créer un nouveau projet";
-            document.getElementById("listProject").appendChild(ButtonCreateProject);
+            // const ButtonCreateProject = document.createElement('button');
+            // ButtonCreateProject.classList.add("btn", "btn-create-project");
+            // ButtonCreateProject.setAttribute("data-bs-toggle", "modal");
+            // ButtonCreateProject.setAttribute("data-bs-target", "#modalCreateProject");
+            // ButtonCreateProject.textContent = "Créer un nouveau projet";
+            // document.getElementById("listProject").appendChild(ButtonCreateProject);
         }
     })
 }

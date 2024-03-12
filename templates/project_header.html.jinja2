@@ -9,6 +9,7 @@
 
 {% block content %}
 
+    <!-- Ici se trouve le header pour changer de projet et passer de la vue tâche à la vue standard et inversement -->
     <main class="main">
 
         <div id="sidebar-close">
@@ -37,14 +38,15 @@
                 <hr>
                 <section class="sidebar-zone">
                     <p class="sidebar-zone-title">Mes projets</p>
+                    <div id="listProjectSidebar"></div
                 </section>
             </div>
         </div>
 
-        {% block pageProject %}
-        {% endblock %}
-        
-    </main>
+    <script src="{{ url_for('static', filename='js/project_pages.js') }}"></script>
+
+    {% block pageProject %}
+    {% endblock %}
 
 {% endblock %}
 
