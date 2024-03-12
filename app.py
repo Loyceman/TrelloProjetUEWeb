@@ -1,15 +1,17 @@
 import datetime
+import logging
 
 import flask
 from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from database.database import db, init_database
+from database.database import db, init_database, get_relationship_names
 from database.models import UserRoleEnum, User, Task, Project
 import database.models as models
 import os
 from helpers import enum_to_readable
 from sqlalchemy import inspect
+
 
 app = Flask(__name__)
 
@@ -66,7 +68,7 @@ def create_project():
     end_year, end_month, end_day = map(int, end_date_str.split('-'))
     end_date = datetime.date(end_year, end_month, end_day)
 
-    members = request.form.getlist('members')  # Récupère une liste des membres du projet
+    members = request.form.getlist('members[]')  # Récupère une liste des membres du projet
 
     existing_project = Project.query.filter_by(name=name).first()
     if existing_project:
@@ -76,10 +78,10 @@ def create_project():
     project = Project(description=description, name=name, color=color, startDate=start_date, endDate=end_date)
 
     # Ajout des membres au projet
-    for member_id in members:
-        member = User.query.get(member_id)
-        if member:
-            project.members.append(member)
+    for member_username in members:
+        member_id = User.query.filter_by(username=member_username).first()
+        if member_id:
+            project.users.append(member_id)
 
     db.session.add(project)
     db.session.commit()
@@ -291,6 +293,27 @@ def show_database():
     for table in tables:
         model_class = globals()[table.capitalize()]  # Assuming your model class names are capitalized
         data[table] = model_class.query.all()
+        print("\nDATA")
+        print(data)
+        print("\n")
+        i = inspect(model_class)
+        referred_classes = []
+        for r in i.relationships :
+            if r.mapper.class_ in referred_classes :
+                continue
+            referred_classes.append(r.mapper.class_)
+
+        relationships = get_relationship_names(model_class)
+        if relationships == [] :
+            continue
+        print("Relationships :", get_relationship_names(model_class))
+
+        print("Linked ids :")
+        for instance in data[table]:
+            print("    Instance :", instance)
+            linked_ids = [object.id for object in getattr(instance, relationships[0])]
+            print("   ", linked_ids)
+
     return render_template('database.html.jinja2', columns=columns_dict, data=data, getattr=getattr)
 
 
