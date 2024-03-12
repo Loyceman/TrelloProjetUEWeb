@@ -188,7 +188,7 @@ def get_project_by_id(project_id):
 @app.route('/current_user', methods=['GET'])
 def get_current_user():
     print(current_user.role.value)
-    user_projects = current_user.projects
+    user_projects = current_user.get_project()
     projects_data = [{"id": project.id, "name": project.name} for project in user_projects]
     if current_user.is_authenticated:
         user_details = {

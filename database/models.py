@@ -34,14 +34,18 @@ class User(UserMixin, db.Model):
     username = db.Column(db.Text, unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(sqlalchemy.types.Enum(UserRoleEnum), nullable=False)
+
     # Relation Many-to-Many avec la table project_members
-    members = db.relationship('Project', secondary=project_members,
-                              backref=db.backref('users', lazy='dynamic'), lazy='dynamic')
+    # members = db.relationship('Project', secondary=project_members,
+    #                           backref=db.backref('users', lazy='dynamic'), lazy='dynamic')
 
     def __init__(self, username='', password_hash='', role=''):
         self.username = username
         self.password_hash = password_hash
         self.role = role
+
+    def get_project(self):
+        return self.projects.all()
 
     def get_id(self):
         return self.username
