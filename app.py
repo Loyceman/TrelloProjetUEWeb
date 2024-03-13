@@ -18,6 +18,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///../database/database.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "this-is-a-secret-key"
+app.config["SESSION_COOKIE_SAMESITE"] = "Strict"
 db.init_app(app)
 
 with app.test_request_context():
