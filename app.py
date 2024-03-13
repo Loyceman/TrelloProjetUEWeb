@@ -222,10 +222,11 @@ def get_project_by_id(project_id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print("Users :")
+    print("==== LOGIN PAGE ====\n")
     users = User.query.all()
+    print("    Users in the database :")
     for user in users:
-        print(user.id, user.username, user.password_hash)
+        print("         ID: {:<3}  | Username: {:<15}  | Password: {:<100}".format(user.id, user.username, user.password_hash))
 
     if request.method == 'POST':
         username = request.form.get('username')
