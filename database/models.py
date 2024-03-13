@@ -25,8 +25,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.Text, unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(sqlalchemy.types.Enum(UserRoleEnum), nullable=False)
-    projects = db.relationship('Project', secondary=users_projects_association,
-                               backref=db.backref('user'))
+
 
     def __init__(self, username='', password_hash='', role=''):
         self.username = username

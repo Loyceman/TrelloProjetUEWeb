@@ -21,6 +21,8 @@ project:
     color: '#00FF00'
     endDate: 2024-12-31
     startDate: 2024-01-01
+    users :
+      - 1
 
 
 task:

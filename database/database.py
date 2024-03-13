@@ -1,7 +1,6 @@
 import yaml
 from pathlib import Path
 from database.models import db
-import logging
 from sqlalchemy import inspect
 
 
@@ -9,6 +8,7 @@ def init_database():
     db.drop_all()
     db.create_all()
     populate_database()
+    print("\n")
 
 
 def populate_database():
@@ -27,50 +27,47 @@ def populate_database():
         classname = cls.__name__
         model_classes[classname.lower()] = cls
 
-        print("    Mapped", classname, "class")
-    print("    Model classes :", model_classes)
+        print("    Mapped " + str(classname) + " class")
+    print("    Model classes : " + str(model_classes))
     print("Classes mapping complete !\n")
 
     print("Importing items from the mock data...")
     previous_model_class = None
     for table_name, table_data in mock_data.items():
-        print("    Table data :")
-        print("       ", table_data)
         # Find the model class corresponding to the table name
         model_class = model_classes.get(table_name)
         if model_class != previous_model_class :
             previous_model_class = model_class
-            print("    Importing", [class_name for class_name, mapped_class in model_classes.items() if mapped_class == model_class][0], "class items")
+            print("    Importing " + str([class_name for class_name, mapped_class in model_classes.items() if mapped_class == model_class][0]) + " class items")
+            print("        Table data :")
+            print("            " + str(table_data))
         if model_class:
-            print("        Model class columns :")
-            print("           ", inspect(model_class).columns.keys())
-            print("        Relationship columns :")
-            print("           ", get_relationship_names(model_class))
+            print("        Model class :")
+            print("            " + str(inspect(model_class).columns.keys()))
             debug_counter = 1
             for item_data in table_data:
-                print("        Item", debug_counter, ":")
+                print("        Item " + str(debug_counter) + " :")
                 # Create an instance of the model class with the provided data
-                print("            Item data :", item_data)
+                print("            Item data : " +  str(item_data))
                 instance = create_instance(model_class, item_data)
                 print("            Instance created")
+                db.session.add(instance)
+
                 for relationship_name, related_items in item_data.items():
                     if not isinstance(related_items, list):
                         continue
                     related_objects = []
                     for related_item in related_items:
                         related_objects.append(related_item)
-                    print("Instance :", instance)
-                    print("Relationship name :", relationship_name)
                     linked_class = model_classes[relationship_name[:-1]]
-                    print("Linked class :", linked_class)
-                    print("Related objects :", related_objects)
+                    print("            Found relationship with class " + str(linked_class) + " and with items with id : " +str(related_objects))
                     for related_object in related_objects:
                         getattr(instance, relationship_name).append(get_object_by_type_and_id(linked_class, related_object))
-                db.session.add(instance)
-                print("            Item successfully added to the database")
+                print("            Item successfully added to the database !")
                 debug_counter += 1
         else:
             print(f"Warning: No model found for table '{table_name}'")
+        print("    All items in the class imported !\n")
     db.session.commit()
     print("All imports successful !")
 
@@ -82,7 +79,6 @@ def get_relationship_names(model_class):
     return relationship_names
 
 
-
 def create_instance(model, data):
     instance = model()
     relationships = get_relationship_names(model)
@@ -90,6 +86,7 @@ def create_instance(model, data):
         if hasattr(model, key) and key not in relationships:
             setattr(instance, key, value)
     return instance
+
 
 def get_object_by_type_and_id(model_class, id):
     try:

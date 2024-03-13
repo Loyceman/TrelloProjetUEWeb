@@ -97,7 +97,10 @@ def get_projects():
     projects = Project.query.all()
     project_data = []
     for project in projects:
-        members = [member.username for member in project.members.all()]
+        members_id = [user.id for user in project.users]
+        members = []
+        for member_id in members_id :
+            members.append(User.query.get(member_id).username)
         project_data.append({
             'id': project.id,
             'name': project.name,
