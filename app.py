@@ -311,17 +311,17 @@ def show_database():
                 continue
             referred_classes.append(r.mapper.class_)
 
-
         relationships = get_relationship_names(model_class)
-        if relationships == [] :
+        if not relationships:
             continue
         print("            Relationships with classes :", get_relationship_names(model_class))
 
-        print("            Linked ids :")
         for instance in data[table]:
             print("            Instance :", instance)
-            linked_ids = [object.id for object in getattr(instance, relationships[0])]
-            print("               ", linked_ids)
+            for relationship in relationships :
+                print("                Linked with instances of class " + relationship, end="")
+                linked_ids = [linked_objects.id for linked_objects in getattr(instance, relationship)]
+                print(" with ids : " + str(linked_ids))
 
     return render_template('database.html.jinja2', columns=columns_dict, data=data, getattr=getattr)
 
