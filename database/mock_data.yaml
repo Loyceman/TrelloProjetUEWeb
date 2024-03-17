@@ -22,7 +22,7 @@ project:
     endDate: 2024-12-31
     startDate: 2024-01-01
     users :
-      - 1
+      - 2
 
 
 task:

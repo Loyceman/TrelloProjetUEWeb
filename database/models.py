@@ -7,7 +7,6 @@ import sqlalchemy
 
 db = SQLAlchemy()
 
-
 users_projects_association = db.Table('user_project_associations',
                                       db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
                                       db.Column('project_id', db.Integer, db.ForeignKey('project.id'))
@@ -18,18 +17,17 @@ users_tasks_association = db.Table('user_tasks_associations',
                                    db.Column('task_id', db.Integer, db.ForeignKey('task.id'))
                                    )
 
+
 class UserRoleEnum(enum.Enum):
     DEVELOPER = 'Developer'
     PROJECT_MANAGER = 'ProjectManager'
 
 
 class User(UserMixin, db.Model):
-
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.Text, unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(sqlalchemy.types.Enum(UserRoleEnum), nullable=False)
-
 
     def __init__(self, username='', password_hash='', role=''):
         self.username = username

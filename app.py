@@ -1,9 +1,6 @@
 import datetime
-import logging
-
-import flask
 from flask import Flask, render_template, redirect, request, flash, jsonify
-from flask_login import login_required, logout_user, LoginManager, login_user, current_user
+from flask_login import login_required, logout_user, LoginManager, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database, get_relationship_names
 from database.models import UserRoleEnum, User, Task, Project
@@ -11,7 +8,6 @@ import database.models as models
 import os
 from helpers import enum_to_readable
 from sqlalchemy import inspect
-
 
 app = Flask(__name__)
 
@@ -99,7 +95,7 @@ def get_projects():
     for project in projects:
         members_id = [user.id for user in project.users]
         members = []
-        for member_id in members_id :
+        for member_id in members_id:
             members.append(User.query.get(member_id).username)
         project_data.append({
             'id': project.id,
@@ -226,7 +222,8 @@ def login():
     users = User.query.all()
     print("    Users in the database :")
     for user in users:
-        print("         ID: {:<3}  | Username: {:<15}  | Password: {:<100}".format(user.id, user.username, user.password_hash))
+        print("         ID: {:<3}  | Username: {:<15}  | Password: {:<100}".format(user.id, user.username,
+                                                                                   user.password_hash))
 
     if request.method == 'POST':
         username = request.form.get('username')
@@ -247,6 +244,7 @@ def login():
         return redirect('/home_page')
     else:
         return render_template('login.html.jinja2')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -295,7 +293,7 @@ def show_database():
     print("    Structure :")
     print("        Tables : ", tables)
     print("        Columns : ")
-    for table, columns in columns_dict.items() :
+    for table, columns in columns_dict.items():
         print("            " + table + " : " + str(columns))
     print("\n    Data :")
     for table in tables:
@@ -306,8 +304,8 @@ def show_database():
 
         i = inspect(model_class)
         referred_classes = []
-        for r in i.relationships :
-            if r.mapper.class_ in referred_classes :
+        for r in i.relationships:
+            if r.mapper.class_ in referred_classes:
                 continue
             referred_classes.append(r.mapper.class_)
 
@@ -318,7 +316,7 @@ def show_database():
 
         for instance in data[table]:
             print("            Instance :", instance)
-            for relationship in relationships :
+            for relationship in relationships:
                 print("                Linked with instances of class " + relationship, end="")
                 linked_ids = [linked_objects.id for linked_objects in getattr(instance, relationship)]
                 print(" with ids : " + str(linked_ids))

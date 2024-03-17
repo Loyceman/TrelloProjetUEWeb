@@ -36,9 +36,11 @@ def populate_database():
     for table_name, table_data in mock_data.items():
         # Find the model class corresponding to the table name
         model_class = model_classes.get(table_name)
-        if model_class != previous_model_class :
+        if model_class != previous_model_class:
             previous_model_class = model_class
-            print("    Importing " + str([class_name for class_name, mapped_class in model_classes.items() if mapped_class == model_class][0]) + " class items")
+            print("    Importing " + str(
+                [class_name for class_name, mapped_class in model_classes.items() if mapped_class == model_class][
+                    0]) + " class items")
             print("        Table data :")
             print("            " + str(table_data))
         if model_class:
@@ -48,7 +50,7 @@ def populate_database():
             for item_data in table_data:
                 print("        Item " + str(debug_counter) + " :")
                 # Create an instance of the model class with the provided data
-                print("            Item data : " +  str(item_data))
+                print("            Item data : " + str(item_data))
                 instance = create_instance(model_class, item_data)
                 print("            Instance created")
                 db.session.add(instance)
@@ -60,9 +62,11 @@ def populate_database():
                     for related_item in related_items:
                         related_objects.append(related_item)
                     linked_class = model_classes[relationship_name[:-1]]
-                    print("            Found relationship with class " + str(linked_class) + " and with items with id : " +str(related_objects))
+                    print("            Found relationship with class " + str(
+                        linked_class) + " and with items with id : " + str(related_objects))
                     for related_object in related_objects:
-                        getattr(instance, relationship_name).append(get_object_by_type_and_id(linked_class, related_object))
+                        getattr(instance, relationship_name).append(
+                            get_object_by_type_and_id(linked_class, related_object))
                 print("            Item successfully added to the database !")
                 debug_counter += 1
         else:
@@ -88,10 +92,9 @@ def create_instance(model, data):
     return instance
 
 
-def get_object_by_type_and_id(model_class, id):
+def get_object_by_type_and_id(model_class, object_id):
     try:
-        # Query the model for the object with the given ID
-        obj = model_class.query.get(id)
+        obj = model_class.query.get(object_id)
         return obj
     except Exception as e:
         print(f"Error: {e}")
