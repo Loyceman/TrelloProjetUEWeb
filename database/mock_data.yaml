@@ -36,5 +36,7 @@ task:
     dueDate: 2024-03-20
     isDone: true
     project_id: 1
+    users :
+      - 1
 
 

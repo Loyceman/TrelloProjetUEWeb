@@ -9,10 +9,14 @@ db = SQLAlchemy()
 
 
 users_projects_association = db.Table('user_project_associations',
-                                db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-                                db.Column('project_id', db.Integer, db.ForeignKey('project.id'))
-                                )
+                                      db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                                      db.Column('project_id', db.Integer, db.ForeignKey('project.id'))
+                                      )
 
+users_tasks_association = db.Table('user_tasks_associations',
+                                   db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                                   db.Column('task_id', db.Integer, db.ForeignKey('task.id'))
+                                   )
 
 class UserRoleEnum(enum.Enum):
     DEVELOPER = 'Developer'
@@ -44,7 +48,7 @@ class Project(db.Model):
     startDate = db.Column(db.Date)
     endDate = db.Column(db.Date)
     users = db.relationship('User', secondary=users_projects_association,
-                            backref=db.backref('project'))
+                            backref=db.backref('projects'))
 
 
 class Task(db.Model):
@@ -54,3 +58,5 @@ class Task(db.Model):
     dueDate = db.Column(db.Date)
     isDone = db.Column(db.Boolean)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    users = db.relationship('User', secondary=users_tasks_association,
+                            backref=db.backref('tasks'))
