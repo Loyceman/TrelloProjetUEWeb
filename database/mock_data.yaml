@@ -1,30 +1,42 @@
-_classes:
-  user: &user
-    class: User
-  task: &task
-    class: Task
-
-user_florian:
-  username: "loyceman"
-  password_hash: "sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48"
-  role: "DEVELOPER"
-  <<: *user
-
-user_jbl:
-  username: "JBL"
-  password_hash: "sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48"
-  role: "PROJECT_MANAGER"
-  <<: *user
-
-user_theo:
-  username: "to"
-  password_hash: "pbkdf2:sha256:600000$gU0FKBEubk5BGJ4q$0b2980832dc2447c164aaa9fbe09faac4deeeb2c972b6b790b9c0a8ee95f0b92"
-  role: "PROJECT_MANAGER"
-  <<: *user
+user:
+  - username: JBL
+    password_hash: sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48
+    role: DEVELOPER
+  - username: user2
+    password_hash: password2
+    role: PROJECT_MANAGER
 
 
-task_carae:
-  id: 1
-  label: "Important"
-  isDone: true
-  <<: *task
+project:
+  - name: Project 1
+    description: Description for Project 1
+    color: '#FF0000'
+    endDate: 2024-12-31
+    startDate: 2024-01-01
+    users :
+      - 1
+      - 2
+  - name: Project 2
+    description: Description for Project 2
+    color: '#00FF00'
+    endDate: 2024-12-31
+    startDate: 2024-01-01
+    users :
+      - 2
+
+
+task:
+  - name: Task 1
+    label: Label for Task 1
+    dueDate: 2024-03-15
+    isDone: false
+    project_id: 1
+  - name: Task 2
+    label: Label for Task 2
+    dueDate: 2024-03-20
+    isDone: true
+    project_id: 1
+    users :
+      - 1
+
+

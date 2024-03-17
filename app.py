@@ -1,11 +1,9 @@
 import datetime
-
-import flask
 from flask import Flask, render_template, redirect, request, flash, jsonify
-from flask_login import login_required, logout_user, LoginManager, login_user, current_user
+from flask_login import login_required, logout_user, LoginManager, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from database.database import db, init_database
-from database.models import User, Task, UserRoleEnum, Project, Team
+from database.database import db, init_database, get_relationship_names
+from database.models import UserRoleEnum, User, Task, Project
 import database.models as models
 import os
 from helpers import enum_to_readable
@@ -66,7 +64,7 @@ def create_project():
     end_year, end_month, end_day = map(int, end_date_str.split('-'))
     end_date = datetime.date(end_year, end_month, end_day)
 
-    members = request.form.getlist('members')  # Récupère une liste des membres du projet
+    members = request.form.getlist('members[]')  # Récupère une liste des membres du projet
 
     existing_project = Project.query.filter_by(name=name).first()
     if existing_project:
@@ -76,10 +74,10 @@ def create_project():
     project = Project(description=description, name=name, color=color, startDate=start_date, endDate=end_date)
 
     # Ajout des membres au projet
-    for member_id in members:
-        member = User.query.get(member_id)
-        if member:
-            project.members.append(member)
+    for member_username in members:
+        member_id = User.query.filter_by(username=member_username).first()
+        if member_id:
+            project.users.append(member_id)
 
     db.session.add(project)
     db.session.commit()
@@ -95,7 +93,10 @@ def get_projects():
     projects = Project.query.all()
     project_data = []
     for project in projects:
-        members = [member.username for member in project.members.all()]
+        members_id = [user.id for user in project.users]
+        members = []
+        for member_id in members_id:
+            members.append(User.query.get(member_id).username)
         project_data.append({
             'id': project.id,
             'name': project.name,
@@ -208,7 +209,7 @@ def save_project():
 def standard_project_page(project_id):
     # Utilisez l'ID du projet pour récupérer les données du projet depuis la base de données
     project = get_project_by_id(project_id)
-    return render_template("project_header.html.jinja2", project=project, pid=project_id)
+    return render_template("project_standard_view.html.jinja2", project=project, pid=project_id)
 
 
 def get_project_by_id(project_id):
@@ -217,10 +218,12 @@ def get_project_by_id(project_id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print("Users :")
+    print("==== LOGIN PAGE ====\n")
     users = User.query.all()
+    print("    Users in the database :")
     for user in users:
-        print(user.id, user.username, user.password_hash)
+        print("         ID: {:<3}  | Username: {:<15}  | Password: {:<100}".format(user.id, user.username,
+                                                                                   user.password_hash))
 
     if request.method == 'POST':
         username = request.form.get('username')
@@ -230,6 +233,9 @@ def login():
         print("Username : ", username)
         print("Password : ", password)
         print("Remember : ", remember)
+        print(check_password_hash(user.password_hash, password))
+        print(generate_password_hash(password))
+        print(user.password_hash)
         if not user or not check_password_hash(user.password_hash, password):
             flash('Please check your login details and try again.')
             return render_template('login.html.jinja2')
@@ -238,6 +244,7 @@ def login():
         return redirect('/home_page')
     else:
         return render_template('login.html.jinja2')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -274,6 +281,7 @@ def logout():
 
 @app.route('/database')
 def show_database():
+    print("\n==== SHOWING THE DATABASE ====\n")
     inspector = inspect(db.engine)
     tables = inspector.get_table_names()
     tables = [table for table in tables if not is_junction_table(table)]
@@ -282,9 +290,37 @@ def show_database():
         columns = inspector.get_columns(table)
         columns_dict[table] = [column['name'] for column in columns]
     data = {}
+    print("    Structure :")
+    print("        Tables : ", tables)
+    print("        Columns : ")
+    for table, columns in columns_dict.items():
+        print("            " + table + " : " + str(columns))
+    print("\n    Data :")
     for table in tables:
-        model_class = globals()[table.capitalize()]  # Assuming your model class names are capitalized
+        print("        " + table.capitalize() + " :")
+        model_class = globals()[table.capitalize()]
         data[table] = model_class.query.all()
+        print("            Instances :" + str(data[table]))
+
+        i = inspect(model_class)
+        referred_classes = []
+        for r in i.relationships:
+            if r.mapper.class_ in referred_classes:
+                continue
+            referred_classes.append(r.mapper.class_)
+
+        relationships = get_relationship_names(model_class)
+        if not relationships:
+            continue
+        print("            Relationships with classes :", get_relationship_names(model_class))
+
+        for instance in data[table]:
+            print("            Instance :", instance)
+            for relationship in relationships:
+                print("                Linked with instances of class " + relationship, end="")
+                linked_ids = [linked_objects.id for linked_objects in getattr(instance, relationship)]
+                print(" with ids : " + str(linked_ids))
+
     return render_template('database.html.jinja2', columns=columns_dict, data=data, getattr=getattr)
 
 
