@@ -283,23 +283,27 @@ def logout():
 
 @app.route('/database')
 def show_database():
+    print("\n==== SHOWING THE DATABASE ====\n")
     inspector = inspect(db.engine)
     tables = inspector.get_table_names()
-    print(inspector.get_schema_names())
     tables = [table for table in tables if not is_junction_table(table)]
     columns_dict = {}
     for table in tables:
         columns = inspector.get_columns(table)
         columns_dict[table] = [column['name'] for column in columns]
     data = {}
-    print("Tables : ", tables)
-    print("Columns Dict : ", columns_dict)
+    print("    Structure :")
+    print("        Tables : ", tables)
+    print("        Columns : ")
+    for table, columns in columns_dict.items() :
+        print("            " + table + " : " + str(columns))
+    print("\n    Data :")
     for table in tables:
-        model_class = globals()[table.capitalize()]  # Assuming your model class names are capitalized
+        print("        " + table.capitalize() + " :")
+        model_class = globals()[table.capitalize()]
         data[table] = model_class.query.all()
-        print("\nDATA")
-        print(data)
-        print("\n")
+        print("            Instances :" + str(data[table]))
+
         i = inspect(model_class)
         referred_classes = []
         for r in i.relationships :
@@ -307,16 +311,17 @@ def show_database():
                 continue
             referred_classes.append(r.mapper.class_)
 
+
         relationships = get_relationship_names(model_class)
         if relationships == [] :
             continue
-        print("Relationships :", get_relationship_names(model_class))
+        print("            Relationships with classes :", get_relationship_names(model_class))
 
-        print("Linked ids :")
+        print("            Linked ids :")
         for instance in data[table]:
-            print("    Instance :", instance)
+            print("            Instance :", instance)
             linked_ids = [object.id for object in getattr(instance, relationships[0])]
-            print("   ", linked_ids)
+            print("               ", linked_ids)
 
     return render_template('database.html.jinja2', columns=columns_dict, data=data, getattr=getattr)
 
