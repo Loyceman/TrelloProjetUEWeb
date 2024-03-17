@@ -2,9 +2,12 @@ import yaml
 from pathlib import Path
 from database.models import db
 from sqlalchemy import inspect
+import os
 
 
 def init_database():
+    if os.path.exists("database/database.db"):
+        os.remove("database/database.db")
     db.drop_all()
     db.create_all()
     populate_database()
