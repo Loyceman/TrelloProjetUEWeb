@@ -2,9 +2,12 @@ user:
   - username: JBL
     password_hash: sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48
     role: DEVELOPER
-  - username: user2
-    password_hash: password2
+  - username: loyceman
+    password_hash: sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48
     role: PROJECT_MANAGER
+  - username: to
+    password_hash: sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48
+    role : DEVELOPER
 
 
 project:
