@@ -249,8 +249,10 @@ function updateProjectList() {
                                 newBackground.style.backgroundColor = "#ffffff"
                                 const newButton = document.createElement('button');
                                 newButton.className = "btn btn-project";
-                                newButton.setAttribute("data-bs-toggle", "modal");
-                                newButton.setAttribute("data-bs-target", "#modalSavedProject");
+                                if (current_user.role === 'ProjectManager') {
+                                    newButton.setAttribute("data-bs-toggle", "modal");
+                                    newButton.setAttribute("data-bs-target", "#modalSavedProject");
+                                }
                                 newButton.id = "buttonProject";
                                 newButton.value = project["id"];
                                 newButton.style.borderColor = project["color"]
