@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database, get_relationship_names
-from database.models import UserRoleEnum, User, Task, Project, Subtask
+from database.models import UserRoleEnum, User, Task, Project, Notif, Subtask
 import database.models as models
 import os
 from helpers import enum_to_readable
@@ -308,7 +308,8 @@ def show_database():
 def is_junction_table(table_name):
     inspector = inspect(db.engine)
     foreign_keys = inspector.get_foreign_keys(table_name)
-    return len(foreign_keys) == 2
+    columns = inspector.get_columns(table_name)
+    return len(foreign_keys) == 2 and len(columns) == 2
 
 
 if __name__ == '__main__':
