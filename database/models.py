@@ -23,6 +23,11 @@ class UserRoleEnum(enum.Enum):
     PROJECT_MANAGER = 'ProjectManager'
 
 
+class TaskCompletionEnum(enum.Enum):
+    IN_PROGRESS = 'InProgress'
+    DONE = 'Done'
+    STUCK = 'Stuck'
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.Text, unique=True, nullable=False)
@@ -52,9 +57,11 @@ class Project(db.Model):
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.Text)
+    category = db.Column(db.Text)
     label = db.Column(db.Text)
+    description = db.Column(db.Text)
     dueDate = db.Column(db.Date)
-    isDone = db.Column(db.Boolean)
+    completionStatus = db.Column(sqlalchemy.types.Enum(TaskCompletionEnum), nullable=False)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     users = db.relationship('User', secondary=users_tasks_association,
                             backref=db.backref('tasks'))

@@ -19,6 +19,7 @@ project:
     users :
       - 1
       - 2
+      - 3
   - name: Project 2
     description: Description for Project 2
     color: '#00FF00'
@@ -30,16 +31,32 @@ project:
 
 task:
   - name: Task 1
-    label: Label for Task 1
+    category: Front
+    label: Side-project
+    description: Faire le CSS
     dueDate: 2024-03-15
-    isDone: false
-    project_id: 1
-  - name: Task 2
-    label: Label for Task 2
-    dueDate: 2024-03-20
-    isDone: true
+    completionStatus: DONE
     project_id: 1
     users :
       - 1
-
+  - name: Task 2
+    category: Back
+    label: Useless
+    description: Fais le Python batard
+    dueDate: 2024-04-02
+    completionStatus: STUCK
+    project_id: 1
+    users :
+      - 1
+      - 2
+      - 3
+  - name: Task 3
+    category: Extensions
+    label: Important
+    description: Azzi on compte sur toi
+    dueDate: 2024-11-02
+    completionStatus: IN_PROGRESS
+    project_id: 2
+    users :
+      - 2
 
