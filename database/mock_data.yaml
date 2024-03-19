@@ -60,3 +60,13 @@ task:
     users :
       - 2
 
+subtask:
+  - name: Changer la couleur des boutons
+    isDone: True
+    task_id: 1
+  - name: Centrer le titre
+    isDone: True
+    task_id: 1
+  - name: Faire la page principale
+    isDone: False
+    task_id: 2

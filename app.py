@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database, get_relationship_names
-from database.models import UserRoleEnum, User, Task, Project
+from database.models import UserRoleEnum, User, Task, Project, Subtask
 import database.models as models
 import os
 from helpers import enum_to_readable
@@ -295,16 +295,17 @@ def show_database():
             print("            Instance :", instance)
             for relationship in relationships:
                 print("                Linked with instances of class " + relationship, end="")
-                linked_ids = [linked_objects.id for linked_objects in getattr(instance, relationship)]
+                linked_objects = getattr(instance, relationship)
+                if hasattr(linked_objects, "__iter__"):
+                    linked_ids = [linked_object.id for linked_object in linked_objects]
+                else :
+                    linked_ids = linked_objects.id
                 print(" with ids : " + str(linked_ids))
 
     return render_template('database.html.jinja2', columns=columns_dict, data=data, getattr=getattr)
 
 
 def is_junction_table(table_name):
-    # You can define your logic to identify junction tables here
-    # For example, if a table has only two foreign keys, it's likely a junction table
-    # This is a simplified example, you may need to adjust it based on your specific database schema
     inspector = inspect(db.engine)
     foreign_keys = inspector.get_foreign_keys(table_name)
     return len(foreign_keys) == 2
