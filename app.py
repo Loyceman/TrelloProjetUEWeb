@@ -101,9 +101,7 @@ def create_project():
 
     # Création d'un projet et ajout à la base de données
     project = Project(description=description, name=name, color=color, startDate=start_date, endDate=end_date)
-
     db.session.add(project)
-
     # Ajout des membres au projet
     for member_name in members:
         member = User.query.filter_by(username=member_name).first()
@@ -133,6 +131,8 @@ def delete_project():
 @app.route('/save_project', methods=['POST'])
 @login_required
 def save_project():
+
+    print("\n==== SAVING PROJECT ====\n")
     name, description, color, start_date, end_date, members = retrieve_data()
 
     # Rechercher le projet existant dans la base de données
@@ -143,16 +143,25 @@ def save_project():
         existing_project.color = color
         existing_project.startDate = start_date
         existing_project.endDate = end_date
-
+        print("    Current Project : " + str(existing_project))
+        print("        Description : " + description)
+        print("        Color : " + str(color))
+        print("        Start Date : " + str(start_date))
+        print("        End Date : " + str(end_date))
+        print("        Members : " + str(members))
         # Supprimer les membres actuels du projet
         for member in existing_project.users:
-            db.session.delete(member)
+            existing_project.users.remove(member)
+        print("\n    Deleted previous members from project")
+
 
         # Ajouter les nouveaux membres au projet
-        for member_id in members:
-            member = User.query.get(member_id)
+        print("    Adding new members :")
+        for member_name in members:
+            member = User.query.filter_by(username=member_name).first()
             if member:
                 existing_project.users.append(member)
+                print("        Added user " + member.username)
 
         # Sauvegarder les modifications dans la base de données
         db.session.commit()
@@ -260,13 +269,6 @@ def show_database():
         model_class = globals()[table.capitalize()]
         data[table] = model_class.query.all()
         print("            Instances :" + str(data[table]))
-
-        i = inspect(model_class)
-        referred_classes = []
-        for r in i.relationships:
-            if r.mapper.class_ in referred_classes:
-                continue
-            referred_classes.append(r.mapper.class_)
 
         relationships = get_relationship_names(model_class)
         if not relationships:
