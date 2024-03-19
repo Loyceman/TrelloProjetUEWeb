@@ -41,7 +41,7 @@ def route():
 @app.route('/home_page', methods=['POST', 'GET'])
 @login_required
 def dashboard():
-    return render_template("home_page.html.jinja2", users=User.query.all())
+    return render_template("home_page.html.jinja2", users=User.query.all(), tasks=Task.query.all())
 
 
 # HOME PAGE

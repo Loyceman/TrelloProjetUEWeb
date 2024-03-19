@@ -4,7 +4,7 @@
 {% set active_page = "Home Page" %}
 
 {% block css %}
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -14,10 +14,12 @@
             <div class="layout-column gap-2">
 
                 <div class="col-12 zone-head-content">
-                    <div id="project-collapser" class="d-flex flex-grow-1" data-bs-toggle="collapse" data-bs-target="#collapseProjects" aria-expanded="true" aria-controls="collapseExample">
+                    <div id="project-collapser" class="d-flex flex-grow-1" data-bs-toggle="collapse"
+                         data-bs-target="#collapseProjects" aria-expanded="true" aria-controls="collapseExample">
                         <div class="layout-center">
                             <span class="zone-head-icon">
-                                <img id="icon-unfold-projects" class="icon" src="{{ url_for("static", filename="img/chevron-down.svg") }}" alt="Show"/>
+                                <img id="icon-unfold-projects" class="icon"
+                                     src="{{ url_for("static", filename="img/chevron-down.svg") }}" alt="Show"/>
                             </span>
                             <span class="zone-title">MES ESPACES DE TRAVAIL</span>
                         </div>
@@ -33,10 +35,10 @@
                     </div>
                     <div class="m-2 px-2">
 
-{#                        <button id="btn-new-project" class="btn btn-primary layout-center " type="button" data-bs-toggle="modal" data-bs-target="#modalCreateProject">#}
-{#                            <img class="icon" src="{{ url_for("static", filename="img/add-square.svg") }}" alt="Show"/>#}
-{#                            <span class="m-1">Nouveau projet</span>#}
-{#                        </button>#}
+                        {#                        <button id="btn-new-project" class="btn btn-primary layout-center " type="button" data-bs-toggle="modal" data-bs-target="#modalCreateProject">#}
+                        {#                            <img class="icon" src="{{ url_for("static", filename="img/add-square.svg") }}" alt="Show"/>#}
+                        {#                            <span class="m-1">Nouveau projet</span>#}
+                        {#                        </button>#}
                     </div>
 
                 </div>
@@ -46,10 +48,12 @@
         <section class="zone-head">
             <div class="layout-column gap-2">
                 <div class="zone-head-content col-12">
-                    <div id="task-collapser" class="d-flex flex-grow-1" data-bs-toggle="collapse" data-bs-target="#collapseTasks" aria-expanded="false" aria-controls="collapseExample">
+                    <div id="task-collapser" class="d-flex flex-grow-1" data-bs-toggle="collapse"
+                         data-bs-target="#collapseTasks" aria-expanded="false" aria-controls="collapseExample">
                         <div class="layout-center">
                             <span class="zone-head-icon">
-                                <img id="icon-unfold-tasks" class="icon" src="{{ url_for("static", filename="img/chevron-down.svg") }}" alt="Show"/>
+                                <img id="icon-unfold-tasks" class="icon"
+                                     src="{{ url_for("static", filename="img/chevron-down.svg") }}" alt="Show"/>
                             </span>
                             <span class="zone-title">MES TACHES</span>
                         </div>
@@ -60,7 +64,29 @@
                 </div>
 
                 <div class="collapse" id="collapseTasks">
-
+                    <table class="table table-light">
+                        <thead>
+                        <tr>
+                            <th scope="col">Projet</th>
+                            <th scope="col">Tâche</th>
+                            <th scope="col">Statut</th>
+                            <th scope="col">Priorité</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for task in tasks %}
+                        <tr>
+                            <th scope="row">{{ task.project_id }}</th>
+                            <td>{{ task.name }}</td>
+                            <td>{{ task.completionStatus }}</td>
+                            <td>{{ task.label }}</td>
+                            <td> Done/Block/In Progress</td>
+                        </tr>
+{#                        <option>{{ user.username }}</option>#}
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
@@ -73,7 +99,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">Créer un nouveau projet {{ current_user.get_id() }}</h1>
-                    <button type="button" class="btn-close clickable" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close clickable" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
@@ -82,7 +109,8 @@
                         <label for="name_new_project">Nom du projet <sup class="text-danger">*</sup></label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="description_new_project" placeholder="Description"></textarea>
+                        <textarea class="form-control" id="description_new_project"
+                                  placeholder="Description"></textarea>
                         <label for="description_new_project">Description du projet</label>
                     </div>
                     <hr>
@@ -193,10 +221,5 @@
         </div>
     </div>
 
-    <div class="collapse" id="collapseDashBoard">
-        <!-- Ici sera le tableau de bord avec toutes les taches à venir d'un utilisateur -->
-    </div>
-
-    <script src="{{ url_for('static', filename='js/home_page.js') }}"></script>
-
+    <script src="../static/js/home_page.js"></script>
 {% endblock %}
