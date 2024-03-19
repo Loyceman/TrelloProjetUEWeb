@@ -23,6 +23,12 @@ class UserRoleEnum(enum.Enum):
     PROJECT_MANAGER = 'ProjectManager'
 
 
+class PriorityEnum(enum.Enum):
+    LOW_PRIORITY = 'Low priority'
+    MIDDLE_PRIORITY = 'Middle priority'
+    HIGH_PRIORITY = 'High priority'
+
+
 class TaskCompletionEnum(enum.Enum):
     IN_PROGRESS = 'InProgress'
     DONE = 'Done'
@@ -64,9 +70,9 @@ class Project(db.Model):
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.Text)
+    name = db.Column(db.Text, nullable=False)
     category = db.Column(db.Text)
-    label = db.Column(db.Text)
+    label = db.Column(sqlalchemy.types.Enum(PriorityEnum), nullable=False)
     description = db.Column(db.Text)
     dueDate = db.Column(db.Date)
     completionStatus = db.Column(sqlalchemy.types.Enum(TaskCompletionEnum), nullable=False)
