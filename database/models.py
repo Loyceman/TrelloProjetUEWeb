@@ -45,7 +45,7 @@ class User(UserMixin, db.Model):
         self.role = role
 
     def get_project(self):
-        return self.projects.all()
+        return self.projects
 
     def get_id(self):
         return self.username
