@@ -1,6 +1,6 @@
 import datetime
 from flask import Flask, render_template, redirect, request, flash, jsonify
-from flask_login import login_required, logout_user, LoginManager, login_user
+from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database, get_relationship_names
 from database.models import UserRoleEnum, User, Task, Project
@@ -41,48 +41,7 @@ def route():
 @app.route('/home_page', methods=['POST', 'GET'])
 @login_required
 def dashboard():
-    if request.method == 'POST':
-        match request.form['type']:
-            case 'project':
-                return create_project()
-
     return render_template("home_page.html.jinja2", users=User.query.all())
-
-
-# HOME PAGE
-def create_project():
-    name = request.form['name']
-    description = request.form['description']
-    color = request.form['color']
-
-    start_date_str = request.form['startDate']
-    start_year, start_month, start_day = map(int, start_date_str.split('-'))
-    start_date = datetime.date(start_year, start_month,
-                               start_day)  # Transforme les dates de javascript en date utilisable par Python
-
-    end_date_str = request.form['endDate']
-    end_year, end_month, end_day = map(int, end_date_str.split('-'))
-    end_date = datetime.date(end_year, end_month, end_day)
-
-    members = request.form.getlist('members[]')  # Récupère une liste des membres du projet
-
-    existing_project = Project.query.filter_by(name=name).first()
-    if existing_project:
-        return jsonify({'error': 'Un projet existe déjà pour le nom renseigné'}), 400
-
-    # Création d'un projet et ajout à la base de données
-    project = Project(description=description, name=name, color=color, startDate=start_date, endDate=end_date)
-
-    # Ajout des membres au projet
-    for member_username in members:
-        member_id = User.query.filter_by(username=member_username).first()
-        if member_id:
-            project.users.append(member_id)
-
-    db.session.add(project)
-    db.session.commit()
-
-    return jsonify({'message': 'Project created successfully'}), 200
 
 
 # HOME PAGE
