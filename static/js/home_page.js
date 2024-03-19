@@ -1,7 +1,6 @@
 $(onLoad)
 
 function onLoad() {
-    get_current_user()
 
     $('#SelectedUserSaved').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
         theme: "bootstrap-5",
@@ -113,12 +112,15 @@ function onLoad() {
     updateProjectList();
 }
 
-function get_current_user(){
+function get_current_user(callback) {
     $.ajax({
         url: "/current_user",
         method: "GET",
         success: function (current_user) {
-            console.log(current_user)
+            callback(current_user); // Appel du callback avec l'utilisateur récupéré
+        },
+        error: function (error) {
+            console.error("Erreur lors de la récupération de l'utilisateur : " + error);
         }
     });
 }
@@ -267,15 +269,18 @@ function updateProjectList() {
                     }
                 )
             }
-
-
-            // // Créer le bouton de création de projet
-            // const ButtonCreateProject = document.createElement('button');
-            // ButtonCreateProject.classList.add("btn", "btn-create-project");
-            // ButtonCreateProject.setAttribute("data-bs-toggle", "modal");
-            // ButtonCreateProject.setAttribute("data-bs-target", "#modalCreateProject");
-            // ButtonCreateProject.textContent = "Créer un nouveau projet";
-            // document.getElementById("listProject").appendChild(ButtonCreateProject);
+            get_current_user(function (current_user) {
+                console.log(current_user.role === "Developer")
+                if (current_user.role === 'ProjectManager') {
+                    // // Créer le bouton de création de projet
+                    const ButtonCreateProject = document.createElement('button');
+                    ButtonCreateProject.classList.add("btn", "btn-create-project");
+                    ButtonCreateProject.setAttribute("data-bs-toggle", "modal");
+                    ButtonCreateProject.setAttribute("data-bs-target", "#modalCreateProject");
+                    ButtonCreateProject.textContent = "Créer un nouveau projet";
+                    document.getElementById("listProject").appendChild(ButtonCreateProject);
+                }
+            });
         }
     })
 }
