@@ -66,6 +66,7 @@ class Project(db.Model):
     endDate = db.Column(db.Date)
     users = db.relationship('User', secondary=users_projects_association,
                             backref=db.backref('projects'))
+    tasks = db.relationship('Task', backref=db.backref('project'))
 
 
 class Task(db.Model):
@@ -79,3 +80,11 @@ class Task(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     users = db.relationship('User', secondary=users_tasks_association,
                             backref=db.backref('tasks'))
+    subtasks = db.relationship('Subtask', backref=db.backref('task'))
+
+
+class Subtask(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.Text)
+    isDone = db.Column(db.Boolean)
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False)
