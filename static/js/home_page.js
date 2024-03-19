@@ -59,6 +59,12 @@ function onLoad() {
     $(document).on('click', '#buttonProject', function () {
         open_project_id = $(this).val()
         get_project(open_project_id)
+        get_current_user(function (current_user) {
+            if (current_user.role === "Developer") {
+                $("#modalSavedProject").modal("hide"); // Hide modal
+                window.location.href = "/projects/standard_view/" + open_project_id;
+            }
+        })
     });
 
     $("#button_open_project").click(function () {
@@ -88,6 +94,7 @@ function onLoad() {
             alert("Veuillez entrer un nom de projet")
         }
     });
+
 
     $("#button_create_project").click(function () {
         let name = $("#name_new_project").val()
@@ -186,7 +193,7 @@ function create_project(name_project, description_project, color_project, start_
             updateProjectList();
         },
 
-        error: function(xhr) {
+        error: function (xhr) {
             alert(xhr.responseJSON.error)
         }
 
@@ -233,13 +240,12 @@ function updateProjectList() {
 
             if (Array.isArray(projects) && projects.length > 0) {
                 projects.forEach((project) => {
-
-                    const newLayout = document.createElement("div")
+                        const newLayout = document.createElement("div")
                         newLayout.className = "btn-project-layout p-2 col-xl-3 col-sm-6 col-12"
-                    const newBackground = document.createElement("div")
+                        const newBackground = document.createElement("div")
                         newBackground.className = "btn-project-layout flex-grow-1 h-100"
                         newBackground.style.backgroundColor = "#ffffff"
-                    const newButton = document.createElement('button');
+                        const newButton = document.createElement('button');
                         newButton.className = "btn btn-project";
                         newButton.setAttribute("data-bs-toggle", "modal");
                         newButton.setAttribute("data-bs-target", "#modalSavedProject");
@@ -248,37 +254,52 @@ function updateProjectList() {
                         newButton.style.borderColor = project["color"]
                         newButton.style.backgroundColor = project["color"].concat("0A");
                         newButton.style.boxShadow = "0 0 5px 0 ".concat(project["color"]).concat("33")
-                    const newColorBar = document.createElement("span")
+                        const newColorBar = document.createElement("span")
                         newColorBar.className = "btn-project-colorbar"
                         newColorBar.style.backgroundColor = project["color"]
-                    const newTitle = document.createElement("span")
+                        const newTitle = document.createElement("span")
                         newTitle.className = "btn-project-title"
                         newTitle.textContent = project["name"];
-                    const newDesc = document.createElement("span");
+                        const newDesc = document.createElement("span");
                         newDesc.className = "btn-project-desc";
                         newDesc.textContent = project["description"];
 
-
-                    newLayout.appendChild(newBackground)
-                    newBackground.appendChild(newButton)
-                    newButton.appendChild(newColorBar)
-                    newButton.appendChild(newTitle)
-                    newButton.appendChild(newDesc)
-                    document.getElementById("listProject").appendChild(newLayout);
-
+                        newLayout.appendChild(newBackground)
+                        newBackground.appendChild(newButton)
+                        newButton.appendChild(newColorBar)
+                        newButton.appendChild(newTitle)
+                        newButton.appendChild(newDesc)
+                        document.getElementById("listProject").appendChild(newLayout);
                     }
                 )
             }
             get_current_user(function (current_user) {
-                console.log(current_user.role === "Developer")
+                // console.log(current_user.role === "Developer")
                 if (current_user.role === 'ProjectManager') {
-                    // // Créer le bouton de création de projet
-                    const ButtonCreateProject = document.createElement('button');
-                    ButtonCreateProject.classList.add("btn", "btn-create-project");
-                    ButtonCreateProject.setAttribute("data-bs-toggle", "modal");
-                    ButtonCreateProject.setAttribute("data-bs-target", "#modalCreateProject");
-                    ButtonCreateProject.textContent = "Créer un nouveau projet";
-                    document.getElementById("listProject").appendChild(ButtonCreateProject);
+                    // Création de l'élément button
+                    let button = document.createElement("button");
+                    button.id = "btn-new-project";
+                    button.className = "btn btn-primary layout-center";
+                    button.type = "button";
+                    button.setAttribute("data-bs-toggle", "modal");
+                    button.setAttribute("data-bs-target", "#modalCreateProject");
+
+                    // Création de l'élément img
+                    let img = document.createElement("img");
+                    img.className = "icon";
+                    img.src = "static/img/add-square.svg";
+
+                    // Création de l'élément span
+                    let span = document.createElement("span");
+                    span.className = "m-1";
+                    span.textContent = "Créer un nouveau projet";
+
+                    // Ajout de l'élément img et span à l'élément button
+                    button.appendChild(img);
+                    button.appendChild(span);
+
+                    // Ajout du bouton à l'élément avec la classe "m-2 px-2"
+                    document.querySelector(".m-2.px-2").appendChild(button);
                 }
             });
         }
