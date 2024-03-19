@@ -149,7 +149,7 @@ def create_project():
     for member_name in members:
         member = User.query.filter_by(username=member_name).first()
         if member:
-            project.members.append(member)
+            project.users.append(member)
 
     db.session.commit()
 
@@ -186,14 +186,14 @@ def save_project():
         existing_project.endDate = end_date
 
         # Supprimer les membres actuels du projet
-        for member in existing_project.members:
+        for member in existing_project.users:
             db.session.delete(member)
 
         # Ajouter les nouveaux membres au projet
         for member_id in members:
             member = User.query.get(member_id)
             if member:
-                existing_project.members.append(member)
+                existing_project.users.append(member)
 
         # Sauvegarder les modifications dans la base de données
         db.session.commit()
