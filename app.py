@@ -296,8 +296,10 @@ def show_database():
             for relationship in relationships:
                 print("                Linked with instances of class " + relationship, end="")
                 linked_objects = getattr(instance, relationship)
-                
-                linked_ids = [linked_object.id for linked_object in linked_objects]
+                if hasattr(linked_objects, "__iter__"):
+                    linked_ids = [linked_object.id for linked_object in linked_objects]
+                else :
+                    linked_ids = linked_objects.id
                 print(" with ids : " + str(linked_ids))
 
     return render_template('database.html.jinja2', columns=columns_dict, data=data, getattr=getattr)
