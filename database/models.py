@@ -17,6 +17,11 @@ users_tasks_association = db.Table('user_tasks_associations',
                                    db.Column('task_id', db.Integer, db.ForeignKey('task.id'))
                                    )
 
+users_notifs_association = db.Table('user_notifs_associations',
+                                    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                                    db.Column('notif_id', db.Integer, db.ForeignKey('notif.id'))
+                                    )
+
 
 class UserRoleEnum(enum.Enum):
     DEVELOPER = 'Developer'
@@ -33,6 +38,11 @@ class TaskCompletionEnum(enum.Enum):
     IN_PROGRESS = 'InProgress'
     DONE = 'Done'
     STUCK = 'Stuck'
+
+
+class NotifTypeEnum(enum.Enum):
+    ASSIGNED = 'Assigned'
+    MODIFIED = 'Modified'
 
 
 class User(UserMixin, db.Model):
@@ -88,3 +98,12 @@ class Subtask(db.Model):
     name = db.Column(db.Text)
     isDone = db.Column(db.Boolean)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False)
+
+
+class Notif(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'))
+    type = db.Column(sqlalchemy.types.Enum(NotifTypeEnum))
+    users = db.relationship('User', secondary=users_notifs_association,
+                            backref=db.backref('notifs'))
