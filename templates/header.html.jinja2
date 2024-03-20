@@ -66,7 +66,7 @@
                 <section>
                     <div class="popover-zone layout-column">
                         <div class="popover-element text-normal">
-                            Bonjour {{ current_user.get_id() }}
+                            <b>{{ current_user.get_id() }}</b> · <span class="text-secondary">{{ current_user.role.value }}</span>
                         </div>
                         <a class="popover-element text-normal nav-link clickable clickable-light">
                             Gérer mon compte
