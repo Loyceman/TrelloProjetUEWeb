@@ -110,6 +110,16 @@ def create_project():
 
     db.session.commit()
 
+    project_created = Project.query.order_by(Project.id.desc()).first()
+    for member in project_created.users:
+        notif = Notif(project_id=project_created.id,
+                      type=NotifTypeEnum.ASSIGNED,
+                      datetime=datetime.datetime.now(),
+                      status=NotifStatusEnum.NOTREAD,
+                      user=member.id)
+        db.session.add(notif)
+    db.session.commit()
+
     return jsonify({'message': 'Project created successfully'}), 200
 
 
@@ -148,18 +158,32 @@ def save_project():
         print("        Start Date : " + str(start_date))
         print("        End Date : " + str(end_date))
         print("        Members : " + str(members))
+
         # Supprimer les membres actuels du projet
         for member in existing_project.users:
-            existing_project.users.remove(member)
+            if member.username not in members:
+                existing_project.users.remove(member)
+                notif = Notif(project_id=existing_project.id,
+                              type=NotifTypeEnum.UNASSIGNED,
+                              datetime=datetime.datetime.now(),
+                              status=NotifStatusEnum.NOTREAD,
+                              user=member.id)
+                db.session.add(notif)
         print("\n    Deleted previous members from project")
 
         # Ajouter les nouveaux membres au projet
         print("    Adding new members :")
         for member_name in members:
             member = User.query.filter_by(username=member_name).first()
-            if member:
+            if member and member not in existing_project.users:
                 existing_project.users.append(member)
                 print("        Added user " + member.username)
+                notif = Notif(project_id=existing_project.id,
+                              type=NotifTypeEnum.ASSIGNED,
+                              datetime=datetime.datetime.now(),
+                              status=NotifStatusEnum.NOTREAD,
+                              user=member.id)
+                db.session.add(notif)
 
         # Sauvegarder les modifications dans la base de données
         db.session.commit()

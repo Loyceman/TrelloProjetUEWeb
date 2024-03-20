@@ -114,8 +114,6 @@ function onLoad() {
             alert("Veuillez entrer un nom de projet")
         }
     });
-
-
     updateProjectList();
 }
 
@@ -136,6 +134,7 @@ function saved_project(name_project, description_project, color_project, start_d
         success: function () {
             $("#modalSavedProject").modal("hide"); // Hide modal
             updateProjectList();
+            updateNotifs()
 
         },
         error: function () {
@@ -178,6 +177,7 @@ function create_project(name_project, description_project, color_project, start_
         success: function (xhr) {
             $("#modalCreateProject").modal("hide"); // Hide modal
             updateProjectList();
+            updateNotifs()
         },
 
         error: function (xhr) {

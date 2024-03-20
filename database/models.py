@@ -41,8 +41,9 @@ class TaskCompletionEnum(enum.Enum):
 
 
 class NotifTypeEnum(enum.Enum):
-    ASSIGNED = 'Assigned'
-    MODIFIED = 'Modified'
+    ASSIGNED = 'ASSIGNED'
+    UNASSIGNED = 'UNASSIGNED'
+    MODIFIED = 'MODIFIED'
 
 
 class NotifStatusEnum(enum.Enum):

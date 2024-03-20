@@ -82,22 +82,32 @@ function updateNotifs() {
                             let is_task = false
                             if (notif.task) is_task = true
                             switch (true) {
-                                case (notif["type"] === "Assigned" && is_task) :
+                                case (notif["type"] === "ASSIGNED" && is_task) :
                                     text_project = "<b>" + notif.project_name + "</b>"
                                     text_date = notif.date + " " + notif.time
                                     text_message = "Vous avez été assignée à la tâche : <i>" + notif.task + "</i>"
                                     break;
-                                case (notif["type"] === "Assigned" && !is_task):
+                                case (notif["type"] === "UNASSIGNED" && is_task) :
+                                    text_project = "<b>" + notif.project_name + "</b>"
+                                    text_date = notif.date + " " + notif.time
+                                    text_message = "Vous avez été retiré de la tâche : <i>" + notif.task + "</i>"
+                                    break;
+                                case (notif["type"] === "ASSIGNED" && !is_task):
                                     text_project = "<b>" + notif.project_name + "</b>"
                                     text_date = notif.date + " " + notif.time
                                     text_message = "Vous avez été assigné au projet"
                                     break;
-                                case (notif["type"] === "Modified" && is_task):
+                                case (notif["type"] === "UNASSIGNED" && !is_task):
+                                    text_project = "<b>" + notif.project_name + "</b>"
+                                    text_date = notif.date + " " + notif.time
+                                    text_message = "Vous avez été retiré du projet"
+                                    break;
+                                case (notif["type"] === "MODIFIED" && is_task):
                                     text_project = "<b>" + notif.project_name + "</b>"
                                     text_date = notif.date + " " + notif.time
                                     text_message = "Tâche : <i>" + notif.task + "</i> modifiée"
                                     break;
-                                case (notif["type"] === "Modified" && !is_task):
+                                case (notif["type"] === "MODIFIED" && !is_task):
                                     text_project = "<b>" + notif.project_name + "</b>"
                                     text_date = notif.date + " " + notif.time
                                     text_message = "Nouvelle modification"
