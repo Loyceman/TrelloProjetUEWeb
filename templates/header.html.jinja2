@@ -45,10 +45,10 @@
 
                     <div class="flex-grow-1"></div>
                     <div class="header-zone header-layout-right">
-                        <span id="popover-notifs" tabindex="0" class="header-element clickable round" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-custom-class="custom-popover" data-bs-content="This is the content of the popover.">
+                        <span id="popover-notifs" tabindex="0" class="header-element clickable round" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-custom-class="custom-popover" data-bs-content="Notifications">
                             <img class="icon-clickable" src="{{ url_for("static", filename="img/bell-icon.svg") }}" alt="Notifs"/>
                         </span>
-                        <span id="popover-profile" tabindex="0" class="header-element clickable round" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-custom-class="custom-popover" data-bs-content="This is the content of the popover. This is the content of the popover. This is the content of the popover.">
+                        <span id="popover-profile" tabindex="0" class="header-element clickable round" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-custom-class="custom-popover" data-bs-content="Profil">
                             <img class="icon-clickable" src="{{ url_for("static", filename="img/profile-icon.svg") }}" alt="Profile"/>
                         </span>
                     </div>
@@ -63,9 +63,9 @@
             <div id="popover-profile-content">
                 <section>
                     <div class="popover-zone layout-column">
-                        <span class="popover-element text-normal">
+                        <div class="popover-element text-normal">
                             Bonjour {{ current_user.get_id() }}
-                        </span>
+                        </div>
                         <a class="popover-element text-normal nav-link clickable clickable-light">
                             Gérer mon compte
                         </a>
@@ -83,44 +83,16 @@
             <div id="popover-notifs-content">
                 <section>
                     <div class="popover-zone layout-column">
-                        <div class="listNotifs">
-                            <span class="popover-element">
-                                Aucune notification
-                            </span>
+                        <div id="listNotif">
+                             <!-- ici sont ajoutés les boutons projets et le bouton 'créer votre nouveau projet' -->
                         </div>
                     </div>
                 </section>
             </div>
         </div>
 
-        <script>
-            var options_profile = {
-                html: true,
-                title: "Votre Profil",
-                content: document.getElementById('popover-profile-content'),
-                {#trigger: 'focus'#}
-            }
+        <script src="{{ url_for('static', filename='js/header.js') }}"></script>
 
-            var options_notifs = {
-                html: true,
-                title: "Notifications",
-                content: document.getElementById('popover-notifs-content'),
-                {#trigger: 'focus',#}
-            }
-            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-                var options = options_profile
-                if (popoverTriggerEl.id === "popover-notifs") {
-                    options = options_notifs
-                }
-                return new bootstrap.Popover(popoverTriggerEl, options)
-            })
-
-            {#const popover = new bootstrap.Popover('.popover-dismiss')#}
-            {#var exampleEl = document.getElementById('example')#}
-
-
-        </script>
         </div>
 
 </body>

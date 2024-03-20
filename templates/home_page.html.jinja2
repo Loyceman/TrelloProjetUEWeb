@@ -191,6 +191,10 @@
         </div>
     </div>
 
+    <div class="collapse" id="collapseDashBoard">
+        <!-- Ici sera le tableau de bord avec toutes les taches à venir d'un utilisateur -->
+    </div>
 
-    <script src="../static/js/home_page.js"></script>
+    <script src="{{ url_for('static', filename='js/home_page.js') }}"></script>
+
 {% endblock %}

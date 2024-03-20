@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database, get_relationship_names
-from database.models import UserRoleEnum, User, Task, Project, Notif, Subtask
+from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum
 import database.models as models
 import os
 from helpers import enum_to_readable
@@ -131,7 +131,6 @@ def delete_project():
 @app.route('/save_project', methods=['POST'])
 @login_required
 def save_project():
-
     print("\n==== SAVING PROJECT ====\n")
     name, description, color, start_date, end_date, members = retrieve_data()
 
@@ -153,7 +152,6 @@ def save_project():
         for member in existing_project.users:
             existing_project.users.remove(member)
         print("\n    Deleted previous members from project")
-
 
         # Ajouter les nouveaux membres au projet
         print("    Adding new members :")
@@ -261,6 +259,29 @@ def register():
 def logout():
     logout_user()
     return redirect('/login')
+
+
+@app.route('/notifs', methods=['GET'])
+@login_required
+def get_notifs():
+    notifs = Notif.query.all()
+    notif_data = []
+    for notif in notifs:
+        members_id = [user.id for user in notif.users]
+        members = []
+        for member_id in members_id:
+            members.append(User.query.get(member_id).username)
+        project = Project.query.get(notif.project_id)
+        notif_data.append({
+            'id': notif.id,
+            'project': project.name,
+            'type': notif.type.value,
+            'users': members
+        })
+        if notif.task_id :
+            task = Task.query.get(notif.task_id)
+            notif_data[0]['task'] = task.name
+    return jsonify(notif_data)
 
 
 @app.route('/database')
