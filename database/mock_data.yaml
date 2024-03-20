@@ -76,13 +76,11 @@ notif:
     type: MODIFIED
     datetime: 2024-03-19 9:30:00
     status: READ
-    users:
-      - 3
+    user: 3
 
   - project_id: 1
     task_id: 1
     type: ASSIGNED
     datetime: 2024-03-20 13:43:00
     status: NOTREAD
-    users:
-      - 3
+    user: 3

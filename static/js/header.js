@@ -46,9 +46,13 @@ $(document).on('click', '#notif-instance', function () {
     window.location.href = "/projects/standard_view/" + notif_project_id;
 });
 
+$(document).on('click', '#notif-read', function () {
+    notif_id = $(this).val()
+    set_notif(notif_id)
+});
+
 $(document).on('click', '#notif-delete', function () {
     notif_id = $(this).val()
-    console.log(notif_id)
     delete_notif(notif_id)
 });
 
@@ -65,11 +69,13 @@ function updateNotifs() {
 
             get_current_user(function (current_user) {
                 let counter = 0;
+                let counter_read = 0;
                 notif_badge = document.getElementById("notif-badge")
                 if (Array.isArray(notifs) && notifs.length > 0) {
                     notifs.forEach((notif) => {
-                        if (notif["users"].includes(current_user.username)) {
+                        if (notif["user"] === current_user.username) {
                             counter ++;
+                            if (!notif.status) counter_read ++;
                             let text_project = ""
                             let text_date = ""
                             let text_message = ""
@@ -119,13 +125,14 @@ function updateNotifs() {
                             newTextMessage.innerHTML = text_message
 
                             const iconRead = document.createElement("img")
+                            iconRead.id = "notif-read"
                             iconRead.className = "icon-popover-notif clickable"
-                            iconRead.src = "/static/img/mail-close.svg"
+                            set_icon_notif_read(iconRead, notif.status)
+                            iconRead.value = notif["id"]
                             const iconDelete = document.createElement("img")
                             iconDelete.id = "notif-delete"
                             iconDelete.className = "icon-popover-notif layout-center clickable"
                             iconDelete.value = notif["id"]
-                            console.log(window.location.host)
                             iconDelete.src = "/static/img/close-icon.svg"
 
                             newTextHead.appendChild(newTextProject)
@@ -140,12 +147,15 @@ function updateNotifs() {
                         }
                     })
                 }
-                if (counter > 0) {
+                if (counter_read > 0) {
                     notif_badge.style.display = "block"
-                    notif_badge.textContent = "" + counter
+                    notif_badge.textContent = "" + counter_read
                 }
                 else {
                     notif_badge.style.display = "none"
+                }
+
+                if (counter === 0) {
                     const NoNotif = document.createElement("div")
                     NoNotif.className = "popover-notif-element"
                     NoNotif.textContent = "Aucune notification"
@@ -157,20 +167,42 @@ function updateNotifs() {
     })
 }
 
+function set_icon_notif_read(icon, status) {
+    if (status) {
+        icon.src = "/static/img/mail-open.svg"
+    }
+    else {
+        icon.src = "/static/img/mail-close.svg"
+    }
+}
+
+
+function set_notif(notif_id) {
+    $.ajax({
+        url: "/set_notif",
+        method: "POST",
+        timeout: 2000,
+        data: {
+            type: 'notif',
+            id_notif: notif_id,
+        },
+        success: function () {
+            updateNotifs()
+        }
+    })
+}
+
 function delete_notif(notif_id) {
-    get_current_user(function (current_user) {
-        $.ajax({
-            url: "/delete_notif",
-            method: "POST",
-            timeout: 2000,
-            data: {
-                type: 'notif',
-                id_notif: notif_id,
-                id_user: current_user.id
-            },
-            success: function () {
-                updateNotifs()
-            }
-        })
+    $.ajax({
+        url: "/delete_notif",
+        method: "POST",
+        timeout: 2000,
+        data: {
+            type: 'notif',
+            id_notif: notif_id,
+        },
+        success: function () {
+            updateNotifs()
+        }
     })
 }

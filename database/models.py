@@ -112,5 +112,4 @@ class Notif(db.Model):
     type = db.Column(sqlalchemy.types.Enum(NotifTypeEnum), nullable=False)
     datetime = db.Column(db.DateTime, nullable=False)
     status = db.Column(sqlalchemy.types.Enum(NotifStatusEnum), nullable=False)
-    users = db.relationship('User', secondary=users_notifs_association,
-                            backref=db.backref('notifs'))
+    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

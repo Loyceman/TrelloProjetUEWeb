@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database, get_relationship_names
-from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum
+from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum, NotifStatusEnum
 import database.models as models
 import os
 from helpers import enum_to_readable
@@ -267,10 +267,7 @@ def get_notifs():
     notifs = Notif.query.all()
     notif_data = []
     for notif in notifs:
-        members_id = [user.id for user in notif.users]
-        members = []
-        for member_id in members_id:
-            members.append(User.query.get(member_id).username)
+        member = User.query.get(notif.user).username
         project = Project.query.get(notif.project_id)
         datetime_str = notif.datetime.strftime("%Y-%m-%d %H:%M:%S").split(" ")
         date = "/".join(datetime_str[0].split("-")[::-1][:2])
@@ -284,7 +281,7 @@ def get_notifs():
             'date': date,
             'time': time,
             'status': notif.status.value,
-            'users': members
+            'user': member
         })
         if notif.task_id:
             task = Task.query.get(notif.task_id)
@@ -296,16 +293,29 @@ def get_notifs():
 @login_required
 def delete_notif():
     id_notif = request.form['id_notif']
-    id_user = request.form['id_user']
-    notif = Notif.query.filter_by(id=id_notif).first()
+    notif = Notif.query.get(id_notif)
     if notif:
-        notif.users.remove(User.query.get(id_user))
-        if len(notif.users) == 0:
-            db.session.delete(notif)
+        db.session.delete(notif)
         db.session.commit()  # Confirmer la suppression
         return jsonify({'message': 'Notif deleted successfully'}), 200
     else:
-        return jsonify({'error': 'Project not found'}), 404
+        return jsonify({'error': 'Notif not found'}), 404
+
+
+@app.route('/set_notif', methods=['POST'])
+@login_required
+def change_status_notif():
+    id_notif = request.form['id_notif']
+    notif = Notif.query.get(id_notif)
+    if notif:
+        if notif.status.value:
+            notif.status = NotifStatusEnum.NOTREAD
+        else:
+            notif.status = NotifStatusEnum.READ
+        db.session.commit()  # Confirmer
+        return jsonify({'message': 'Notif status changed successfully'}), 200
+    else:
+        return jsonify({'error': 'Notif not found'}), 404
 
 
 @app.route('/database')
