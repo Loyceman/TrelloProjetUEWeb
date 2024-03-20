@@ -45,6 +45,11 @@ class NotifTypeEnum(enum.Enum):
     MODIFIED = 'Modified'
 
 
+class NotifStatusEnum(enum.Enum):
+    READ = True
+    NOTREAD = False
+
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.Text, unique=True, nullable=False)
@@ -104,6 +109,8 @@ class Notif(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'))
-    type = db.Column(sqlalchemy.types.Enum(NotifTypeEnum))
+    type = db.Column(sqlalchemy.types.Enum(NotifTypeEnum), nullable=False)
+    datetime = db.Column(db.DateTime, nullable=False)
+    status = db.Column(sqlalchemy.types.Enum(NotifStatusEnum), nullable=False)
     users = db.relationship('User', secondary=users_notifs_association,
                             backref=db.backref('notifs'))

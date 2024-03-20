@@ -272,16 +272,40 @@ def get_notifs():
         for member_id in members_id:
             members.append(User.query.get(member_id).username)
         project = Project.query.get(notif.project_id)
+        datetime_str = notif.datetime.strftime("%Y-%m-%d %H:%M:%S").split(" ")
+        date = "/".join(datetime_str[0].split("-")[::-1][:2])
+        time = datetime_str[1][:5]
         notif_data.append({
             'id': notif.id,
-            'project': project.name,
+            'project_id': project.id,
+            'project_name': project.name,
+            'color': project.color,
             'type': notif.type.value,
+            'date': date,
+            'time': time,
+            'status': notif.status.value,
             'users': members
         })
-        if notif.task_id :
+        if notif.task_id:
             task = Task.query.get(notif.task_id)
             notif_data[0]['task'] = task.name
     return jsonify(notif_data)
+
+
+@app.route('/delete_notif', methods=['POST'])
+@login_required
+def delete_notif():
+    id_notif = request.form['id_notif']
+    id_user = request.form['id_user']
+    notif = Notif.query.filter_by(id=id_notif).first()
+    if notif:
+        notif.users.remove(User.query.get(id_user))
+        if len(notif.users) == 0:
+            db.session.delete(notif)
+        db.session.commit()  # Confirmer la suppression
+        return jsonify({'message': 'Notif deleted successfully'}), 200
+    else:
+        return jsonify({'error': 'Project not found'}), 404
 
 
 @app.route('/database')

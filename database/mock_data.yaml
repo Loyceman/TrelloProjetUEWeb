@@ -7,7 +7,7 @@ user:
     role: DEVELOPER
   - username: to
     password_hash: sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48
-    role : DEVELOPER
+    role : PROJECT_MANAGER
 
 
 project:
@@ -70,3 +70,19 @@ subtask:
   - name: Faire la page principale
     isDone: False
     task_id: 2
+
+notif:
+  - project_id: 1
+    type: MODIFIED
+    datetime: 2024-03-19 9:30:00
+    status: READ
+    users:
+      - 3
+
+  - project_id: 1
+    task_id: 1
+    type: ASSIGNED
+    datetime: 2024-03-20 13:43:00
+    status: NOTREAD
+    users:
+      - 3

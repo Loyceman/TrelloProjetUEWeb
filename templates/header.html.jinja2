@@ -45,8 +45,10 @@
 
                     <div class="flex-grow-1"></div>
                     <div class="header-zone header-layout-right">
-                        <span id="popover-notifs" tabindex="0" class="header-element clickable round" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-custom-class="custom-popover" data-bs-content="Notifications">
-                            <img class="icon-clickable" src="{{ url_for("static", filename="img/bell-icon.svg") }}" alt="Notifs"/>
+                        <span id="popover-notifs" tabindex="0" class="header-element clickable round position-relative" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-custom-class="custom-popover" data-bs-content="Notifications">
+                            <img class="icon-clickable" src="{{ url_for("static", filename="img/bell-icon.svg") }}" alt="Notifs">
+                            <span id="notif-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                            </span>
                         </span>
                         <span id="popover-profile" tabindex="0" class="header-element clickable round" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-custom-class="custom-popover" data-bs-content="Profil">
                             <img class="icon-clickable" src="{{ url_for("static", filename="img/profile-icon.svg") }}" alt="Profile"/>
@@ -82,10 +84,8 @@
 
             <div id="popover-notifs-content">
                 <section>
-                    <div class="popover-zone layout-column">
-                        <div id="listNotif">
-                             <!-- ici sont ajoutés les boutons projets et le bouton 'créer votre nouveau projet' -->
-                        </div>
+                    <div id="listNotif" class="popover-zone layout-column">
+                         <!-- ici sont ajoutés les boutons projets et le bouton 'créer votre nouveau projet' -->
                     </div>
                 </section>
             </div>
