@@ -119,19 +119,6 @@ function onLoad() {
     updateProjectList();
 }
 
-function get_current_user(callback) {
-    $.ajax({
-        url: "/current_user",
-        method: "GET",
-        success: function (current_user) {
-            callback(current_user); // Appel du callback avec l'utilisateur récupéré
-        },
-        error: function (error) {
-            console.error("Erreur lors de la récupération de l'utilisateur : " + error);
-        }
-    });
-}
-
 function saved_project(name_project, description_project, color_project, start_date_project, end_date_project, project_members) {
     $.ajax({
         url: "/save_project",
@@ -241,42 +228,41 @@ function updateProjectList() {
             get_current_user(function (current_user) {
                 if (Array.isArray(projects) && projects.length > 0) {
                     projects.forEach((project) => {
-                            if (project["members"].includes(current_user.username)) {
-                                const newLayout = document.createElement("div")
-                                newLayout.className = "btn-project-layout p-2 col-xl-3 col-sm-6 col-12"
-                                const newBackground = document.createElement("div")
-                                newBackground.className = "btn-project-layout flex-grow-1 h-100"
-                                newBackground.style.backgroundColor = "#ffffff"
-                                const newButton = document.createElement('button');
-                                newButton.className = "btn btn-project";
-                                if (current_user.role === 'ProjectManager') {
-                                    newButton.setAttribute("data-bs-toggle", "modal");
-                                    newButton.setAttribute("data-bs-target", "#modalSavedProject");
-                                }
-                                newButton.id = "buttonProject";
-                                newButton.value = project["id"];
-                                newButton.style.borderColor = project["color"]
-                                newButton.style.backgroundColor = project["color"].concat("0A");
-                                newButton.style.boxShadow = "0 0 5px 0 ".concat(project["color"]).concat("33")
-                                const newColorBar = document.createElement("span")
-                                newColorBar.className = "btn-project-colorbar"
-                                newColorBar.style.backgroundColor = project["color"]
-                                const newTitle = document.createElement("span")
-                                newTitle.className = "btn-project-title"
-                                newTitle.textContent = project["name"];
-                                const newDesc = document.createElement("span");
-                                newDesc.className = "btn-project-desc";
-                                newDesc.textContent = project["description"];
-
-                                newLayout.appendChild(newBackground)
-                                newBackground.appendChild(newButton)
-                                newButton.appendChild(newColorBar)
-                                newButton.appendChild(newTitle)
-                                newButton.appendChild(newDesc)
-                                document.getElementById("listProject").appendChild(newLayout);
+                        if (project["members"].includes(current_user.username)) {
+                            const newLayout = document.createElement("div")
+                            newLayout.className = "btn-project-layout p-2 col-xl-3 col-sm-6 col-12"
+                            const newBackground = document.createElement("div")
+                            newBackground.className = "btn-project-layout flex-grow-1 h-100"
+                            newBackground.style.backgroundColor = "#ffffff"
+                            const newButton = document.createElement('button');
+                            newButton.className = "btn btn-project";
+                            if (current_user.role === 'ProjectManager') {
+                                newButton.setAttribute("data-bs-toggle", "modal");
+                                newButton.setAttribute("data-bs-target", "#modalSavedProject");
                             }
+                            newButton.id = "buttonProject";
+                            newButton.value = project["id"];
+                            newButton.style.borderColor = project["color"]
+                            newButton.style.backgroundColor = project["color"].concat("0A");
+                            newButton.style.boxShadow = "0 0 5px 0 ".concat(project["color"]).concat("33")
+                            const newColorBar = document.createElement("span")
+                            newColorBar.className = "btn-project-colorbar"
+                            newColorBar.style.backgroundColor = project["color"]
+                            const newTitle = document.createElement("span")
+                            newTitle.className = "btn-project-title"
+                            newTitle.textContent = project["name"];
+                            const newDesc = document.createElement("span");
+                            newDesc.className = "btn-project-desc";
+                            newDesc.textContent = project["description"];
+
+                            newLayout.appendChild(newBackground)
+                            newBackground.appendChild(newButton)
+                            newButton.appendChild(newColorBar)
+                            newButton.appendChild(newTitle)
+                            newButton.appendChild(newDesc)
+                            document.getElementById("listProject").appendChild(newLayout);
                         }
-                    )
+                    })
                 }
 
                 // console.log(current_user.role === "Developer")

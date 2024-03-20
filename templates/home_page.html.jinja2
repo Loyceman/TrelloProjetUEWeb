@@ -85,11 +85,11 @@
                         <textarea class="form-control" id="description_new_project" placeholder="Description"></textarea>
                         <label for="description_new_project">Description du projet</label>
                     </div>
-
+                    <hr>
                     <div class="layout-center p-2">
                         <label for="dateProjectStart"> Date du début de votre projet : </label>
                         <span class="flex-grow-1"></span>
-                        <input class="is-invalid" type="date" id="dateProjectStart">
+                        <input type="date" id="dateProjectStart">
                     </div>
                     <div class="layout-center p-2">
                         <label for="dateProjectEnd"> Date de fin de votre projet : </label>
@@ -103,9 +103,9 @@
                                value="#c8c8fa"
                                title="Couleur de ton projet">
                     </div>
+                    <hr>
                     <div>
-
-                        <label class="m-2" for="SelectedUser"> Selectionner les utilisateurs participant à votre
+                        <label class="m-2" for="SelectedUser"> Sélectionner les utilisateurs participant à votre
                             projet</label>
                         <select class="form-select" id="SelectedUser" data-placeholder="Choose anything"
                                 multiple>
@@ -148,25 +148,27 @@
                         <label for="description_saved_project">Description du projet</label>
                     </div>
                     <hr>
-                    <div class="m-2">
-                        <label for="colorProjectDisplaySaved" class="form-label">Couleur de ton projet</label>
+                    <div class="layout-center p-2">
+                        <label for="dateProjectStartSaved"> Date du début de votre projet : </label>
+                        <span class="flex-grow-1"></span>
+                        <input class="is-invalid" type="date" id="dateProjectStartSaved">
+                    </div>
+                    <div class="layout-center p-2">
+                        <label for="dateProjectEndSaved"> Date de fin de votre projet : </label>
+                        <span class="flex-grow-1"></span>
+                        <input type="date" id="dateProjectEndSaved">
+                    </div>
+                    <div class="layout-center p-2">
+                        <label for="colorProjectDisplaySaved" class="form-label">Couleur associée au projet : </label>
+                        <span class="flex-grow-1"></span>
                         <input type="color" id="colorProjectDisplaySaved"
                                value="#c8c8fa"
                                title="Couleur de ton projet">
                     </div>
                     <hr>
                     <div>
-                        <fieldset disabled>
-                            <label for="dateProjectStartSaved"> Date du début de votre projet </label>
-                            <input type="date" id="dateProjectStartSaved"> <br>
-                        </fieldset>
-                        <label for="dateProjectEndSaved"> Date de fin de votre projet </label>
-                        <input type="date" id="dateProjectEndSaved">
-                    </div>
-                    <hr>
-                    <div>
 
-                        <label class="m-2" for="SelectedUserSaved"> Selectionner les utilisateurs participant à votre
+                        <label class="m-2" for="SelectedUserSaved"> Sélectionner les utilisateurs participant à votre
                             projet</label>
                         <select class="form-select" id="SelectedUserSaved" data-placeholder="Choose anything"
                                 multiple>
@@ -178,7 +180,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="btn-group" role="group">
+                    <div class="d-inline-flex gap-2" role="group">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                         <button type="button" class="btn btn-danger" id="button_delete_project">Supprimer le projet
                         </button>

@@ -188,5 +188,8 @@ hr{
   border-radius: 0;
 }
 
+.modal-dialog{
+  min-width: 400px;
+}
 
 
