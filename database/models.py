@@ -29,9 +29,9 @@ class UserRoleEnum(enum.Enum):
 
 
 class PriorityEnum(enum.Enum):
-    LOW_PRIORITY = 'Low priority'
-    MIDDLE_PRIORITY = 'Middle priority'
-    HIGH_PRIORITY = 'High priority'
+    LOW_PRIORITY = 'Priorité basse'
+    MIDDLE_PRIORITY = 'Priorité moyenne'
+    HIGH_PRIORITY = 'Haute priorité'
 
 
 class TaskCompletionEnum(enum.Enum):
@@ -49,6 +49,14 @@ class NotifTypeEnum(enum.Enum):
 class NotifStatusEnum(enum.Enum):
     READ = True
     NOTREAD = False
+
+
+# Définir un dictionnaire qui mappe chaque valeur d'énumération avec la classe de badge correspondante
+PRIORITY_BADGE_MAPPING = {
+    PriorityEnum.LOW_PRIORITY.value: 'badge bg-success',
+    PriorityEnum.MIDDLE_PRIORITY.value: 'badge bg-warning',
+    PriorityEnum.HIGH_PRIORITY.value: 'badge bg-danger'
+}
 
 
 class User(UserMixin, db.Model):
@@ -98,6 +106,9 @@ class Task(db.Model):
                             backref=db.backref('tasks'))
     subtasks = db.relationship('Subtask', backref=db.backref('task'))
 
+    def get_priority_badge_class(self):
+        return PRIORITY_BADGE_MAPPING.get(self.label.value, 'badge bg-secondary')
+
 
 class Subtask(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -114,3 +125,5 @@ class Notif(db.Model):
     datetime = db.Column(db.DateTime, nullable=False)
     status = db.Column(sqlalchemy.types.Enum(NotifStatusEnum), nullable=False)
     user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    

@@ -64,29 +64,54 @@
                 </div>
 
                 <div class="collapse" id="collapseTasks">
-                    <table class="table table-light">
-                        <thead>
-                        <tr>
-                            <th scope="col">Projet</th>
-                            <th scope="col">Tâche</th>
-                            <th scope="col">Statut</th>
-                            <th scope="col">Priorité</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for task in tasks %}
-                        <tr>
-                            <th scope="row">{{ task.project_id }}</th>
-                            <td>{{ task.name }}</td>
-                            <td>{{ task.completionStatus }}</td>
-                            <td>{{ task.label }}</td>
-                            <td> Done/Block/In Progress</td>
-                        </tr>
-{#                        <option>{{ user.username }}</option>#}
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                    <nav class="navbar navbar-light bg-light justify-content-between">
+                        <form class="d-inline-flex p-2">
+                            <input class="d-flex form-control " type="search" aria-label="Rechercher"
+                                   placeholder="Rechercher">
+                        </form>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <select class="p-2 form-select" aria-label="Default select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+
+                    </nav>
+
+                    <div id="datatable">
+                        <table class="table table-light">
+                            <thead>
+                            <tr>
+                                <th scope="col">Projet</th>
+                                <th scope="col">Tâche</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col">Priorité</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for task in tasks %}
+                                <tr>
+                                    <th scope="row">{{ task.project_id }}</th>
+                                    <td>{{ task.name }}</td>
+                                    <td>{{ task.completionStatus.value }}</td>
+                                    <td>
+                                        <span class="{{ task.get_priority_badge_class() }}">{{ task.label.value }}</span>
+                                    </td>
+                                    <td> Done/Block/In Progress</td>
+                                </tr>
+                                {#                        <option>{{ user.username }}</option>#}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         </section>
