@@ -1,27 +1,8 @@
-:root{
-  --c-dark: #26263B;
-  --c-dark-hover: #272737;
-  --c-light: #F4F4FA;
-  --c-light-hover: #DADAE4;
-  --c-blue: #288EEE;
-  --c-red: #F44933;
-}
+
 
 .color-nav{
   background-color: var(--c-light);
-}
-
-html{
-  background-color: white;
-  display: block
-}
-
-body {
-  background-color: white;
-  background-image: url("../img/background-4.jpg");
-  background-size: cover;
-  line-height: 1;
-  color: var(--c-dark);
+  border-bottom: 1px solid var(--c-light-hover);
 }
 
 hr{
@@ -43,10 +24,6 @@ hr{
 .layout-column{
   display: flex;
   flex-direction: column;
-}
-
-.navbar{
-  border-bottom: 1px solid var(--c-light-hover);
 }
 
 .header{
@@ -141,6 +118,12 @@ hr{
   margin: 0 0.25em;
 }
 
+.round{
+  border-radius: 100%;
+}
+
+/* === Notifications */
+
 .notif-colorbar{
     width: 30%;
     height: 0.25em;
@@ -156,9 +139,7 @@ hr{
   font-size: 0.75rem;
 }
 
-.round{
-  border-radius: 100%;
-}
+
 
 .text-header{
   text-align: center;
@@ -178,7 +159,6 @@ hr{
   padding: 0.3125rem;
 }
 
-
 .btn-colour-1 {
   color: #fff;
   background-color: #201658;
@@ -191,5 +171,3 @@ hr{
 .modal-dialog{
   min-width: 400px;
 }
-
-
