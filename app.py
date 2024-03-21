@@ -103,10 +103,13 @@ def create_project():
     project = Project(description=description, name=name, color=color, startDate=start_date, endDate=end_date)
     db.session.add(project)
     # Ajout des membres au projet
-    for member_name in members:
-        member = User.query.filter_by(username=member_name).first()
-        if member:
-            project.users.append(member)
+    if members:
+        for member_name in members:
+            member = User.query.filter_by(username=member_name).first()
+            if member:
+                project.users.append(member)
+    else:
+        project.users.append(current_user)
 
     db.session.commit()
 
@@ -377,7 +380,7 @@ def show_database():
                 linked_objects = getattr(instance, relationship)
                 if hasattr(linked_objects, "__iter__"):
                     linked_ids = [linked_object.id for linked_object in linked_objects]
-                else :
+                else:
                     linked_ids = linked_objects.id
                 print(" with ids : " + str(linked_ids))
 
