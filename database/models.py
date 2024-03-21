@@ -91,19 +91,18 @@ class Project(db.Model):
     endDate = db.Column(db.Date)
     users = db.relationship('User', secondary=users_projects_association,
                             backref=db.backref('projects'))
-    tasks = db.relationship('Task', backref=db.backref('project'))
+    categories = db.relationship('Category', backref=db.backref('project'))
 
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.Text, nullable=False)
-    category = db.Column(db.Text)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     label = db.Column(sqlalchemy.types.Enum(PriorityEnum), nullable=False)
     description = db.Column(db.Text)
     dueDate = db.Column(db.Date)
     displayable = db.Column(db.Boolean)
     completionStatus = db.Column(sqlalchemy.types.Enum(TaskCompletionEnum), nullable=False)
-    project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     users = db.relationship('User', secondary=users_tasks_association,
                             backref=db.backref('tasks'))
     subtasks = db.relationship('Subtask', backref=db.backref('task'))
@@ -136,3 +135,8 @@ class Notif(db.Model):
     user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.Text)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    tasks = db.relationship('Task', backref=db.backref('category'))

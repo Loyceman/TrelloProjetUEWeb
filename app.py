@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database, get_relationship_names
-from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum, NotifStatusEnum
+from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum, NotifStatusEnum, Category
 import database.models as models
 import os
 from helpers import enum_to_readable
@@ -255,10 +255,15 @@ def save_project():
 # PROJECT PAGES
 @login_required
 @app.route('/projects/standard_view/<int:project_id>', methods=['GET', 'POST'])
+
+@app.route('/projects/standard_view/<int:project_id>', methods=['GET','POST'])
 def standard_project_page(project_id):
     # Utilisez l'ID du projet pour récupérer les données du projet depuis la base de données
     project = Project.query.get(project_id)
     return render_template("project_standard_view.html.jinja2", project=project, pid=project_id)
+    project = Project.query.get(project_id)
+    print(project.id)
+    return render_template("project_standard_view.html.jinja2", project=project)
 
 
 @login_required
