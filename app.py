@@ -253,14 +253,9 @@ def save_project():
 
 
 # PROJECT PAGES
-@login_required
-@app.route('/projects/standard_view/<int:project_id>', methods=['GET', 'POST'])
 
 @app.route('/projects/standard_view/<int:project_id>', methods=['GET','POST'])
 def standard_project_page(project_id):
-    # Utilisez l'ID du projet pour récupérer les données du projet depuis la base de données
-    project = Project.query.get(project_id)
-    return render_template("project_standard_view.html.jinja2", project=project, pid=project_id)
     project = Project.query.get(project_id)
     print(project.id)
     return render_template("project_standard_view.html.jinja2", project=project)
@@ -438,7 +433,7 @@ def show_database():
                 if hasattr(linked_objects, "__iter__"):
                     linked_ids = [linked_object.id for linked_object in linked_objects]
                 else:
-                    linked_ids = linked_objects.id
+                    linked_ids = [linked_objects.id]
                 print(" with ids : " + str(linked_ids))
 
     return render_template('database.html.jinja2', columns=columns_dict, data=data, getattr=getattr)

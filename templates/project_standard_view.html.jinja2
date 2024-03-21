@@ -5,6 +5,18 @@
 
 {% block pageProject %}
 
-    <p>Vous êtes sur le projet : {{ pid }}</p>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">{{ project.name }}</span>
+        </div>
+    </nav>
+
+    <ul class="list-group list-group-horizontal">
+        {% for category in project.categories %}
+            <li class="list-group-item"> {{ category.name }}</li>
+        {% endfor %}
+
+            <button class="list-group-item"> Ajouter une catégorie</button>
+    </ul>
 
 {% endblock %}
