@@ -172,6 +172,13 @@ def save_project():
                               status=NotifStatusEnum.NOTREAD,
                               user=member.id)
                 db.session.add(notif)
+            else:
+                notif = Notif(project_id=existing_project.id,
+                              type=NotifTypeEnum.MODIFIED,
+                              datetime=datetime.datetime.now(),
+                              status=NotifStatusEnum.NOTREAD,
+                              user=member.id)
+                db.session.add(notif)
         print("\n    Deleted previous members from project")
 
         # Ajouter les nouveaux membres au projet
