@@ -18,36 +18,40 @@
                     <img class="sidebar-icon" src="{{ url_for("static", filename="img/sidebar-open.svg") }}" alt="SidebarOpen"/>
                 </span>
             </div>
-        </div>
 
-
-        <div id="sidebar-open" class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="true">
-            <div class="offcanvas-header pb-1">
-                <h5 class="offcanvas-title sidebar-title" id="offcanvasExampleLabel">Menu</h5>
-                <span class="sidebar-box-close sidebar-button" data-bs-dismiss="offcanvas">
-                    <img class="sidebar-icon" src="{{ url_for("static", filename="img/sidebar-close.svg") }}" alt="SidebarOpen"/>
-                </span>
-            </div>
-            <hr>
-            <div class="offcanvas-body pt-0">
-                <section class="sidebar-zone">
-                    <p class="sidebar-zone-title">Mes vues</p>
-                    <span class="sidebar-element clickable">Vue projets</span>
-                    <span class="sidebar-element clickable">Vue tâches</span>
-                </section>
+            <div id="sidebar-open" class="offcanvas offcanvas-start" tabindex="-1" role="dialog" data-bs-scroll="true" data-bs-backdrop="true">
+                <div class="offcanvas-header pb-1">
+                    <h5 class="offcanvas-title sidebar-title" id="offcanvasExampleLabel">Menu</h5>
+                    <span class="sidebar-box-close sidebar-button" data-bs-dismiss="offcanvas">
+                        <img class="sidebar-icon" src="{{ url_for("static", filename="img/sidebar-close.svg") }}" alt="SidebarOpen"/>
+                    </span>
+                </div>
                 <hr>
-                <section class="sidebar-zone">
-                    <p class="sidebar-zone-title">Mes projets</p>
-                    <div id="listProjectSidebar"></div>
-                </section>
-            </div>
+                <div class="offcanvas-body pt-0">
+                    <section class="sidebar-zone">
+                        <p class="sidebar-zone-title">Mes vues</p>
+                        <span class="sidebar-element clickable">Vue projets</span>
+                        <span class="sidebar-element clickable">Vue tâches</span>
+                    </section>
+                    <hr>
+                    <section class="sidebar-zone">
+                        <p class="sidebar-zone-title">Mes projets</p>
+                        <div id="listProjectSidebar"></div>
+                    </section>
+                </div>
+    </div>
         </div>
+
 
     <script src="{{ url_for('static', filename='js/project_pages.js') }}"></script>
 
     {% block pageProject %}
     {% endblock %}
     </main>
+{% endblock %}
+
+{% block sidebar %}
+
 {% endblock %}
 
 </html>

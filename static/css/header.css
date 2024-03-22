@@ -1,4 +1,10 @@
+html{
+  --navbar-height: 55px;
+}
 
+.navbar{
+  height: var(--navbar-height)
+}
 
 .color-nav{
   background-color: var(--c-light);
@@ -138,8 +144,6 @@ hr{
 #notif-badge{
   font-size: 0.75rem;
 }
-
-
 
 .text-header{
   text-align: center;
