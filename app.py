@@ -37,11 +37,60 @@ def route():
     return redirect('/home_page')
 
 
+task_order_date = False 
+
+
 # HOME PAGE
 @app.route('/home_page', methods=['POST', 'GET'])
 @login_required
 def dashboard():
-    return render_template("home_page.html.jinja2", users=User.query.all(), tasks=Task.query.all())
+    global task_order_date
+    return render_template("home_page.html.jinja2", users=User.query.all(), tasks=Task.query.all(),
+                           taskOrderDate=task_order_date)
+
+
+# HOME PAGE
+@app.route('/update_dash_board', methods=['POST'])
+@login_required
+def update_dash_board():
+    global task_order_date
+    # Obtenir les données envoyées depuis la requête AJAX
+    input_search_bar = request.form['input_search_bar']
+    input_select_project = request.form['input_select_project']
+    input_select_status = request.form['input_select_status']
+    input_select_priority = request.form['input_select_priority']
+    input_select_date_order = request.form['input_select_date_order']
+
+    # Trier les tâches en fonction de la valeur sélectionnée dans le menu déroulant DateSelect
+    if input_select_date_order == 'AscendingDate':
+        task_order_date = False
+    elif input_select_date_order == 'DescendingDate':
+        task_order_date = True
+
+    # Mettre à jour les tâches filtrées
+    update_filtered_tasks(input_search_bar, input_select_project, input_select_status, input_select_priority,
+                          input_select_date_order)
+
+    db.session.commit()
+
+    return jsonify({'success': 'we correctly receive data'}), 200
+
+
+def update_filtered_tasks(input_search_bar, input_select_project, input_select_status, input_select_priority,
+                          input_select_date_order):
+    all_tasks = Task.query.all()
+
+    # Parcourir toutes les tâches et mettre à jour l'attribut displayable
+    for task in all_tasks:
+
+        # Mettre à jour displayable si les critères de filtrage sont satisfaits
+        if (input_search_bar.lower() in task.name.lower() or input_search_bar == '') and \
+                (input_select_project == 'Filtre par projet' or str(input_select_project) == str(task.project_id)) and \
+                (input_select_status == 'Filtre par statut' or input_select_status == task.completionStatus.value) and \
+                (input_select_priority == 'Filtre par priorité' or input_select_priority == task.label.value):
+            task.displayable = True
+        else:
+            task.displayable = False
 
 
 # HOME PAGE
@@ -208,12 +257,8 @@ def save_project():
 @app.route('/projects/standard_view/<int:project_id>', methods=['GET', 'POST'])
 def standard_project_page(project_id):
     # Utilisez l'ID du projet pour récupérer les données du projet depuis la base de données
-    project = get_project_by_id(project_id)
+    project = Project.query.get(project_id)
     return render_template("project_standard_view.html.jinja2", project=project, pid=project_id)
-
-
-def get_project_by_id(project_id):
-    return Project.query.get(project_id)
 
 
 @login_required

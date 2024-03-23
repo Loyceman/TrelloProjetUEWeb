@@ -2,6 +2,12 @@ $(onLoad)
 
 function onLoad() {
 
+    const searchButton = document.querySelector('#button-addon1');
+
+    searchButton.addEventListener('click', function () {
+        window.location.reload(); // Actualiser la page
+    });
+
     $('#SelectedUserSaved').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
         theme: "bootstrap-5",
         width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
@@ -114,7 +120,58 @@ function onLoad() {
             alert("Veuillez entrer un nom de projet")
         }
     });
+
+    const searchBar = document.querySelector('#searchBar');
+    const projectSelect = document.querySelector('#projectSelect');
+    const statusSelect = document.querySelector('#StatusSelect');
+    const prioritySelect = document.querySelector('#PrioritySelect');
+    const dateSelect = document.querySelector('#DateSelect');
+
+    searchBar.addEventListener('input', updateFormData);
+    projectSelect.addEventListener('change', updateFormData);
+    statusSelect.addEventListener('change', updateFormData);
+    prioritySelect.addEventListener('change', updateFormData);
+    dateSelect.addEventListener('change', updateFormData);
+
     updateProjectList();
+}
+
+function updateFormData() {
+    const searchBarValue = document.querySelector('#searchBar').value;
+    const projectSelectValue = document.querySelector('#projectSelect').value;
+    const statusSelectValue = document.querySelector('#StatusSelect').value;
+    const prioritySelectValue = document.querySelector('#PrioritySelect').value;
+    const dateSelectValue = document.querySelector('#DateSelect').value;
+
+    console.log("update form data:",
+        "searchBarValue:", searchBarValue,
+        "projectSelectValue:", projectSelectValue,
+        "statusSelectValue:", statusSelectValue,
+        "prioritySelectValue:", prioritySelectValue,
+        "dateSelectValue:", dateSelectValue);
+
+    post_filter_input_research(searchBarValue, projectSelectValue, statusSelectValue, prioritySelectValue, dateSelectValue);
+}
+
+function post_filter_input_research(input_search_bar, input_select_project, input_select_status, input_select_priority, input_select_date_order) {
+    $.ajax({
+        url: "/update_dash_board",
+        method: "POST",
+        timeout: 4000,
+        data: {
+            input_search_bar: input_search_bar,
+            input_select_project: input_select_project,
+            input_select_status: input_select_status,
+            input_select_priority: input_select_priority,
+            input_select_date_order: input_select_date_order
+        },
+        success: function () {
+            console.log("navbar input send")
+        },
+        error: function () {
+            alert("error : posting navbar input do not work")
+        }
+    });
 }
 
 function saved_project(name_project, description_project, color_project, start_date_project, end_date_project, project_members) {

@@ -51,6 +51,7 @@ class NotifStatusEnum(enum.Enum):
     NOTREAD = False
 
 
+
 # Définir un dictionnaire qui mappe chaque valeur d'énumération avec la classe de badge correspondante
 PRIORITY_BADGE_MAPPING = {
     PriorityEnum.LOW_PRIORITY.value: 'badge bg-success',
@@ -100,11 +101,19 @@ class Task(db.Model):
     label = db.Column(sqlalchemy.types.Enum(PriorityEnum), nullable=False)
     description = db.Column(db.Text)
     dueDate = db.Column(db.Date)
+    displayable = db.Column(db.Boolean)
     completionStatus = db.Column(sqlalchemy.types.Enum(TaskCompletionEnum), nullable=False)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     users = db.relationship('User', secondary=users_tasks_association,
                             backref=db.backref('tasks'))
     subtasks = db.relationship('Subtask', backref=db.backref('task'))
+
+    def get_project_name(self):
+        project = Project.query.get(self.project_id)
+        if project:
+            return project.name
+        else:
+            return None
 
     def get_priority_badge_class(self):
         return PRIORITY_BADGE_MAPPING.get(self.label.value, 'badge bg-secondary')

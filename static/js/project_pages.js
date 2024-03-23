@@ -8,7 +8,6 @@ function onLoadProject() {
     });
 
     updateProjectListSidebar()
-
 }
 
 function updateProjectListSidebar() {

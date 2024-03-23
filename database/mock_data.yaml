@@ -36,6 +36,7 @@ task:
     description: Faire le CSS
     dueDate: 2024-03-15
     completionStatus: DONE
+    displayable: TRUE
     project_id: 1
     users :
       - 1
@@ -45,6 +46,7 @@ task:
     description: Fais le Python batard
     dueDate: 2024-04-02
     completionStatus: STUCK
+    displayable: TRUE
     project_id: 1
     users :
       - 1
@@ -56,6 +58,7 @@ task:
     description: Azzi on compte sur toi
     dueDate: 2024-11-02
     completionStatus: IN_PROGRESS
+    displayable: TRUE
     project_id: 2
     users :
       - 2
