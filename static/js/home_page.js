@@ -143,13 +143,6 @@ function updateFormData() {
     const prioritySelectValue = document.querySelector('#PrioritySelect').value;
     const dateSelectValue = document.querySelector('#DateSelect').value;
 
-    console.log("update form data:",
-        "searchBarValue:", searchBarValue,
-        "projectSelectValue:", projectSelectValue,
-        "statusSelectValue:", statusSelectValue,
-        "prioritySelectValue:", prioritySelectValue,
-        "dateSelectValue:", dateSelectValue);
-
     post_filter_input_research(searchBarValue, projectSelectValue, statusSelectValue, prioritySelectValue, dateSelectValue);
 }
 
@@ -322,7 +315,6 @@ function updateProjectList() {
                     })
                 }
 
-                // console.log(current_user.role === "Developer")
                 if (current_user.role === 'ProjectManager' && !document.getElementById("btn-new-project")) {
                     // Création de l'élément button
                     let button = document.createElement("button");
