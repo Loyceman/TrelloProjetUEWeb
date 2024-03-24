@@ -2,6 +2,11 @@ html{
   --navbar-height: 55px;
 }
 
+main{
+  padding-top:55px;
+  padding-left:55px;
+}
+
 .navbar{
   height: var(--navbar-height)
 }
