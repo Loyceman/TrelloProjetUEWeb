@@ -15,7 +15,7 @@ Flexbox is used as a fallback so that browsers which don't support grid will sti
 *::after {
     box-sizing: border-box;
 }
-    
+
 
 .btn {
     display: flex;
