@@ -37,7 +37,7 @@ def route():
     return redirect('/home_page')
 
 
-task_order_date = False 
+task_order_date = False
 
 
 # HOME PAGE
@@ -254,11 +254,22 @@ def save_project():
 
 # PROJECT PAGES
 
-@app.route('/projects/standard_view/<int:project_id>', methods=['GET','POST'])
+@app.route('/projects/standard_view/<int:project_id>', methods=['GET', 'POST'])
 def standard_project_page(project_id):
     project = Project.query.get(project_id)
     print(project.id)
     return render_template("project_standard_view.html.jinja2", project=project)
+
+
+# PROJECT PAGES
+# Route for creating categories
+@app.route('/create_category', methods=['POST'])
+@login_required
+def create_category():
+    name = request.form['category_name']
+    # Ici on crée la categorie
+
+    return jsonify({'message': 'Category create successfully'})
 
 
 @login_required
