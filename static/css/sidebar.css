@@ -1,21 +1,14 @@
-
-
-body{
-}
-
-.main{
-    display:flex;
-    flex-grow: 1;
-}
-
-#sidebar-close{
+#sidebar-close {
+    position: absolute;
+    top: var(--navbar-height);
+    left: 0;
     height: 100%;
     width: 20px;
     background-color: var(--c-light);
-    position: relative;
     box-shadow: 10px 0 10px -10px rgba(0,0,0,0.1);
     margin-right: 30px;
 }
+
 
 #sidebar-open{
     width: 240px;
