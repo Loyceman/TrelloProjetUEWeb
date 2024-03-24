@@ -268,9 +268,17 @@ def standard_project_page(project_id):
 @login_required
 def create_category():
     name = request.form['category_name']
+    project_id = request.form['project_id']
     # Ici on crée la categorie
+    existing_category = Category.query.filter_by(name=name).first()
+    if existing_category:
+        return jsonify({'error':'A category with the same name already exists'}), 400
 
-    return jsonify({'message': 'Category create successfully'})
+    category = Category(name=name, project_id=project_id)
+    db.session.add(category)
+    db.session.commit()
+
+    return jsonify({'message': 'Category created successfully'}), 200
 
 
 @login_required
