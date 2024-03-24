@@ -253,12 +253,13 @@ def save_project():
 
 
 # PROJECT PAGES
-
+@login_required
 @app.route('/projects/standard_view/<int:project_id>', methods=['GET', 'POST'])
 def standard_project_page(project_id):
     project = Project.query.get(project_id)
+    users = project.users  # Récupérer les utilisateurs associés à ce projet
     print(project.id)
-    return render_template("project_standard_view.html.jinja2", project=project)
+    return render_template("project_standard_view.html.jinja2", project=project, users=users)
 
 
 # PROJECT PAGES
@@ -270,6 +271,22 @@ def create_category():
     # Ici on crée la categorie
 
     return jsonify({'message': 'Category create successfully'})
+
+
+@login_required
+@app.route('/create_task', methods=['POST'])
+def create_task():
+    name = request.form.get('name')
+    description = request.form.get('description')
+    due_date = request.form.get('dueDate')
+    priority = request.form.get('priority')
+    status = request.form.get('status')
+    users = request.form.getlist('users')
+
+    # Logique pour créer la tâche dans la base de données
+    # ...
+
+    return jsonify({'success': True})
 
 
 @login_required
