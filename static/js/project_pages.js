@@ -14,13 +14,13 @@ function onLoadProject() {
         window.location.href = "/projects/standard_view/" + $(this).val();
     });
 
-    $("#CreateCategorie").click(function () {
+    $("#CreateCategory").click(function () {
             let new_category_name = $("#name_new_category").val()
 
             if (new_category_name === "") {
                 alert("Veuillez entrer un nom de projet")
             } else {
-                createCategory(new_category_name)
+                createCategory(new_category_name, projectId)
 
             }
         }
@@ -93,18 +93,20 @@ function updateProjectListSidebar() {
     })
 }
 
-function createCategory(new_category_name) {
+function createCategory(category_name, project_id) {
     $.ajax({
         url: "/create_category",
         method: "POST",
         data: {
-            category_name: new_category_name,
+            category_name: category_name,
+            project_id: project_id
         },
         success: function (projects) {
             $("#ModalCreationCategory").modal("hide"); // Hide modal
+            window.location.reload();
         },
         error: function (projects) {
-            alert('category cant be create')
+            alert('category cant be created')
         }
     });
 }
@@ -124,8 +126,7 @@ function create_task(name, description, dueDate, priority, status, users_selecte
         },
         success: function (xhr) {
             $("#ModalCreationTask").modal("hide"); // Masquer le modal
-            // updateTaskList(); // Mettre à jour la liste des tâches
-            // updateNotifs(); // Mettre à jour les notifications
+            window.location.reload();
         },
         error: function (xhr) {
             alert(xhr.responseJSON.error);

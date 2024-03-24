@@ -4,6 +4,9 @@
 {% set active_page = "Project standard view" %}
 
 {% block pageProject %}
+    <script>
+        let projectId = {{ project.id }};
+    </script>
 
 <!-- Board info bar -->
 <section class="board-info-bar">
@@ -19,10 +22,10 @@
 </section>
 <!-- End of board info bar -->
     <!-- Lists container -->
-<section class="lists-container">
+<section class="lists-container" id="category-list">
 
     {% for category in project.categories %}
-        <div class="list">
+        <div class="list" id="category_{{ category.id }}">
 
             <h3 class="list-title">{{ category.name }}</h3>
 
@@ -36,50 +39,37 @@
         </div>
     {% endfor %}
 
-	<button class="add-list-btn btn">Ajouter une catégorie</button>
+	<button class="add-list-btn btn" data-bs-toggle="modal" data-bs-target="#ModalCreationCategory">Ajouter une catégorie</button>
 
 </section>
 <!-- End of lists container -->
 
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1">{{ project.name }}</span>
-        </div>
-    </nav>
-
-    <ul class="list-group list-group-horizontal">
-        {% for category in project.categories %}
-            <li class="list-group-item"> {{ category.name }}</li>
-        {% endfor %}
-
-
-        <!-- button for Modal Category Creation -->
-        <button class="list-group-item" data-bs-toggle="modal" data-bs-target="#ModalCreationCategory"> Ajouter une
-            catégorie
-        </button>
-
-        <!-- Modal Category Creation -->
-        <div class="modal fade" id="ModalCreationCategory" tabindex="-1" aria-labelledby="ModalCreationCategory"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Créer une nouvelle catégorie de tâches</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-floating layout-column mb-3">
-                            <input type="text" class="form-control" id="name_new_category" placeholder="Nom">
-                            <label for="name_new_category">Nom de la catégorie</label>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                        <button type="button" class="btn btn-primary" id="CreateCategorie">Créer</button>
-                    </div>
+<!-- Modal Category Creation -->
+<div class="modal fade" id="ModalCreationCategory" tabindex="-1" aria-labelledby="ModalCreationCategory"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Créer une nouvelle catégorie de tâches</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-floating layout-column mb-3">
+                    <input type="text" class="form-control" id="name_new_category" placeholder="Nom">
+                    <label for="name_new_category">Nom de la catégorie</label>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-primary" id="CreateCategory">Créer</button>
+            </div>
         </div>
+    </div>
+</div>
+    <ul class="list-group list-group-horizontal">
+
+
+
 
 
 
