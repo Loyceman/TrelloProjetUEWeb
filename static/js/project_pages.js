@@ -2,6 +2,13 @@ $(onLoadProject)
 
 function onLoadProject() {
 
+    $('#SelectedUserTask').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
+        theme: "bootstrap-5",
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $(this).data('placeholder'),
+        closeOnSelect: false,
+    });
+
     // redirige vers la page projet
     $("#listProjectSidebar").on("click", "#buttonProjectSidebar", function () {
         window.location.href = "/projects/standard_view/" + $(this).val();
@@ -18,6 +25,21 @@ function onLoadProject() {
             }
         }
     )
+
+    $("#CreateTask").click(function () {
+        let name = $("#name_new_task").val();
+        let description = $("#description_new_task").val();
+        let dueDate = $("#dueDateTask").val();
+        let priority = $("input[name='flexRadioPriority']:checked").val();
+        let status = $("input[name='flexRadioStatus']:checked").val();
+        let users_selected = $('#SelectedUserTask').val(); // Array des utilisateurs sélectionnés pour la tâche
+
+        if (name !== "") {
+            create_task(name, description, dueDate, priority, status, users_selected);
+        } else {
+            alert("Veuillez entrer un nom de tâche");
+        }
+    });
 
     updateProjectListSidebar()
 }
@@ -86,3 +108,28 @@ function createCategory(new_category_name) {
         }
     });
 }
+
+function create_task(name, description, dueDate, priority, status, users_selected) {
+    $.ajax({
+        url: "/create_task",
+        method: "POST",
+        timeout: 2000,
+        data: {
+            name: name,
+            description: description,
+            dueDate: dueDate,
+            priority: priority,
+            status: status,
+            users: users_selected
+        },
+        success: function (xhr) {
+            $("#ModalCreationTask").modal("hide"); // Masquer le modal
+            // updateTaskList(); // Mettre à jour la liste des tâches
+            // updateNotifs(); // Mettre à jour les notifications
+        },
+        error: function (xhr) {
+            alert(xhr.responseJSON.error);
+        }
+    });
+}
+

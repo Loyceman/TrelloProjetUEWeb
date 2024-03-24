@@ -16,9 +16,11 @@
             <li class="list-group-item"> {{ category.name }}</li>
         {% endfor %}
 
-        <button class="list-group-item" data-bs-toggle="modal" data-bs-target="#ModalCreationCategory"> Ajouter une catégorie
-        </button>
 
+        <!-- button for Modal Category Creation -->
+        <button class="list-group-item" data-bs-toggle="modal" data-bs-target="#ModalCreationCategory"> Ajouter une
+            catégorie
+        </button>
 
         <!-- Modal Category Creation -->
         <div class="modal fade" id="ModalCreationCategory" tabindex="-1" aria-labelledby="ModalCreationCategory"
@@ -26,7 +28,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Créer une nouvelle catégorie de taches</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Créer une nouvelle catégorie de tâches</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -38,6 +40,108 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                         <button type="button" class="btn btn-primary" id="CreateCategorie">Créer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- button for Modal Task Creation -->
+        <button class="list-group-item" data-bs-toggle="modal" data-bs-target="#ModalCreationTask"> Ajouter une
+            tâche
+        </button>
+
+
+        <!-- Modal Task Creation -->
+        <div class="modal fade" id="ModalCreationTask" tabindex="-1" aria-labelledby="ModalCreationTask"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Créer une nouvelle tâche</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-floating layout-column mb-3">
+                            <input type="text" class="form-control" id="name_new_task" placeholder="Nom">
+                            <label for="name_new_task">Nom de la tâche</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                        <textarea class="form-control" id="description_new_task"
+                                  placeholder="Description"></textarea>
+                            <label for="description_new_task">Description de la tâche</label>
+                        </div>
+                        <div class="layout-center p-2">
+                            <label for="dueDateTask"> Tâche à finir pour le : </label>
+                            <span class="flex-grow-1"></span>
+                            <input type="date" id="dueDateTask">
+                        </div>
+                        <hr>
+                        <div aria-label="ListPriority">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioPriority"
+                                       id="flexRadioHighPriority" value="Haute priorité">
+                                <label class="form-check-label" for="flexRadioHighPriority">
+                                    Priorité élévée
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioPriority"
+                                       id="flexRadioMiddlePriority" value="Priorité moyenne">
+                                <label class="form-check-label" for="flexRadioMiddlePriority">
+                                    Priorité moyenne
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioPriority"
+                                       id="flexRadioLowPriority" value="Priorité basse"
+                                       checked>
+                                <label class="form-check-label" for="flexRadioLowPriority">
+                                    Priorité faible
+                                </label>
+                            </div>
+                        </div>
+                        <hr>
+                        <div aria-label="ListStatus">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioStatus"
+                                       id="flexRadioInProgressStatus" value="InProgress">
+                                <label class="form-check-label" for="flexRadioInProgressStatus">
+                                    En cours
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioStatus"
+                                       id="flexRadioDoneStatus" value="Done">
+                                <label class="form-check-label" for="flexRadioDoneStatus">
+                                    Terminée
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioStatus"
+                                       id="flexRadioStuckStatus" value="Stuck"
+                                       checked>
+                                <label class="form-check-label" for="flexRadioStuckStatus">
+                                    Bloquée
+                                </label>
+                            </div>
+                        </div>
+                        <hr>
+                        <div>
+                            <label class="m-2" for="SelectedUserTask"> Sélectionner les utilisateurs devant réaliser
+                                cette
+                                tâche</label>
+                            <select class="form-select" id="SelectedUserTask" data-placeholder="Choose anything"
+                                    multiple>
+                                {% for user in users %}
+                                    <option>{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-primary" id="CreateTask">Créer</button>
                     </div>
                 </div>
             </div>
