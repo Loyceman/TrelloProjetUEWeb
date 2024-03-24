@@ -108,10 +108,26 @@ class Task(db.Model):
     subtasks = db.relationship('Subtask', backref=db.backref('task'))
 
     def get_project_name(self):
-        project = Project.query.get(self.project_id)
+        category = Category.query.get(self.category_id)
+        project = Project.query.get(category.project_id)
         if project:
             return project.name
         else:
+            return None
+
+    def get_project(self):
+        category = Category.query.get(self.category_id)
+        project = Project.query.get(category.project_id)
+        if project:
+            return project
+        else:
+            return None
+
+    def get_category(self):
+        category = Category.query.get(self.category_id)
+        if category :
+            return category
+        else :
             return None
 
     def get_priority_badge_class(self):
@@ -124,6 +140,12 @@ class Subtask(db.Model):
     isDone = db.Column(db.Boolean)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False)
 
+    def get_task(self):
+        task = Task.query.get(self.task_id)
+        if task:
+            return task
+        else:
+            return None
 
 class Notif(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -140,3 +162,10 @@ class Category(db.Model):
     name = db.Column(db.Text)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     tasks = db.relationship('Task', backref=db.backref('category'))
+
+    def get_project(self):
+        project = Project.query.get(self.project_id)
+        if project :
+            return project
+        else :
+            return None
