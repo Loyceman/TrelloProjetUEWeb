@@ -15,6 +15,8 @@ html, body {
 
 body {
   background-image: url("../img/background-4.jpg");
+  background-attachment: fixed;
   background-size: cover;
+  overflow: auto;
   color: var(--c-dark);
 }
