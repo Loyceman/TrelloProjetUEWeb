@@ -289,8 +289,9 @@ def create_task():
     due_date = request.form.get('dueDate')
     priority = request.form.get('priority')
     status = request.form.get('status')
-    users = request.form.getlist('users')
-
+    users = request.form.getlist('users[]')
+    category_id = request.form.get('categoryId')
+    
     # Logique pour créer la tâche dans la base de données
     # ...
 

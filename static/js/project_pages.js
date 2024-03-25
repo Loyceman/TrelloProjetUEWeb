@@ -25,21 +25,29 @@ function onLoadProject() {
             }
         }
     )
+    // Lorsque le bouton "Ajouter une tâche" est cliqué
+    $(document).on("click", ".add-card-btn", function () {
+        let categoryId = $(this).data("category-id");
+        $("#CreateTaskButton").attr("data-category-id", categoryId); // Stocker l'ID de la catégorie dans le bouton "Créer"
+    });
 
-    $("#CreateTask").click(function () {
+    // Lorsque le bouton "Créer" est cliqué
+    $("#CreateTaskButton").click(function () {
         let name = $("#name_new_task").val();
         let description = $("#description_new_task").val();
         let dueDate = $("#dueDateTask").val();
         let priority = $("input[name='flexRadioPriority']:checked").val();
         let status = $("input[name='flexRadioStatus']:checked").val();
         let users_selected = $('#SelectedUserTask').val(); // Array des utilisateurs sélectionnés pour la tâche
+        let categoryId = $(this).attr("data-category-id"); // Récupérer l'ID de la catégorie
 
         if (name !== "") {
-            create_task(name, description, dueDate, priority, status, users_selected);
+            create_task(name, description, dueDate, priority, status, users_selected, categoryId);
         } else {
             alert("Veuillez entrer un nom de tâche");
         }
     });
+
 
     updateProjectListSidebar()
 }
@@ -111,7 +119,7 @@ function createCategory(category_name, project_id) {
     });
 }
 
-function create_task(name, description, dueDate, priority, status, users_selected) {
+function create_task(name, description, dueDate, priority, status, users_selected, categoryID) {
     $.ajax({
         url: "/create_task",
         method: "POST",
@@ -122,9 +130,11 @@ function create_task(name, description, dueDate, priority, status, users_selecte
             dueDate: dueDate,
             priority: priority,
             status: status,
-            users: users_selected
+            users: users_selected,
+            categoryId: categoryID
         },
         success: function (xhr) {
+            console.log("categoryID : " + categoryID)
             $("#ModalCreationTask").modal("hide"); // Masquer le modal
             window.location.reload();
         },
