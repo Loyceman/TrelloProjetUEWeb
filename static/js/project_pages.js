@@ -38,11 +38,6 @@ function onLoadProject() {
         $("#CreateTaskButton").attr("data-category-id", categoryId); // Stocker l'ID de la catégorie dans le bouton "Créer"
     });
 
-    let task_open_id
-    $(document).on("click", "TaskLi", function () {
-        task_open_id = $(this).val()
-    });
-
     $("#button_delete_task").click(function () {
         let task_id = $(this).val()
         console.log("on supprime la tâche :" + task_id)
