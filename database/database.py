@@ -79,6 +79,7 @@ def populate_database():
     print("All imports successful !")
 
 
+# Get the names of the relationships of a given class
 def get_relationship_names(model_class):
     relationship_names = []
     for relationship in model_class.__mapper__.relationships:
@@ -86,6 +87,7 @@ def get_relationship_names(model_class):
     return relationship_names
 
 
+# Creates an instance of a Class when given a model and data to initialize it
 def create_instance(model, data):
     instance = model()
     relationships = get_relationship_names(model)
@@ -95,6 +97,7 @@ def create_instance(model, data):
     return instance
 
 
+# Get an object from the database of class model_class and with the given id
 def get_object_by_type_and_id(model_class, object_id):
     try:
         obj = model_class.query.get(object_id)
