@@ -114,6 +114,13 @@ class Task(db.Model):
         else:
             return None
 
+    def get_project_id(self):
+        category = Category.query.get(self.category_id)
+        if category:
+            return category.project_id
+        else:
+            return None
+
     def get_project(self):
         category = Category.query.get(self.category_id)
         project = Project.query.get(category.project_id)

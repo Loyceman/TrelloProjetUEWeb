@@ -83,7 +83,7 @@
                                 {% set unique_project_names = [] %}
                                 {% for task in tasks %}
                                     {% if task.get_project_name() not in unique_project_names %}
-                                        <option value="{{ task.project_id }}">{{ task.get_project_name() }}</option>
+                                        <option value="{{ task.get_project_id() }}">{{ task.get_project_name() }}</option>
                                         {% set _ = unique_project_names.append(task.get_project_name()) %}
                                     {% endif %}
                                 {% endfor %}

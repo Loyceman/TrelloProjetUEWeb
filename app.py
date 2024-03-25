@@ -86,10 +86,10 @@ def update_filtered_tasks(input_search_bar, input_select_project, input_select_s
 
     # Parcourir toutes les tâches et mettre à jour l'attribut displayable
     for task in all_tasks:
-
+        category = Category.query.get(task.category_id)
         # Mettre à jour displayable si les critères de filtrage sont satisfaits
         if (input_search_bar.lower() in task.name.lower() or input_search_bar == '') and \
-                (input_select_project == 'Filtre par projet' or str(input_select_project) == str(task.project_id)) and \
+                (input_select_project == 'Filtre par projet' or str(input_select_project) == str(category.project_id)) and \
                 (input_select_status == 'Filtre par statut' or input_select_status == task.completionStatus.value) and \
                 (input_select_priority == 'Filtre par priorité' or input_select_priority == task.label.value):
             task.displayable = True
