@@ -3,11 +3,15 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database, get_relationship_names
-from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum, NotifStatusEnum, Category
+from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum, NotifStatusEnum, Category, PriorityEnum, TaskCompletionEnum
 import database.models as models
 import os
 from helpers import enum_to_readable
 from sqlalchemy import inspect
+
+
+reset_database = False
+
 
 app = Flask(__name__)
 
@@ -18,9 +22,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "this-is-a-secret-key"
 app.config["SESSION_COOKIE_SAMESITE"] = "Strict"
 db.init_app(app)
-
-with app.test_request_context():
-    init_database()
+if reset_database:
+    with app.test_request_context():
+        init_database()
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
@@ -286,15 +290,34 @@ def create_category():
 def create_task():
     name = request.form.get('name')
     description = request.form.get('description')
-    due_date = request.form.get('dueDate')
-    priority = request.form.get('priority')
+    due_date = datetime.date(2024, 12, 30)
+    if request.form['dueDate']:
+        due_date_str = request.form['dueDate']
+        due_year, due_month, due_day = map(int, due_date_str.split('-'))
+        due_date = datetime.date(due_year, due_month,
+                                 due_day)
+    label = request.form.get('priority')
     status = request.form.get('status')
     users = request.form.getlist('users[]')
     category_id = request.form.get('categoryId')
+    label_enum = None
+    for priority in PriorityEnum:
+        if priority.value == label:
+            label_enum = priority
+    status_enum = None
+    for completion_status in TaskCompletionEnum:
+        if completion_status.value == status:
+            status_enum = completion_status
 
-    # Logique pour créer la tâche dans la base de données
-    # ...
+    task = Task(name=name, description=description, dueDate=due_date, label=label_enum, completionStatus=status_enum, category_id=category_id)
+    print(task)
 
+
+    current_category = Category.query.get(category_id)
+    current_category.tasks.append(task)
+    db.session.add(task)
+    db.session.commit()
+    print(users)
     return jsonify({'success': True})
 
 
