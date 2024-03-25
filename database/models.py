@@ -7,6 +7,9 @@ import sqlalchemy
 
 db = SQLAlchemy()
 
+
+# Relationship associations
+
 users_projects_association = db.Table('user_project_associations',
                                       db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
                                       db.Column('project_id', db.Integer, db.ForeignKey('project.id'))
@@ -23,33 +26,37 @@ users_notifs_association = db.Table('user_notifs_associations',
                                     )
 
 
+# The different roles a User can have
 class UserRoleEnum(enum.Enum):
     DEVELOPER = 'Developer'
     PROJECT_MANAGER = 'ProjectManager'
 
 
+# The different priorities of a Task
 class PriorityEnum(enum.Enum):
     LOW_PRIORITY = 'Priorité basse'
     MIDDLE_PRIORITY = 'Priorité moyenne'
     HIGH_PRIORITY = 'Haute priorité'
 
 
+# The different completion states that a Task can achieve
 class TaskCompletionEnum(enum.Enum):
     IN_PROGRESS = 'InProgress'
     DONE = 'Done'
     STUCK = 'Stuck'
 
 
+# The different types of notifications
 class NotifTypeEnum(enum.Enum):
     ASSIGNED = 'ASSIGNED'
     UNASSIGNED = 'UNASSIGNED'
     MODIFIED = 'MODIFIED'
 
 
+# The status of a Notification
 class NotifStatusEnum(enum.Enum):
     READ = True
     NOTREAD = False
-
 
 
 # Définir un dictionnaire qui mappe chaque valeur d'énumération avec la classe de badge correspondante
@@ -65,10 +72,6 @@ class User(UserMixin, db.Model):
     username = db.Column(db.Text, unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     role = db.Column(sqlalchemy.types.Enum(UserRoleEnum), nullable=False)
-
-    # Relation Many-to-Many avec la table project_members
-    # members = db.relationship('Project', secondary=project_members,
-    #                           backref=db.backref('users', lazy='dynamic'), lazy='dynamic')
 
     def __init__(self, username='', password_hash='', role=''):
         self.username = username
