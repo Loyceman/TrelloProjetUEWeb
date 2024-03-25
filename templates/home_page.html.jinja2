@@ -66,7 +66,8 @@
                 <div class="collapse show" id="collapseTasks">
                     <nav class="navbar navbar-light bg-light justify-content-between">
                         <form class="d-flex flex-grow-1 p-2">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon1">Rechercher</button>
+                            <button class="btn btn-outline-secondary" type="button" id="button-addon1">Rechercher
+                            </button>
                             <input id="searchBar" class="form-control w-100" type="search" aria-label="Rechercher"
                                    placeholder="Rechercher" aria-describedby="button-addon1">
                         </form>
@@ -158,7 +159,9 @@
                                             <span class="{{ task.get_priority_badge_class() }}">{{ task.label.value }}</span>
                                         </td>
                                         <td>{{ task.dueDate }}</td>
-                                        <td> <button onclick="get_task_value({{ task.id }})">Modifier</button> </td>
+                                        <td>
+                                            <button onclick="get_task_value({{ task.id }})">Modifier</button>
+                                        </td>
                                     </tr>
                                     {#                        <option>{{ user.username }}</option>#}
                                 {% endif %}
@@ -330,24 +333,24 @@
                             <hr>
                             <div aria-label="ListPriority">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioPriority"
-                                           id="flexRadioHighPriority" value="Haute priorité">
-                                    <label class="form-check-label" for="flexRadioHighPriority">
+                                    <input class="form-check-input" type="radio" name="flexRadioPriorityModified"
+                                           id="flexRadioHighPriorityModified" value="Haute priorité">
+                                    <label class="form-check-label" for="flexRadioHighPriorityModified">
                                         Priorité élévée
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioPriority"
-                                           id="flexRadioMiddlePriority" value="Priorité moyenne">
-                                    <label class="form-check-label" for="flexRadioMiddlePriority">
+                                    <input class="form-check-input" type="radio" name="flexRadioPriorityModified"
+                                           id="flexRadioMiddlePriorityModified" value="Priorité moyenne">
+                                    <label class="form-check-label" for="flexRadioMiddlePriorityModified">
                                         Priorité moyenne
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioPriority"
-                                           id="flexRadioLowPriority" value="Priorité basse"
+                                    <input class="form-check-input" type="radio" name="flexRadioPriorityModified"
+                                           id="flexRadioLowPriorityModified" value="Priorité basse"
                                            checked>
-                                    <label class="form-check-label" for="flexRadioLowPriority">
+                                    <label class="form-check-label" for="flexRadioLowPriorityModified">
                                         Priorité faible
                                     </label>
                                 </div>
@@ -356,42 +359,43 @@
                         <hr>
                         <div aria-label="ListStatus">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioStatus"
-                                       id="flexRadioInProgressStatus" value="InProgress">
-                                <label class="form-check-label" for="flexRadioInProgressStatus">
+                                <input class="form-check-input" type="radio" name="flexRadioStatusModified"
+                                       id="flexRadioInProgressStatusModified" value="InProgress">
+                                <label class="form-check-label" for="flexRadioInProgressStatusModified">
                                     En cours
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioStatus"
-                                       id="flexRadioDoneStatus" value="Done">
-                                <label class="form-check-label" for="flexRadioDoneStatus">
+                                <input class="form-check-input" type="radio" name="flexRadioStatusModified"
+                                       id="flexRadioDoneStatusModified" value="Done">
+                                <label class="form-check-label" for="flexRadioDoneStatusModified">
                                     Terminée
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioStatus"
-                                       id="flexRadioStuckStatus" value="Stuck"
+                                <input class="form-check-input" type="radio" name="flexRadioStatusModified"
+                                       id="flexRadioStuckStatusModified" value="Stuck"
                                        checked>
-                                <label class="form-check-label" for="flexRadioStuckStatus">
+                                <label class="form-check-label" for="flexRadioStuckStatusModified">
                                     Bloquée
                                 </label>
                             </div>
                         </div>
                         <hr>
-                        <fieldset disabled>
-                            <div>
-                                <label class="m-2" for="SelectedUserTask"> Sélectionner les utilisateurs devant réaliser
-                                    cette
-                                    tâche</label>
-                                <select class="form-select" id="SelectedUserTask" data-placeholder="Choose anything"
-                                        multiple>
-                                    {% for user in users %}
-                                        <option>{{ user.username }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </fieldset>
+                        <div>
+                            <label class="m-2" for="SelectedUserTaskModified"> Sélectionner les utilisateurs devant
+                                réaliser
+                                cette
+                                tâche<span class="badge rounded-pill text-bg-warning">Seulement les modifications des ProjectManager sont prises en compte</span>
+                            </label>
+                            <select class="form-select" id="SelectedUserTaskModified"
+                                    data-placeholder="Choose anything"
+                                    multiple>
+                                {% for user in users %}
+                                    <option>{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     {% elif current_user.role.value == "ProjectManager" %}
                         <div class="form-floating layout-column mb-3">
                             <input type="text" class="form-control" id="name_modified_task" placeholder="Nom">
@@ -476,10 +480,11 @@
                     <div class="d-inline-flex gap-2" role="group">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                         {% if current_user.role.value == "ProjectManager" %}
-                        <button type="button" class="btn btn-danger" id="button_delete_task">Supprimer la tâche
-                        </button>
+                            <button type="button" class="btn btn-danger" id="button_delete_task">Supprimer la tâche
+                            </button>
                         {% endif %}
-                        <button type="button" class="btn btn-success" id="button_save_task">Sauvegarder les modifications
+                        <button type="button" class="btn btn-success" id="button_save_task">Sauvegarder les
+                            modifications
                         </button>
                     </div>
                 </div>

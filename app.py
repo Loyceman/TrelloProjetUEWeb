@@ -309,7 +309,7 @@ def create_task():
     status_enum = get_completion_enum_from_value(status)
 
     task = Task(name=name, description=description, dueDate=due_date, label=label_enum, completionStatus=status_enum,
-                category_id=category_id)
+                category_id=category_id, displayable=True)
 
     current_category = Category.query.get(category_id)
     current_category.tasks.append(task)
@@ -365,14 +365,18 @@ def modify_task():
     task.name = name
     task.description = description
     task.dueDate = due_date
-    task.priority = get_priority_enum_from_value(priority)
-    task.status = get_completion_enum_from_value(status)
+    task.label = get_priority_enum_from_value(priority)
+    task.completionStatus = get_completion_enum_from_value(status)
 
-    users = []
-    for username in usernames:
-        user = User.query.filter_by(username=username).first()
-        users.append(user)
-    task.users = users
+    task.displayable = True
+
+    if current_user.role == "ProjectManager":
+        users = []
+        for username in usernames:
+            user = User.query.filter_by(username=username).first()
+            users.append(user)
+        task.users = users
+    print("users of the task are ", usernames)
     db.session.commit()
     return jsonify({'success': True})
 
@@ -588,6 +592,7 @@ def is_junction_table(table_name):
 def get_priority_enum_from_value(string):
     for priority in PriorityEnum:
         if priority.value == string:
+            print("priority", priority)
             return priority
 
 

@@ -8,6 +8,13 @@ function onLoad() {
         window.location.reload(); // Actualiser la page
     });
 
+    $('#SelectedUserTaskModified').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
+        theme: "bootstrap-5",
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $(this).data('placeholder'),
+        closeOnSelect: false,
+    });
+
     $('#SelectedUserSaved').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
         theme: "bootstrap-5",
         width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
@@ -219,11 +226,8 @@ function modify_task(idTask, name, description, dueDate, priority, status, users
         },
         success: function (xhr) {
             console.log(idTask)
-            $("#ModalCreationTask").modal("hide"); // Masquer le modal
+            $("#ModalModifyTask").modal("hide"); // Masquer le modal
             window.location.reload();
-        },
-        error: function (xhr) {
-            alert(xhr.responseJSON.error);
         }
     });
 }

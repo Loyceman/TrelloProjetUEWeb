@@ -198,9 +198,6 @@ function modify_task(idTask, name, description, dueDate, priority, status, users
             console.log(idTask)
             $("#ModalCreationTask").modal("hide"); // Masquer le modal
             window.location.reload();
-        },
-        error: function (xhr) {
-            alert(xhr.responseJSON.error);
         }
     });
 }
@@ -242,9 +239,6 @@ function create_task(name, description, dueDate, priority, status, users_selecte
             console.log("categoryID : " + categoryID)
             $("#ModalCreationTask").modal("hide"); // Masquer le modal
             window.location.reload();
-        },
-        error: function (xhr) {
-            alert(xhr.responseJSON.error);
         }
     });
 }
