@@ -56,20 +56,20 @@ def dashboard():
 @login_required
 def update_dash_board():
     global task_order_date
-    # Obtenir les données envoyées depuis la requête AJAX
+    # Gets the data sent through the AJAX request
     input_search_bar = request.form['input_search_bar']
     input_select_project = request.form['input_select_project']
     input_select_status = request.form['input_select_status']
     input_select_priority = request.form['input_select_priority']
     input_select_date_order = request.form['input_select_date_order']
 
-    # Trier les tâches en fonction de la valeur sélectionnée dans le menu déroulant DateSelect
+    # Sorts the tasks according to the selected value inside the DateSelect dropdown menu
     if input_select_date_order == 'AscendingDate':
         task_order_date = False
     elif input_select_date_order == 'DescendingDate':
         task_order_date = True
 
-    # Mettre à jour les tâches filtrées
+    # Updates the filtered task list
     update_filtered_tasks(input_search_bar, input_select_project, input_select_status, input_select_priority,
                           input_select_date_order)
 
@@ -83,10 +83,10 @@ def update_filtered_tasks(input_search_bar, input_select_project, input_select_s
                           input_select_date_order):
     all_tasks = Task.query.all()
 
-    # Parcourir toutes les tâches et mettre à jour l'attribut displayable
+    # Goes overe every task and updates the displayable
     for task in all_tasks:
 
-        # Mettre à jour displayable si les critères de filtrage sont satisfaits
+        # Updates displayable if the filters are satisfied
         if (input_search_bar.lower() in task.name.lower() or input_search_bar == '') and \
                 (input_select_project == 'Filtre par projet' or str(input_select_project) == str(task.project_id)) and \
                 (input_select_status == 'Filtre par statut' or input_select_status == task.completionStatus.value) and \
@@ -131,13 +131,13 @@ def retrieve_data():
         start_date_str = request.form['startDate']
         start_year, start_month, start_day = map(int, start_date_str.split('-'))
         start_date = datetime.date(start_year, start_month,
-                                   start_day)  # Transforme les dates de javascript en date utilisable par Python
+                                   start_day)  # Turns the javascript dates into python dates
     if request.form['endDate']:
         end_date_str = request.form['endDate']
         end_year, end_month, end_day = map(int, end_date_str.split('-'))
         end_date = datetime.date(end_year, end_month, end_day)
 
-    project_members = request.form.getlist('members[]')  # Récupère une liste des membres du projet
+    project_members = request.form.getlist('members[]')
 
     return name, description, color, start_date, end_date, project_members
 
@@ -151,10 +151,11 @@ def create_project():
     if existing_project:
         return jsonify({'error': 'A project with the same name already exists'}), 400
 
-    # Création d'un projet et ajout à la base de données
+    # Creates a project and add it to the database
     project = Project(description=description, name=name, color=color, startDate=start_date, endDate=end_date)
     db.session.add(project)
-    # Ajout des membres au projet
+
+    # Adds the project members to the newly created instance
     if members:
         for member_name in members:
             member = User.query.filter_by(username=member_name).first()
@@ -186,7 +187,7 @@ def delete_project():
     project = Project.query.filter_by(id=id_project).first()
     if project:
         db.session.delete(project)
-        db.session.commit()  # Confirmer la suppression
+        db.session.commit()
         return jsonify({'message': 'Project deleted successfully'}), 200
     else:
         return jsonify({'error': 'Project not found'}), 404
@@ -199,10 +200,10 @@ def save_project():
     print("\n==== SAVING PROJECT ====\n")
     name, description, color, start_date, end_date, members = retrieve_data()
 
-    # Rechercher le projet existant dans la base de données
+    # Look if there is an existing project inside the database
     existing_project = Project.query.filter_by(name=name).first()
     if existing_project:
-        # Mettre à jour les champs du projet avec les nouvelles valeurs
+        # Updates the project fields with the new values
         existing_project.description = description
         existing_project.color = color
         existing_project.startDate = start_date
@@ -214,7 +215,7 @@ def save_project():
         print("        End Date : " + str(end_date))
         print("        Members : " + str(members))
 
-        # Supprimer les membres actuels du projet
+        # Deletes the current members from the project
         for member in existing_project.users:
             if member.username not in members:
                 existing_project.users.remove(member)
@@ -233,7 +234,7 @@ def save_project():
                 db.session.add(notif)
         print("\n    Deleted previous members from project")
 
-        # Ajouter les nouveaux membres au projet
+        # Adds the new members to the project
         print("    Adding new members :")
         for member_name in members:
             member = User.query.filter_by(username=member_name).first()
@@ -247,7 +248,6 @@ def save_project():
                               user=member.id)
                 db.session.add(notif)
 
-        # Sauvegarder les modifications dans la base de données
         db.session.commit()
 
         return jsonify({'message': 'Project updated successfully'}), 200
@@ -378,7 +378,7 @@ def delete_notif():
     notif = Notif.query.get(id_notif)
     if notif:
         db.session.delete(notif)
-        db.session.commit()  # Confirmer la suppression
+        db.session.commit()
         return jsonify({'message': 'Notif deleted successfully'}), 200
     else:
         return jsonify({'error': 'Notif not found'}), 404
