@@ -105,7 +105,6 @@ class Task(db.Model):
     completionStatus = db.Column(sqlalchemy.types.Enum(TaskCompletionEnum), nullable=False)
     users = db.relationship('User', secondary=users_tasks_association,
                             backref=db.backref('tasks'))
-    subtasks = db.relationship('Subtask', backref=db.backref('task'))
 
     def get_project_name(self):
         category = Category.query.get(self.category_id)
