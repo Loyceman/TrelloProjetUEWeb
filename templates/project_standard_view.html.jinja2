@@ -34,16 +34,20 @@
                         <li>{{ task.name }}</li>
                     {% endfor %}
                 </ul>
+            {% if current_user.role.value == "ProjectManager" %}
                 <button class="add-card-btn btn" id="GetTaskId" data-category-id={{ category.id }} data-bs-toggle="modal"
                         data-bs-target="#ModalCreationTask">Ajouter une tâche
                 </button>
+            {% endif %}
 
             </div>
         {% endfor %}
 
+    {% if current_user.role.value == "ProjectManager" %}
         <button class="add-list-btn btn" data-bs-toggle="modal" data-bs-target="#ModalCreationCategory">Ajouter une
             catégorie
         </button>
+     {% endif %}
 
     </section>
     <!-- End of lists container -->
