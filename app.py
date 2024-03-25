@@ -3,15 +3,14 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database, get_relationship_names
-from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum, NotifStatusEnum, Category, PriorityEnum, TaskCompletionEnum
+from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum, NotifStatusEnum, Category, \
+    PriorityEnum, TaskCompletionEnum
 import database.models as models
 import os
 from helpers import enum_to_readable
 from sqlalchemy import inspect
 
-
 reset_database = True
-
 
 app = Flask(__name__)
 
@@ -24,18 +23,15 @@ app.config['SECRET_KEY'] = "this-is-a-secret-key"
 app.config["SESSION_COOKIE_SAMESITE"] = "Strict"
 db.init_app(app)
 
-
 # Initializes the database if not already created
 if reset_database:
     with app.test_request_context():
         init_database()
 
-
 # Login Manager
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
-
 
 task_order_date = False
 
@@ -97,7 +93,8 @@ def update_filtered_tasks(input_search_bar, input_select_project, input_select_s
 
         # Updates displayable if the filters are satisfied
         if (input_search_bar.lower() in task.name.lower() or input_search_bar == '') and \
-                (input_select_project == 'Filtre par projet' or str(input_select_project) == str(category.project_id)) and \
+                (input_select_project == 'Filtre par projet' or str(input_select_project) == str(
+                    category.project_id)) and \
                 (input_select_status == 'Filtre par statut' or input_select_status == task.completionStatus.value) and \
                 (input_select_priority == 'Filtre par priorité' or input_select_priority == task.label.value):
             task.displayable = True
@@ -311,7 +308,8 @@ def create_task():
     label_enum = get_priority_enum_from_value(label)
     status_enum = get_completion_enum_from_value(status)
 
-    task = Task(name=name, description=description, dueDate=due_date, label=label_enum, completionStatus=status_enum, category_id=category_id)
+    task = Task(name=name, description=description, dueDate=due_date, label=label_enum, completionStatus=status_enum,
+                category_id=category_id)
 
     current_category = Category.query.get(category_id)
     current_category.tasks.append(task)
@@ -467,6 +465,11 @@ def register():
                            zip=zip)
 
 
+@login_manager.user_loader
+def load_user(user):
+    return models.User.query.filter_by(username=user).first()
+
+
 @app.route('/logout', methods=["GET"])
 @login_required
 def logout():
@@ -592,6 +595,7 @@ def get_completion_enum_from_value(string):
     for completion in TaskCompletionEnum:
         if completion.value == string:
             return completion
+
 
 if __name__ == '__main__':
     app.run()
