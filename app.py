@@ -272,7 +272,7 @@ def create_category():
     # Ici on crée la categorie
     existing_category = Category.query.filter_by(name=name).first()
     if existing_category:
-        return jsonify({'error':'A category with the same name already exists'}), 400
+        return jsonify({'error': 'A category with the same name already exists'}), 400
 
     category = Category(name=name, project_id=project_id)
     db.session.add(category)
@@ -291,11 +291,67 @@ def create_task():
     status = request.form.get('status')
     users = request.form.getlist('users[]')
     category_id = request.form.get('categoryId')
-    
+
     # Logique pour créer la tâche dans la base de données
     # ...
 
     return jsonify({'success': True})
+
+
+@login_required
+@app.route('/get_tasks', methods=['GET'])
+def get_tasks():
+    tasks = Task.query.all()
+    task_data = []
+    for task in tasks:
+        task_users = [user.username for user in task.users]
+        task_details = {
+            'id': task.id,
+            'name': task.name,
+            'category_id': task.category_id,
+            'label': task.label.value,
+            'description': task.description,
+            'dueDate': task.dueDate.strftime('%Y-%m-%d') if task.dueDate else None,
+            'displayable': task.displayable,
+            'completionStatus': task.completionStatus.value,
+            'users': task_users
+        }
+        task_data.append(task_details)
+    return jsonify(task_data), 200
+
+
+# PROJECT PAGE
+@login_required
+@app.route('/modify_task', methods=['POST'])
+def modify_task():
+    id = request.form.get('idTask')
+    name = request.form.get('name')
+    description = request.form.get('description')
+    due_date = request.form.get('dueDate')
+    priority = request.form.get('priority')
+    status = request.form.get('status')
+    users = request.form.getlist('users[]')
+
+    # Logique pour modifier la tâche dans la base de données
+    # ...
+
+    return jsonify({'success': True})
+
+
+# PROJECT PAGE
+
+@app.route('/delete_task', methods=['POST'])
+@login_required
+def delete_task():
+    print("Nous voulons delete")
+    id_task = request.form['id']
+    task = Task.query.filter_by(id=id_task).first()
+    if task:
+        db.session.delete(task)
+        db.session.commit()  # Confirmer la suppression
+        return jsonify({'message': 'Project deleted successfully'}), 200
+    else:
+        return jsonify({'error': 'Project not found'}), 404
 
 
 @login_required
