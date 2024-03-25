@@ -4,7 +4,7 @@ user:
     role: DEVELOPER
   - username: loyceman
     password_hash: sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48
-    role: PROJECT_MANAGER
+    role: DEVELOPER
   - username: to
     password_hash: sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48
     role : PROJECT_MANAGER
@@ -28,38 +28,42 @@ project:
     users :
       - 2
 
+category:
+  - name: Front
+    project_id: 1
+  - name: Back
+    project_id: 1
+  - name: Extensions
+    project_id: 2
 
 task:
-  - name: Styles CSS
-    category: Front
+  - name: Task 1
     label: MIDDLE_PRIORITY
     description: Faire le CSS de la page projet
     dueDate: 2024-03-15
     completionStatus: DONE
     displayable: TRUE
-    project_id: 1
+    category_id: 1
     users :
       - 1
-  - name: Flask - Get task
-    category: Back
+  - name: Task 2
     label: LOW_PRIORITY
     description: Faire le python de la requête get_task
     dueDate: 2024-04-02
     completionStatus: STUCK
     displayable: TRUE
-    project_id: 1
+    category_id: 2
     users :
       - 1
       - 2
       - 3
-  - name: IA
-    category: Extensions
+  - name: Task 3
     label: HIGH_PRIORITY
     description: Implémenter un LLM
     dueDate: 2024-11-02
     completionStatus: IN_PROGRESS
     displayable: TRUE
-    project_id: 2
+    category_id: 3
     users :
       - 2
 

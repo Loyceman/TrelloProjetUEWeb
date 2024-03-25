@@ -5,6 +5,7 @@ from sqlalchemy import inspect
 import os
 
 
+
 def init_database():
     if os.path.exists("database/database.db"):
         os.remove("database/database.db")

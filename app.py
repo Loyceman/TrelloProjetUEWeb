@@ -3,11 +3,15 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database, get_relationship_names
-from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum, NotifStatusEnum
+from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum, NotifStatusEnum, Category, PriorityEnum, TaskCompletionEnum
 import database.models as models
 import os
 from helpers import enum_to_readable
 from sqlalchemy import inspect
+
+
+reset_database = True
+
 
 app = Flask(__name__)
 
@@ -18,9 +22,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "this-is-a-secret-key"
 app.config["SESSION_COOKIE_SAMESITE"] = "Strict"
 db.init_app(app)
-
-with app.test_request_context():
-    init_database()
+if reset_database:
+    with app.test_request_context():
+        init_database()
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
@@ -37,7 +41,7 @@ def route():
     return redirect('/home_page')
 
 
-task_order_date = False 
+task_order_date = False
 
 
 # HOME PAGE
@@ -256,9 +260,131 @@ def save_project():
 @login_required
 @app.route('/projects/standard_view/<int:project_id>', methods=['GET', 'POST'])
 def standard_project_page(project_id):
-    # Utilisez l'ID du projet pour récupérer les données du projet depuis la base de données
     project = Project.query.get(project_id)
-    return render_template("project_standard_view.html.jinja2", project=project, pid=project_id)
+    users = project.users  # Récupérer les utilisateurs associés à ce projet
+    print(project.id)
+    return render_template("project_standard_view.html.jinja2", project=project, users=users)
+
+
+# PROJECT PAGES
+# Route for creating categories
+@app.route('/create_category', methods=['POST'])
+@login_required
+def create_category():
+    name = request.form['category_name']
+    project_id = request.form['project_id']
+    # Ici on crée la categorie
+    existing_category = Category.query.filter_by(name=name).first()
+    if existing_category:
+        return jsonify({'error': 'A category with the same name already exists'}), 400
+
+    category = Category(name=name, project_id=project_id)
+    db.session.add(category)
+    db.session.commit()
+
+    return jsonify({'message': 'Category created successfully'}), 200
+
+
+@login_required
+@app.route('/create_task', methods=['POST'])
+def create_task():
+    name = request.form.get('name')
+    description = request.form.get('description')
+    due_date = datetime.date(2024, 12, 30)
+    if request.form['dueDate']:
+        due_date_str = request.form['dueDate']
+        due_year, due_month, due_day = map(int, due_date_str.split('-'))
+        due_date = datetime.date(due_year, due_month,
+                                 due_day)
+    label = request.form.get('priority')
+    status = request.form.get('status')
+    users = request.form.getlist('users[]')
+    category_id = request.form.get('categoryId')
+    label_enum = get_priority_enum_from_value(label)
+    status_enum = get_completion_enum_from_value(status)
+
+    task = Task(name=name, description=description, dueDate=due_date, label=label_enum, completionStatus=status_enum, category_id=category_id)
+
+    current_category = Category.query.get(category_id)
+    current_category.tasks.append(task)
+    db.session.add(task)
+    db.session.commit()
+    for username in users:
+        user = User.query.filter_by(username=username).first()
+        task.users.append(user)
+    db.session.commit()
+    return jsonify({'success': True})
+
+
+@login_required
+@app.route('/get_tasks', methods=['GET'])
+def get_tasks():
+    tasks = Task.query.all()
+    task_data = []
+    for task in tasks:
+        task_users = [user.username for user in task.users]
+        task_details = {
+            'id': task.id,
+            'name': task.name,
+            'category_id': task.category_id,
+            'label': task.label.value,
+            'description': task.description,
+            'dueDate': task.dueDate.strftime('%Y-%m-%d') if task.dueDate else None,
+            'displayable': task.displayable,
+            'completionStatus': task.completionStatus.value,
+            'users': task_users
+        }
+        task_data.append(task_details)
+    return jsonify(task_data), 200
+
+
+# PROJECT PAGE
+@login_required
+@app.route('/modify_task', methods=['POST'])
+def modify_task():
+    id = request.form.get('idTask')
+    name = request.form.get('name')
+    description = request.form.get('description')
+    due_date = datetime.date(2024, 12, 30)
+    if request.form['dueDate']:
+        due_date_str = request.form['dueDate']
+        due_year, due_month, due_day = map(int, due_date_str.split('-'))
+        due_date = datetime.date(due_year, due_month,
+                                 due_day)
+    priority = request.form.get('priority')
+    status = request.form.get('status')
+    usernames = request.form.getlist('users[]')
+
+    task = Task.query.get(id)
+    task.name = name
+    task.description = description
+    task.dueDate = due_date
+    task.priority = get_priority_enum_from_value(priority)
+    task.status = get_completion_enum_from_value(status)
+
+    users = []
+    for username in usernames:
+        user = User.query.filter_by(username=username).first()
+        users.append(user)
+    task.users = users
+    db.session.commit()
+    return jsonify({'success': True})
+
+
+# PROJECT PAGE
+
+@app.route('/delete_task', methods=['POST'])
+@login_required
+def delete_task():
+    print("Nous voulons delete")
+    id_task = request.form['id']
+    task = Task.query.filter_by(id=id_task).first()
+    if task:
+        db.session.delete(task)
+        db.session.commit()  # Confirmer la suppression
+        return jsonify({'message': 'Project deleted successfully'}), 200
+    else:
+        return jsonify({'error': 'Project not found'}), 404
 
 
 @login_required
@@ -432,7 +558,7 @@ def show_database():
                 if hasattr(linked_objects, "__iter__"):
                     linked_ids = [linked_object.id for linked_object in linked_objects]
                 else:
-                    linked_ids = linked_objects.id
+                    linked_ids = [linked_objects.id]
                 print(" with ids : " + str(linked_ids))
 
     return render_template('database.html.jinja2', columns=columns_dict, data=data, getattr=getattr)
@@ -444,6 +570,17 @@ def is_junction_table(table_name):
     columns = inspector.get_columns(table_name)
     return len(foreign_keys) == 2 and len(columns) == 2
 
+
+def get_priority_enum_from_value(string):
+    for priority in PriorityEnum:
+        if priority.value == string:
+            return priority
+
+
+def get_completion_enum_from_value(string):
+    for completion in TaskCompletionEnum:
+        if completion.value == string:
+            return completion
 
 if __name__ == '__main__':
     app.run()

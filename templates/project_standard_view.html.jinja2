@@ -4,7 +4,358 @@
 {% set active_page = "Project standard view" %}
 
 {% block pageProject %}
+    <script>
+        let projectId = {{ project.id }};
+    </script>
 
-    <p>Vous êtes sur le projet : {{ pid }}</p>
+    <!-- Board info bar -->
+    <section class="board-info-bar">
+
+        <div class="board-controls">
+
+            <button class="board-title btn">
+                <h2>{{ project.name }}</h2>
+            </button>
+
+        </div>
+
+    </section>
+    <!-- End of board info bar -->
+    <!-- Lists container -->
+    <section class="lists-container" id="category-list">
+
+        {% for category in project.categories %}
+            <div class="list" id="category_{{ category.id }}">
+
+                <h3 class="list-title">{{ category.name }}</h3>
+
+                <ul class="list-items">
+                    {% for task in category.tasks %}
+                        <li id="TaskLi" value={{ task.id }} onclick="get_task_value({{ task.id }})">{{ task.name }}</li>
+                    {% endfor %}
+                </ul>
+                {% if current_user.role.value == "ProjectManager" %}
+                    <button class="add-card-btn btn" id="GetTaskId"
+                            data-category-id={{ category.id }} data-bs-toggle="modal"
+                            data-bs-target="#ModalCreationTask">Ajouter une tâche
+                    </button>
+                {% endif %}
+
+            </div>
+        {% endfor %}
+
+        {% if current_user.role.value == "ProjectManager" %}
+            <button class="add-list-btn btn" data-bs-toggle="modal" data-bs-target="#ModalCreationCategory">Ajouter une
+                catégorie
+            </button>
+        {% endif %}
+
+    </section>
+    <!-- End of lists container -->
+
+    <!-- Modal Category Creation -->
+    <div class="modal fade" id="ModalCreationCategory" tabindex="-1" aria-labelledby="ModalCreationCategory"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Créer une nouvelle catégorie de tâches</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating layout-column mb-3">
+                        <input type="text" class="form-control" id="name_new_category" placeholder="Nom">
+                        <label for="name_new_category">Nom de la catégorie</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary" id="CreateCategory">Créer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Task Creation -->
+    <div class="modal fade" id="ModalCreationTask" tabindex="-1" aria-labelledby="ModalCreationTask"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Créer une nouvelle tâche</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating layout-column mb-3">
+                        <input type="text" class="form-control" id="name_new_task" placeholder="Nom">
+                        <label for="name_new_task">Nom de la tâche</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="description_new_task"
+                                  placeholder="Description"></textarea>
+                        <label for="description_new_task">Description de la tâche</label>
+                    </div>
+                    <div class="layout-center p-2">
+                        <label for="dueDateTask"> Tâche à finir pour le : </label>
+                        <span class="flex-grow-1"></span>
+                        <input type="date" id="dueDateTask">
+                    </div>
+                    <hr>
+                    <div aria-label="ListPriority">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioPriority"
+                                   id="flexRadioHighPriority" value="Haute priorité">
+                            <label class="form-check-label" for="flexRadioHighPriority">
+                                Priorité élévée
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioPriority"
+                                   id="flexRadioMiddlePriority" value="Priorité moyenne">
+                            <label class="form-check-label" for="flexRadioMiddlePriority">
+                                Priorité moyenne
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioPriority"
+                                   id="flexRadioLowPriority" value="Priorité basse"
+                                   checked>
+                            <label class="form-check-label" for="flexRadioLowPriority">
+                                Priorité faible
+                            </label>
+                        </div>
+                    </div>
+                    <hr>
+                    <div aria-label="ListStatus">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioStatus"
+                                   id="flexRadioInProgressStatus" value="InProgress">
+                            <label class="form-check-label" for="flexRadioInProgressStatus">
+                                En cours
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioStatus"
+                                   id="flexRadioDoneStatus" value="Done">
+                            <label class="form-check-label" for="flexRadioDoneStatus">
+                                Terminée
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioStatus"
+                                   id="flexRadioStuckStatus" value="Stuck"
+                                   checked>
+                            <label class="form-check-label" for="flexRadioStuckStatus">
+                                Bloquée
+                            </label>
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <label class="m-2" for="SelectedUserTask"> Sélectionner les utilisateurs devant réaliser
+                            cette
+                            tâche</label>
+                        <select class="form-select" id="SelectedUserTask" data-placeholder="Choose anything"
+                                multiple>
+                            {% for user in users %}
+                                <option>{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary" id="CreateTaskButton">Créer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Task Modify -->
+    <div class="modal fade" id="ModalModifyTask" tabindex="-1" aria-labelledby="ModalModifyTask"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Modifier la tâche</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% if current_user.role.value == "Developer" %}
+                        <fieldset disabled>
+                            <div class="form-floating layout-column mb-3">
+                                <input type="text" class="form-control" id="name_modified_task" placeholder="Nom">
+                                <label for="name_modified_task">Nom de la tâche</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                        <textarea class="form-control" id="description_modified_task"
+                                  placeholder="Description"></textarea>
+                                <label for="description_modified_task">Description de la tâche</label>
+                            </div>
+                            <div class="layout-center p-2">
+                                <label for="dueDateTaskModified"> Tâche à finir pour le : </label>
+                                <span class="flex-grow-1"></span>
+                                <input type="date" id="dueDateTaskModified">
+                            </div>
+                            <hr>
+                            <div aria-label="ListPriority">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioPriority"
+                                           id="flexRadioHighPriority" value="Haute priorité">
+                                    <label class="form-check-label" for="flexRadioHighPriority">
+                                        Priorité élévée
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioPriority"
+                                           id="flexRadioMiddlePriority" value="Priorité moyenne">
+                                    <label class="form-check-label" for="flexRadioMiddlePriority">
+                                        Priorité moyenne
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioPriority"
+                                           id="flexRadioLowPriority" value="Priorité basse"
+                                           checked>
+                                    <label class="form-check-label" for="flexRadioLowPriority">
+                                        Priorité faible
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <hr>
+                        <div aria-label="ListStatus">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioStatus"
+                                       id="flexRadioInProgressStatus" value="InProgress">
+                                <label class="form-check-label" for="flexRadioInProgressStatus">
+                                    En cours
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioStatus"
+                                       id="flexRadioDoneStatus" value="Done">
+                                <label class="form-check-label" for="flexRadioDoneStatus">
+                                    Terminée
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioStatus"
+                                       id="flexRadioStuckStatus" value="Stuck"
+                                       checked>
+                                <label class="form-check-label" for="flexRadioStuckStatus">
+                                    Bloquée
+                                </label>
+                            </div>
+                        </div>
+                        <hr>
+                        <fieldset disabled>
+                            <div>
+                                <label class="m-2" for="SelectedUserTask"> Sélectionner les utilisateurs devant réaliser
+                                    cette
+                                    tâche</label>
+                                <select class="form-select" id="SelectedUserTask" data-placeholder="Choose anything"
+                                        multiple>
+                                    {% for user in users %}
+                                        <option>{{ user.username }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </fieldset>
+                    {% elif current_user.role.value == "ProjectManager" %}
+                        <div class="form-floating layout-column mb-3">
+                            <input type="text" class="form-control" id="name_modified_task" placeholder="Nom">
+                            <label for="name_modified_task">Nom de la tâche</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                        <textarea class="form-control" id="description_modified_task"
+                                  placeholder="Description"></textarea>
+                            <label for="description_modified_task">Description de la tâche</label>
+                        </div>
+                        <div class="layout-center p-2">
+                            <label for="dueDateTaskModified"> Tâche à finir pour le : </label>
+                            <span class="flex-grow-1"></span>
+                            <input type="date" id="dueDateTaskModified">
+                        </div>
+                        <hr>
+                        <div aria-label="ListPriority">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioPriorityModified"
+                                       id="flexRadioHighPriorityModified" value="Haute priorité">
+                                <label class="form-check-label" for="flexRadioHighPriorityModified">
+                                    Priorité élévée
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioPriorityModified"
+                                       id="flexRadioMiddlePriorityModified" value="Priorité moyenne">
+                                <label class="form-check-label" for="flexRadioMiddlePriorityModified">
+                                    Priorité moyenne
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioPriorityModified"
+                                       id="flexRadioLowPriorityModified" value="Priorité basse"
+                                       checked>
+                                <label class="form-check-label" for="flexRadioLowPriorityModified">
+                                    Priorité faible
+                                </label>
+                            </div>
+                        </div>
+                        <hr>
+                        <div aria-label="ListStatus">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioStatusModified"
+                                       id="flexRadioInProgressStatusModified" value="InProgress">
+                                <label class="form-check-label" for="flexRadioInProgressStatusModified">
+                                    En cours
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioStatusModified"
+                                       id="flexRadioDoneStatusModified" value="Done">
+                                <label class="form-check-label" for="flexRadioDoneStatusModified">
+                                    Terminée
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioStatusModified"
+                                       id="flexRadioStuckStatusModified" value="Stuck"
+                                       checked>
+                                <label class="form-check-label" for="flexRadioStuckStatusModified">
+                                    Bloquée
+                                </label>
+                            </div>
+                        </div>
+                        <hr>
+                        <div>
+                            <label class="m-2" for="SelectedUserTaskModified"> Sélectionner les utilisateurs devant
+                                réaliser
+                                cette
+                                tâche</label>
+                            <select class="form-select" id="SelectedUserTaskModified" data-placeholder="Choose anything"
+                                    multiple>
+                                {% for user in users %}
+                                    <option>{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <div class="d-inline-flex gap-2" role="group">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        {% if current_user.role.value == "ProjectManager" %}
+                        <button type="button" class="btn btn-danger" id="button_delete_task">Supprimer la tâche
+                        </button>
+                        {% endif %}
+                        <button type="button" class="btn btn-success" id="button_save_task">Sauvegarder les modifications
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

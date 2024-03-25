@@ -5,14 +5,12 @@
 
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cards_layout.css') }}">
 {% endblock %}
 
 {% block content %}
 
-    <!-- Ici se trouve le header pour changer de projet et passer de la vue tâche à la vue standard et inversement -->
-    <main class="main">
-
-        <div id="sidebar-close">
+            <div id="sidebar-close">
             <div class="sidebar-button" data-bs-toggle="offcanvas" data-bs-target="#sidebar-open" aria-expanded="false">
                 <span class="sidebar-box-open" >
                     <img class="sidebar-icon" src="{{ url_for("static", filename="img/sidebar-open.svg") }}" alt="SidebarOpen"/>
@@ -39,14 +37,13 @@
                         <div id="listProjectSidebar"></div>
                     </section>
                 </div>
-    </div>
+            </div>
         </div>
-
-
-    <script src="{{ url_for('static', filename='js/project_pages.js') }}"></script>
-
-    {% block pageProject %}
-    {% endblock %}
+        <script src="{{ url_for('static', filename='js/project_pages.js') }}"></script>
+    <!-- Ici se trouve le header pour changer de projet et passer de la vue tâche à la vue standard et inversement -->
+    <main class="main">
+        {% block pageProject %}
+        {% endblock %}
     </main>
 {% endblock %}
 
