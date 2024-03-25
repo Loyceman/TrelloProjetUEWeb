@@ -1,6 +1,10 @@
+html{
+    --sidebar-top: calc(var(--header-height) + (2*var(--navbar-padding)) + 1px)
+}
+
 #sidebar-close {
     position: absolute;
-    top: var(--navbar-height);
+    top: var(--sidebar-top);
     left: 0;
     height: 100%;
     width: 20px;
@@ -12,9 +16,9 @@
 
 #sidebar-open{
     width: 240px;
-    height: calc(100% - var(--navbar-height));
+    height: calc(100% - var(--sidebar-top));
     background-color: var(--c-light);
-    top: var(--navbar-height);
+    top: var(--sidebar-top);
 }
 
 .sidebar-zone{

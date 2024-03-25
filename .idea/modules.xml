@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../../IMT-PJINNOV/InnovWebsite/.idea/InnovWebsite.iml" filepath="$PROJECT_DIR$/../../IMT-PJINNOV/InnovWebsite/.idea/InnovWebsite.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/Projet.iml" filepath="$PROJECT_DIR$/.idea/Projet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/TrelloProjetUEWeb.iml" filepath="$PROJECT_DIR$/.idea/TrelloProjetUEWeb.iml" />
     </modules>
   </component>
 </project>

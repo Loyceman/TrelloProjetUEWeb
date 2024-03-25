@@ -1,5 +1,6 @@
 html{
-  --navbar-height: 55px;
+  --header-height: 40px;
+  --navbar-padding: 0.5rem;
 }
 
 main{
@@ -8,7 +9,11 @@ main{
 }
 
 .navbar{
-  height: var(--navbar-height)
+  padding: var(--navbar-padding)
+}
+
+.header{
+  height: var(--header-height)
 }
 
 .color-nav{
