@@ -10,7 +10,7 @@ from helpers import enum_to_readable
 from sqlalchemy import inspect
 
 
-reset_database = False
+reset_database = True
 
 
 app = Flask(__name__)
@@ -300,24 +300,19 @@ def create_task():
     status = request.form.get('status')
     users = request.form.getlist('users[]')
     category_id = request.form.get('categoryId')
-    label_enum = None
-    for priority in PriorityEnum:
-        if priority.value == label:
-            label_enum = priority
-    status_enum = None
-    for completion_status in TaskCompletionEnum:
-        if completion_status.value == status:
-            status_enum = completion_status
+    label_enum = get_priority_enum_from_value(label)
+    status_enum = get_completion_enum_from_value(status)
 
     task = Task(name=name, description=description, dueDate=due_date, label=label_enum, completionStatus=status_enum, category_id=category_id)
-    print(task)
-
 
     current_category = Category.query.get(category_id)
     current_category.tasks.append(task)
     db.session.add(task)
     db.session.commit()
-    print(users)
+    for username in users:
+        user = User.query.filter_by(username=username).first()
+        task.users.append(user)
+    db.session.commit()
     return jsonify({'success': True})
 
 
@@ -350,14 +345,29 @@ def modify_task():
     id = request.form.get('idTask')
     name = request.form.get('name')
     description = request.form.get('description')
-    due_date = request.form.get('dueDate')
+    due_date = datetime.date(2024, 12, 30)
+    if request.form['dueDate']:
+        due_date_str = request.form['dueDate']
+        due_year, due_month, due_day = map(int, due_date_str.split('-'))
+        due_date = datetime.date(due_year, due_month,
+                                 due_day)
     priority = request.form.get('priority')
     status = request.form.get('status')
-    users = request.form.getlist('users[]')
+    usernames = request.form.getlist('users[]')
 
-    # Logique pour modifier la tâche dans la base de données
-    # ...
+    task = Task.query.get(id)
+    task.name = name
+    task.description = description
+    task.dueDate = due_date
+    task.priority = get_priority_enum_from_value(priority)
+    task.status = get_completion_enum_from_value(status)
 
+    users = []
+    for username in usernames:
+        user = User.query.filter_by(username=username).first()
+        users.append(user)
+    task.users = users
+    db.session.commit()
     return jsonify({'success': True})
 
 
@@ -561,6 +571,17 @@ def is_junction_table(table_name):
     columns = inspector.get_columns(table_name)
     return len(foreign_keys) == 2 and len(columns) == 2
 
+
+def get_priority_enum_from_value(string):
+    for priority in PriorityEnum:
+        if priority.value == string:
+            return priority
+
+
+def get_completion_enum_from_value(string):
+    for completion in TaskCompletionEnum:
+        if completion.value == string:
+            return completion
 
 if __name__ == '__main__':
     app.run()
