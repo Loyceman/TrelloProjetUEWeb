@@ -419,7 +419,6 @@ def login():
         remember = True if request.form.get('remember') else False
         user = models.User.query.filter_by(username=username).first()
         print("Username : ", username)
-        print("Password : ", password)
         print("Remember : ", remember)
         print(check_password_hash(user.password_hash, password))
         print(generate_password_hash(password))

@@ -346,8 +346,10 @@
                 <div class="modal-footer">
                     <div class="d-inline-flex gap-2" role="group">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        {% if current_user.role.value == "ProjectManager" %}
                         <button type="button" class="btn btn-danger" id="button_delete_task">Supprimer la tâche
                         </button>
+                        {% endif %}
                         <button type="button" class="btn btn-success" id="button_save_task">Sauvegarder les modifications
                         </button>
                     </div>

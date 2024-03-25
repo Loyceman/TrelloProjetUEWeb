@@ -39,7 +39,7 @@ category:
 task:
   - name: Task 1
     label: MIDDLE_PRIORITY
-    description: Faire le CSS
+    description: Faire le CSS de la page projet
     dueDate: 2024-03-15
     completionStatus: DONE
     displayable: TRUE
@@ -48,7 +48,7 @@ task:
       - 1
   - name: Task 2
     label: LOW_PRIORITY
-    description: Fais le Python batard
+    description: Faire le python de la requête get_task
     dueDate: 2024-04-02
     completionStatus: STUCK
     displayable: TRUE
@@ -59,7 +59,7 @@ task:
       - 3
   - name: Task 3
     label: HIGH_PRIORITY
-    description: Azzi on compte sur toi
+    description: Implémenter un LLM
     dueDate: 2024-11-02
     completionStatus: IN_PROGRESS
     displayable: TRUE
