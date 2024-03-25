@@ -13,31 +13,33 @@ app = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+# Configuration of the Flask application
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///../database/database.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "this-is-a-secret-key"
 app.config["SESSION_COOKIE_SAMESITE"] = "Strict"
 db.init_app(app)
 
+
+# Initializes the database
 with app.test_request_context():
     init_database()
+
+
+# Login Manager
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
 
-@login_manager.user_loader
-def load_user(user):
-    return models.User.query.filter_by(username=user).first()
+task_order_date = False
 
 
+# Base redirection
 @app.route('/')
 @login_required
 def route():
     return redirect('/home_page')
-
-
-task_order_date = False 
 
 
 # HOME PAGE
@@ -49,7 +51,7 @@ def dashboard():
                            taskOrderDate=task_order_date)
 
 
-# HOME PAGE
+# Update the dashboard, called when creating or editing a project
 @app.route('/update_dash_board', methods=['POST'])
 @login_required
 def update_dash_board():
@@ -76,6 +78,7 @@ def update_dash_board():
     return jsonify({'success': 'we correctly receive data'}), 200
 
 
+# Called when filtering the tasks in the dashboard
 def update_filtered_tasks(input_search_bar, input_select_project, input_select_status, input_select_priority,
                           input_select_date_order):
     all_tasks = Task.query.all()
@@ -93,8 +96,7 @@ def update_filtered_tasks(input_search_bar, input_select_project, input_select_s
             task.displayable = False
 
 
-# HOME PAGE
-# Route for retrieving projects
+# Route for retrieving projects, called by JS on the dashboard
 @app.route('/projects', methods=['GET'])
 @login_required
 def get_projects():
@@ -117,6 +119,7 @@ def get_projects():
     return jsonify(project_data)
 
 
+# Meant to retrieve the data when submitting a project through a form
 def retrieve_data():
     name = request.form['name']
     description = request.form['description']
@@ -139,7 +142,7 @@ def retrieve_data():
     return name, description, color, start_date, end_date, project_members
 
 
-# HOME PAGE
+# Called when creating a project through the home page
 @app.route('/create_project', methods=['POST'])
 @login_required
 def create_project():
@@ -175,7 +178,7 @@ def create_project():
     return jsonify({'message': 'Project created successfully'}), 200
 
 
-# HOME PAGE
+# Called when deleting a project through the home page
 @app.route('/delete_project', methods=['POST'])
 @login_required
 def delete_project():
@@ -189,7 +192,7 @@ def delete_project():
         return jsonify({'error': 'Project not found'}), 404
 
 
-# HOME PAGE
+# Called when saving a project through the home page
 @app.route('/save_project', methods=['POST'])
 @login_required
 def save_project():
@@ -252,15 +255,15 @@ def save_project():
         return jsonify({'error': 'Project not found'}), 404
 
 
-# PROJECT PAGES
+# Displays the standard view of the given project
 @login_required
 @app.route('/projects/standard_view/<int:project_id>', methods=['GET', 'POST'])
 def standard_project_page(project_id):
-    # Utilisez l'ID du projet pour récupérer les données du projet depuis la base de données
     project = Project.query.get(project_id)
     return render_template("project_standard_view.html.jinja2", project=project, pid=project_id)
 
 
+# Meant to be used by js to get info about the current user
 @login_required
 @app.route('/current_user', methods=['GET'])
 def get_current_user():
@@ -397,6 +400,7 @@ def change_status_notif():
         return jsonify({'error': 'Notif not found'}), 404
 
 
+# Meant for debugging purposes and showing all the info inside the database
 @app.route('/database')
 def show_database():
     print("\n==== SHOWING THE DATABASE ====\n")
@@ -439,6 +443,7 @@ def show_database():
     return render_template('database.html.jinja2', columns=columns_dict, data=data, getattr=getattr)
 
 
+# Detects if the given table is a junction table, so that it isn't used when showing the database
 def is_junction_table(table_name):
     inspector = inspect(db.engine)
     foreign_keys = inspector.get_foreign_keys(table_name)
