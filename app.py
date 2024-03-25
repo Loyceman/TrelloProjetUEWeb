@@ -9,6 +9,10 @@ import os
 from helpers import enum_to_readable
 from sqlalchemy import inspect
 
+
+reset_database = False
+
+
 app = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -18,9 +22,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "this-is-a-secret-key"
 app.config["SESSION_COOKIE_SAMESITE"] = "Strict"
 db.init_app(app)
-
-with app.test_request_context():
-    init_database()
+if reset_database:
+    with app.test_request_context():
+        init_database()
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
