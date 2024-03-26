@@ -116,7 +116,6 @@ main{
     border-radius: 0.25rem;
     margin: 0 0.5em 1em 0.5em;
     word-wrap: break-word;
-    cursor: pointer;
     align-content: start;
     padding: 0.5rem;
     overflow-y: auto;
@@ -127,7 +126,12 @@ main{
     margin-bottom: 0;
 }
 
-.list-items:hover{
+#TaskLi{
+    background-color:white;
+    cursor:pointer;
+}
+
+#TaskLi:hover{
     background-color: #eee;
 }
 
