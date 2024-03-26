@@ -6,7 +6,7 @@ user:
     password_hash: sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48
     role: DEVELOPER
   - username: to
-    password_hash: sha256$1nSH2UZxHygfiyqa$aa75ceb823a81123176b08e6cc4a168782359eb07038f1d66145d975ef2a1a48
+    password_hash: pbkdf2:sha256:600000$TiXnuLGvqSP8QpHC$1531b61a5d4bd89dc048b98078925e7b1b06540eb896b3c399b28423460fc8d9
     role : PROJECT_MANAGER
 
 

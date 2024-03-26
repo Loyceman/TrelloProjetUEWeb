@@ -527,7 +527,8 @@ def register():
             flash('Please fill in all the fields')
         else:
             user = User(username=username,
-                        password_hash=generate_password_hash(password, method='sha256'),
+                        password_hash=generate_password_hash(password),
+                        # password_hash=generate_password_hash(, method='sha256'),
                         role=role)
             db.session.add(user)
             db.session.commit()
