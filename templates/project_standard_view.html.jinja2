@@ -44,7 +44,7 @@
                                     {% endfor %}
                                 </ul>
                                 {% if current_user.role.value == "ProjectManager" %}
-                                    <button class="mx-2 btn btn-outline-primary" id="GetTaskId"
+                                    <button class="mx-2 btn btn-outline-primary add-card-btn" id="GetTaskId"
                                             data-category-id={{ category.id }} data-bs-toggle="modal"
                                             data-bs-target="#ModalCreationTask">
                                         Ajouter une tâche
