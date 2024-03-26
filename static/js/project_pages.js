@@ -32,6 +32,12 @@ function onLoadProject() {
             }
         }
     )
+    $("#DeleteCategory").click(function () {
+        let category_name = $(this).val()
+        deleteCategory(category_name, projectId)
+        }
+    )
+
     // Lorsque le bouton "Ajouter une tâche" est cliqué
     $(document).on("click", ".add-card-btn", function () {
         let categoryId = $(this).data("category-id");
@@ -149,6 +155,23 @@ function createCategory(category_name, project_id) {
         },
         error: function (projects) {
             alert('category cant be created')
+        }
+    });
+}
+
+function deleteCategory(category_name, project_id) {
+    $.ajax({
+        url: "/delete_category",
+        method: "POST",
+        data: {
+            category_name: category_name,
+            project_id: project_id
+        },
+        success: function (projects) {
+            window.location.reload();
+        },
+        error: function (projects) {
+            alert('category cant be deleted')
         }
     });
 }

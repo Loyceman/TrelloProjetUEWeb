@@ -25,9 +25,13 @@
     <section class="lists-container" id="category-list">
 
         {% for category in project.categories %}
-            <div class="list" id="category_{{ category.id }}">
-
-                <h3 class="list-title">{{ category.name }}</h3>
+            <div class="list p-2" id="category_{{ category.id }}">
+                <div class="layout-center">
+                    <span class="list-title flex-grow-1">{{ category.name }}</span>
+                    <button id="DeleteCategory" value="{{ category.name }}">
+                        <img class="category-icon clickable" src="{{ url_for("static", filename="img/close-icon.svg") }}" alt="Close">
+                    </button>
+                </div>
 
                 <ul class="list-items">
                     {% for task in category.tasks %}

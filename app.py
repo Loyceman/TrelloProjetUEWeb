@@ -300,6 +300,26 @@ def create_category():
     return jsonify({'message': 'Category created successfully'}), 200
 
 
+@app.route('/delete_category', methods=['POST'])
+@login_required
+def delete_category():
+    name = request.form['category_name']
+    project_id = request.form['project_id']
+    category = Category.query.filter_by(name=name).first()
+
+    tasks = Task.query.filter_by(category_id=category.id).all()
+    for task in tasks:
+        notifs = Notif.query.filter_by(task_id=task.id).all()
+        for notif in notifs:
+            db.session.delete(notif)
+        db.session.delete(task)
+
+    db.session.delete(category)
+    db.session.commit()
+
+    return jsonify({'message': 'Category deleted successfully'}), 200
+
+
 @login_required
 @app.route('/create_task', methods=['POST'])
 def create_task():
