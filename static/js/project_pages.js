@@ -32,7 +32,8 @@ function onLoadProject() {
             }
         }
     )
-    $("#DeleteCategory").click(function () {
+    $(document).on('click', "#DeleteCategory" ,function () {
+        console.log("coucou")
         let category_name = $(this).val()
         deleteCategory(category_name, projectId)
         }

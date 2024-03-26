@@ -3,11 +3,6 @@ html{
   --navbar-padding: 0.5rem;
 }
 
-main{
-  padding-top:55px;
-  padding-left:55px;
-}
-
 .navbar{
   padding: var(--navbar-padding)
 }

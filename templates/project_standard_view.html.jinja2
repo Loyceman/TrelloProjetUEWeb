@@ -7,55 +7,67 @@
     <script>
         let projectId = {{ project.id }};
     </script>
+    <div class="board-container">
 
-    <!-- Board info bar -->
-    <section class="board-info-bar">
+        <div class="board-content">
+            <!-- Board info bar -->
+            <section class="board-header">
 
-        <div class="board-controls">
-
-            <button class="board-title btn">
-                <h2>{{ project.name }}</h2>
-            </button>
-
-        </div>
-
-    </section>
-    <!-- End of board info bar -->
-    <!-- Lists container -->
-    <section class="lists-container" id="category-list">
-
-        {% for category in project.categories %}
-            <div class="list p-2" id="category_{{ category.id }}">
-                <div class="layout-center">
-                    <span class="list-title flex-grow-1">{{ category.name }}</span>
-                    <button id="DeleteCategory" value="{{ category.name }}">
-                        <img class="category-icon clickable" src="{{ url_for("static", filename="img/close-icon.svg") }}" alt="Close">
+                    <button class="board-title btn">
+                        <h2>{{ project.name }}</h2>
                     </button>
-                </div>
 
-                <ul class="list-items">
-                    {% for task in category.tasks %}
-                        <li id="TaskLi" value={{ task.id }} onclick="get_task_value({{ task.id }})">{{ task.name }}</li>
+
+            </section>
+            <!-- End of board info bar -->
+
+            <!-- Lists container -->
+            <section class="layout-column flex-grow-1">
+
+                <div class="category-container gap-3" id="category-list">
+
+                    {% for category in project.categories %}
+                        <div class="h-100">
+
+                            <div class="category-item p-2" id="category_{{ category.id }}">
+                                <div class="layout-center">
+                                    <span class="category-title flex-grow-1">{{ category.name }}</span>
+                                    <button id="DeleteCategory" value="{{ category.name }}">
+                                        <img class="category-icon clickable" src="{{ url_for("static", filename="img/close-icon.svg") }}" alt="Close">
+                                    </button>
+                                </div>
+                                <hr>
+
+                                <ul class="list-items">
+                                    {% for task in category.tasks %}
+                                        <li id="TaskLi" class="h-100" value={{ task.id }} onclick="get_task_value({{ task.id }})">{{ task.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% if current_user.role.value == "ProjectManager" %}
+                                    <button class="mx-2 btn btn-outline-primary" id="GetTaskId"
+                                            data-category-id={{ category.id }} data-bs-toggle="modal"
+                                            data-bs-target="#ModalCreationTask">
+                                        Ajouter une tâche
+                                    </button>
+                                {% endif %}
+
+                            </div>
+                        </div>
                     {% endfor %}
-                </ul>
-                {% if current_user.role.value == "ProjectManager" %}
-                    <button class="add-card-btn btn" id="GetTaskId"
-                            data-category-id={{ category.id }} data-bs-toggle="modal"
-                            data-bs-target="#ModalCreationTask">Ajouter une tâche
-                    </button>
-                {% endif %}
 
-            </div>
-        {% endfor %}
+                    {% if current_user.role.value == "ProjectManager" %}
+                        <button class="add-category-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCreationCategory">
+                            <img class="icon" src="{{ url_for("static", filename="img/add-square.svg") }}" alt="New">
+                            Ajouter une catégorie
+                        </button>
+                    {% endif %}
 
-        {% if current_user.role.value == "ProjectManager" %}
-            <button class="add-list-btn btn" data-bs-toggle="modal" data-bs-target="#ModalCreationCategory">Ajouter une
-                catégorie
-            </button>
-        {% endif %}
+                </div>
+            </section>
+            <!-- End of lists container -->
+        </div>
+    </div>
 
-    </section>
-    <!-- End of lists container -->
 
     <!-- Modal Category Creation -->
     <div class="modal fade" id="ModalCreationCategory" tabindex="-1" aria-labelledby="ModalCreationCategory"

@@ -1,16 +1,18 @@
 html{
-    --sidebar-top: calc(var(--header-height) + (2*var(--navbar-padding)) + 1px)
+    --sidebar-top: calc(var(--header-height) + (2*var(--navbar-padding)) + 1px);
+    --sidebar-close-width: 20px;
 }
 
 #sidebar-close {
     position: absolute;
     top: var(--sidebar-top);
     left: 0;
-    height: 100%;
-    width: 20px;
+    height: calc(100% - var(--sidebar-top));
+    width: var(--sidebar-close-width);
     background-color: var(--c-light);
     box-shadow: 10px 0 10px -10px rgba(0,0,0,0.1);
     margin-right: 30px;
+    z-index: 1;
 }
 
 
