@@ -10,7 +10,7 @@ import os
 from helpers import enum_to_readable
 from sqlalchemy import inspect
 
-reset_database = True
+reset_database = False
 
 app = Flask(__name__)
 
