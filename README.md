@@ -21,7 +21,7 @@ notre mission est de créer un site similaire à Trello avec des fonctionnalité
 |    ✔️     | Gestion tâches         | Création, modification                             |
 |     ✔️     | Suivi de progression   | Projet et tâches                                   |
 |     ❌     | Vue tâches             |                                                    |
-|     ❌     | Commentaires tâches    |                                                    |
+|     ✔️     | Commentaires tâches    |                                                    |
 |     ✔️     | Tableau de bord        | Avec ordre de priorité                             |
 |    ✔️     | Notifications          | En temps réel                                      |
 |    ✔️     | README                 |                                                    |
