@@ -38,7 +38,7 @@
                                 </div>
                                 <hr>
 
-                                <ul class="">
+                                <ul class="task-list-margin">
                                     {% for task in category.tasks %}
                                         <li id="TaskLi" class="h-100 list-items" value={{ task.id }} onclick="get_task_value({{ task.id }})">{{ task.name }}</li>
                                     {% endfor %}

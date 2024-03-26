@@ -135,6 +135,10 @@ main{
     background-color: #eee;
 }
 
+.task-list-margin{
+    padding-left:0;
+}
+
 .add-category-btn {
     display: flex;
     align-items: center;
