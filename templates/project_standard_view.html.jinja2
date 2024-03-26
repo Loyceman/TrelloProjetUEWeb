@@ -38,9 +38,9 @@
                                 </div>
                                 <hr>
 
-                                <ul class="list-items">
+                                <ul class="">
                                     {% for task in category.tasks %}
-                                        <li id="TaskLi" class="h-100" value={{ task.id }} onclick="get_task_value({{ task.id }})">{{ task.name }}</li>
+                                        <li id="TaskLi" class="h-100 list-items" value={{ task.id }} onclick="get_task_value({{ task.id }})">{{ task.name }}</li>
                                     {% endfor %}
                                 </ul>
                                 {% if current_user.role.value == "ProjectManager" %}
