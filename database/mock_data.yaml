@@ -27,6 +27,7 @@ project:
     startDate: 2024-01-01
     users :
       - 2
+      - 3
 
 category:
   - name: Front
@@ -66,6 +67,7 @@ task:
     category_id: 3
     users :
       - 2
+      - 3
 
 subtask:
   - name: Changer la couleur des boutons

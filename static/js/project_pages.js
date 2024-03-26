@@ -100,7 +100,7 @@ function updateProjectListSidebar() {
 
                 get_current_user(function (current_user) {
                     if (Array.isArray(projects) && projects.length > 0) {
-                        let firstProjects = projects.slice(0, 3)
+                        let firstProjects = projects.slice(0, 5)
                         firstProjects.forEach((project) => {
                             if (project["members"].includes(current_user.username)) {
                                 const newLayoutSidebar = document.createElement("div");
@@ -197,6 +197,7 @@ function modify_task(idTask, name, description, dueDate, priority, status, users
         success: function (xhr) {
             console.log(idTask)
             $("#ModalCreationTask").modal("hide"); // Masquer le modal
+            updateNotifs()
             window.location.reload();
         }
     });
@@ -213,6 +214,7 @@ function delete_task(task_id) {
         },
         success: function () {
             $("#ModalModifyTask").modal("hide"); // Hide modal
+            updateNotifs()
             window.location.reload();
         },
         error: function () {
@@ -238,6 +240,7 @@ function create_task(name, description, dueDate, priority, status, users_selecte
         success: function (xhr) {
             console.log("categoryID : " + categoryID)
             $("#ModalCreationTask").modal("hide"); // Masquer le modal
+            updateNotifs();
             window.location.reload();
         }
     });

@@ -189,9 +189,20 @@ def create_project():
 @app.route('/delete_project', methods=['POST'])
 @login_required
 def delete_project():
+
     id_project = request.form['id']
     project = Project.query.filter_by(id=id_project).first()
     if project:
+        categories = Category.query.filter_by(project_id=id_project).all()
+        for category in categories:
+            tasks = Task.query.filter_by(category_id=category.id).all()
+            for task in tasks:
+                db.session.delete(task)
+            db.session.delete(category)
+        notifs = Notif.query.filter_by(project_id=id_project).all()
+        for notif in notifs:
+            db.session.delete(notif)
+
         db.session.delete(project)
         db.session.commit()
         return jsonify({'message': 'Project deleted successfully'}), 200
@@ -267,7 +278,6 @@ def save_project():
 def standard_project_page(project_id):
     project = Project.query.get(project_id)
     users = project.users  # Récupérer les utilisateurs associés à ce projet
-    print(project.id)
     return render_template("project_standard_view.html.jinja2", project=project, users=users)
 
 
@@ -315,9 +325,17 @@ def create_task():
     current_category.tasks.append(task)
     db.session.add(task)
     db.session.commit()
+    task_created = Task.query.order_by(Task.id.desc()).first()
     for username in users:
         user = User.query.filter_by(username=username).first()
         task.users.append(user)
+        notif = Notif(project_id=current_category.project_id,
+                      task_id=task_created.id,
+                      type=NotifTypeEnum.ASSIGNED,
+                      datetime=datetime.datetime.now(),
+                      status=NotifStatusEnum.NOTREAD,
+                      user=user.id)
+        db.session.add(notif)
     db.session.commit()
     return jsonify({'success': True})
 
@@ -367,16 +385,46 @@ def modify_task():
     task.dueDate = due_date
     task.label = get_priority_enum_from_value(priority)
     task.completionStatus = get_completion_enum_from_value(status)
+    category = Category.query.get(task.category_id)
 
     task.displayable = True
+    print(current_user.role)
+    if current_user.role == UserRoleEnum.PROJECT_MANAGER:
+        existing_users = task.users
+        for user in existing_users:
+            if user.username not in usernames:
+                task.users.remove(user)
+                notif = Notif(project_id=category.project_id,
+                              task_id=id,
+                              type=NotifTypeEnum.UNASSIGNED,
+                              datetime=datetime.datetime.now(),
+                              status=NotifStatusEnum.NOTREAD,
+                              user=user.id)
+                db.session.add(notif)
+            else:
+                notif = Notif(project_id=category.project_id,
+                              task_id=id,
+                              type=NotifTypeEnum.MODIFIED,
+                              datetime=datetime.datetime.now(),
+                              status=NotifStatusEnum.NOTREAD,
+                              user=user.id)
+                db.session.add(notif)
 
-    if current_user.role == "ProjectManager":
         users = []
         for username in usernames:
             user = User.query.filter_by(username=username).first()
             users.append(user)
-        task.users = users
-    print("users of the task are ", usernames)
+            if user and user not in existing_users:
+                task.users.append(user)
+                notif = Notif(project_id=category.project_id,
+                              task_id=id,
+                              type=NotifTypeEnum.ASSIGNED,
+                              datetime=datetime.datetime.now(),
+                              status=NotifStatusEnum.NOTREAD,
+                              user=user.id)
+                db.session.add(notif)
+
+    # print("users of the task are ", usernames)
     db.session.commit()
     return jsonify({'success': True})
 
@@ -390,6 +438,9 @@ def delete_task():
     id_task = request.form['id']
     task = Task.query.filter_by(id=id_task).first()
     if task:
+        notifs = Notif.query.filter_by(task_id=id_task).all()
+        for notif in notifs:
+            db.session.delete(notif)
         db.session.delete(task)
         db.session.commit()  # Confirmer la suppression
         return jsonify({'message': 'Project deleted successfully'}), 200
@@ -505,7 +556,7 @@ def get_notifs():
         })
         if notif.task_id:
             task = Task.query.get(notif.task_id)
-            notif_data[0]['task'] = task.name
+            notif_data[-1]['task'] = task.name
     return jsonify(notif_data)
 
 
@@ -592,7 +643,6 @@ def is_junction_table(table_name):
 def get_priority_enum_from_value(string):
     for priority in PriorityEnum:
         if priority.value == string:
-            print("priority", priority)
             return priority
 
 

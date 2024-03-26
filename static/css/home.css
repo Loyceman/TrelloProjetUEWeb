@@ -103,3 +103,8 @@ main{
   letter-spacing: 0.05em;
   border-radius: 0;
 }
+
+.table{
+    border-radius: 0.25em;
+    overflow: hidden;
+}

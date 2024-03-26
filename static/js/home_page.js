@@ -171,6 +171,7 @@ function onLoad() {
     dateSelect.addEventListener('change', updateFormData);
 
     updateProjectList();
+    updateFormData()
 }
 
 function updateFormData() {
@@ -227,6 +228,7 @@ function modify_task(idTask, name, description, dueDate, priority, status, users
         success: function (xhr) {
             console.log(idTask)
             $("#ModalModifyTask").modal("hide"); // Masquer le modal
+            updateNotifs()
             window.location.reload();
         }
     });
@@ -243,6 +245,7 @@ function delete_task(task_id) {
         },
         success: function () {
             $("#ModalModifyTask").modal("hide"); // Hide modal
+            updateNotifs()
             window.location.reload();
         },
         error: function () {
@@ -312,6 +315,7 @@ function delete_project(project_id) {
             $("#modalSavedProject").modal("hide"); // Hide modal
             alert("Votre projet a bien été supprimé")
             updateProjectList()
+            updateNotifs()
         }
     })
 }

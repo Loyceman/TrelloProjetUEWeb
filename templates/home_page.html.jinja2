@@ -63,9 +63,9 @@
                     </div>
                 </div>
 
-                <div class="collapse show" id="collapseTasks">
-                    <nav class="navbar navbar-light bg-light justify-content-between">
-                        <form class="d-flex flex-grow-1 p-2">
+                <div class="collapse show mx-3" id="collapseTasks">
+                    <nav class="navbar navbar-light justify-content-between">
+                        <form class="d-flex flex-grow-1 p-2 gap-2">
                             <button class="btn btn-outline-secondary" type="button" id="button-addon1">Rechercher
                             </button>
                             <input id="searchBar" class="form-control w-100" type="search" aria-label="Rechercher"
@@ -78,7 +78,7 @@
                         {#                            </button>#}
                         {#                        </div>#}
 
-                        <div class="d-flex p-2">
+                        <div class="d-flex p-2 gap-2">
                             <select class="form-select" aria-label="Select" id="projectSelect">
                                 <option selected>Filtre par projet</option>
                                 {% set unique_project_names = [] %}
@@ -111,13 +111,13 @@
 
 
                     <div id="datatable">
-                        <table class="table table-light table-hover">
+                        <table class="table table-light table-hover align-middle">
                             <thead>
                             <tr>
                                 <th scope="col">Projet</th>
                                 <th scope="col">Tâche</th>
                                 <th scope="col">Statut</th>
-                                <th scope="col" style="padding-left: 50px;">Priorité</th>
+                                <th scope="col" style="padding-left: 2em;">Priorité</th>
                                 <th scope="col">Date de fin (aaaa-mm-jj)</th>
                                 <th scope="col">Actions</th>
                             </tr>
@@ -155,12 +155,12 @@
                                                 </div>
                                             {% endif %}
                                         </td>
-                                        <td style="padding-left: 50px;">
+                                        <td style="padding-left: 2em;">
                                             <span class="{{ task.get_priority_badge_class() }}">{{ task.label.value }}</span>
                                         </td>
                                         <td>{{ task.dueDate }}</td>
                                         <td>
-                                            <button onclick="get_task_value({{ task.id }})">Modifier</button>
+                                            <button class="btn btn-secondary" onclick="get_task_value({{ task.id }})">Modifier</button>
                                         </td>
                                     </tr>
                                     {#                        <option>{{ user.username }}</option>#}
