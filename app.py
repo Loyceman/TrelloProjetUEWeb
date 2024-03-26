@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_login import login_required, logout_user, LoginManager, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.database import db, init_database, get_relationship_names
-from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum, NotifStatusEnum, Category, \
+from database.models import UserRoleEnum, User, Task, Project, Subtask, Notif, NotifTypeEnum, NotifStatusEnum, Message, Category, \
     PriorityEnum, TaskCompletionEnum
 import database.models as models
 import os
@@ -609,6 +609,45 @@ def change_status_notif():
     else:
         return jsonify({'error': 'Notif not found'}), 404
 
+
+@app.route('/messages', methods=['GET'])
+@login_required
+def get_messages():
+    messages = Message.query.all()
+    message_data = []
+    for message in messages:
+        user = User.query.get(message.user)
+        message_data.append({
+            'id': message.id,
+            'task_id': message.task_id,
+            'user': user.username,
+            'content': message.content,
+        })
+    return jsonify(message_data)
+
+
+@app.route('/create_message', methods=['POST'])
+@login_required
+def create_message():
+    id_task = request.form['task_id']
+    id_user = request.form['user']
+    content = request.form['content']
+
+    message = Message(user=id_user, task_id=id_task, content=content)
+    db.session.add(message)
+
+    task = Task.query.get(id_task)
+    category = Category.query.get(task.category_id)
+    for user in task.users:
+        notif = Notif(project_id=category.project_id,
+                      type=NotifTypeEnum.MODIFIED,
+                      datetime=datetime.datetime.now(),
+                      status=NotifStatusEnum.NOTREAD,
+                      user=user.id)
+        db.session.add(notif)
+    db.session.commit()
+
+    return jsonify({'message': 'Project created successfully'}), 200
 
 # Meant for debugging purposes and showing all the info inside the database
 @app.route('/database')

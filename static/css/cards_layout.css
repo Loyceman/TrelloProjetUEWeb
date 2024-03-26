@@ -162,3 +162,33 @@ main{
     border: none;
     background: none;
 }
+
+#listMessage{
+    border-width: 1px;
+    border-radius: 0.25em;
+    overflow: scroll;
+    height: 250px;
+    padding: 0.25em;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-item{
+    padding: 0.25em 0;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.message-title{
+    font-style: italic;
+    font-size: 0.75rem;
+}
+
+.message-content{
+    display: flex;
+    font-size: 1em;
+    border-radius: 0.25em;
+    background-color: var(--c-light);
+    padding: 0.25em;
+}

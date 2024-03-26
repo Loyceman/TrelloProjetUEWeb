@@ -1,5 +1,7 @@
 $(onLoadProject)
 
+let current_task_id
+
 function onLoadProject() {
 
     $('#SelectedUserTask').select2({ // permet le fonctionnement correct de la selection multiple des utilisateurs
@@ -20,6 +22,12 @@ function onLoadProject() {
     $("#listProjectSidebar").on("click", "#buttonProjectSidebar", function () {
         window.location.href = "/projects/standard_view/" + $(this).val();
     });
+
+    $(document).on('click', "#TaskLi" ,function () {
+        let task_id = $(this).val()
+        updateMessages(task_id)
+        }
+    )
 
     $("#CreateCategory").click(function () {
             let new_category_name = $("#name_new_category").val()
@@ -48,6 +56,7 @@ function onLoadProject() {
     let task_open_id
     $(document).on("click", "TaskLi", function () {
         task_open_id = $(this).val()
+        updateMessages(task_open_id)
     });
 
     $("#button_delete_task").click(function () {
@@ -89,8 +98,18 @@ function onLoadProject() {
         }
     });
 
-
     updateProjectListSidebar()
+
+    current_task_id = null
+    $("#sendMessage").click(function () {
+        let content = $("#messageBar").val();
+
+        if (content !== "") {
+            get_current_user(function (current_user) {
+             createMessage(current_task_id,current_user.id, content)
+            })
+        }
+ })
 }
 
 function updateProjectListSidebar() {
@@ -178,6 +197,7 @@ function deleteCategory(category_name, project_id) {
 }
 
 function get_task_value(task_id) {
+    get_task_message(task_id)
     $.ajax({
         url: "/get_tasks",
         method: "GET",
@@ -268,5 +288,71 @@ function create_task(name, description, dueDate, priority, status, users_selecte
             window.location.reload();
         }
     });
+}
+
+
+function get_task_message(task_id){
+    current_task_id = task_id
+}
+
+
+ function createMessage(task_id, user, content) {
+    $.ajax({
+        url: "/create_message",
+        method: "POST",
+        timeout: 2000,
+        data: {
+            task_id: task_id,
+            user: user,
+            content: content
+        },
+        success: function (xhr) {
+            updateMessages(task_id)
+        },
+
+        error: function (xhr) {
+            alert(xhr.responseJSON.error)
+        }
+
+    });
+}
+
+function updateMessages(task_id) {
+    $.ajax({
+        url: "/messages",
+        method: "GET",
+
+        success: function (messages) {
+            let listMessage = document.getElementById("listMessage");
+            if (!listMessage.firstChild) console.log("here")
+            while (listMessage.firstChild) {
+                listMessage.removeChild(listMessage.firstChild);
+            }
+
+            if (Array.isArray(messages) && messages.length > 0) {
+                    messages.forEach((message) => {
+
+                        if (message.task_id === task_id) {
+
+                            newMessage = document.createElement("div")
+                            newMessage.className = "message-item"
+
+                            newTitle = document.createElement("div")
+                            newTitle.className = "message-title"
+                            newTitle.textContent = message.user
+
+                            newContent = document.createElement("div")
+                            newContent.className = "message-content"
+                            newContent.textContent = message.content
+
+                            newMessage.appendChild(newTitle)
+                            newMessage.appendChild(newContent)
+                            listMessage.appendChild(newMessage)
+                        }
+
+                })
+            }
+        }
+    })
 }
 

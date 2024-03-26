@@ -178,3 +178,10 @@ class Category(db.Model):
             return project
         else :
             return None
+
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'))
+    content = db.Column(db.Text)
